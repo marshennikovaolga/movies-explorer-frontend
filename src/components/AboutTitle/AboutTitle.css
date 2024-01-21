@@ -1,0 +1,11 @@
+.about-title {
+    margin: 0 auto;
+    padding-bottom: 23px;
+    margin-bottom: 70px;
+    border-bottom: 1px solid #DADADA;
+    max-width: 100%;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.88px;
+}
