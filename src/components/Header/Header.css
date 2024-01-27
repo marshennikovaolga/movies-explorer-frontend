@@ -1,24 +1,29 @@
 .header {
   display: flex;
+  width: 90%;
+  align-self: center;
+  height: 46px;
   justify-content: space-between;
-  padding: 18px 70px 41px 70px;
+  padding-top: 18px;
+  margin: 0 auto;
   color: #FFF;
-  text-align: right;
-  font-family: Inter;
   font-size: 12px;
-  font-style: normal;
   font-weight: 500;
   line-height: 16px;
-  justify-content: space-between;
 }
 
 .header__nav {
-  padding: 21px 0 0 0;
+  padding: 0;
   margin: 0;
   list-style: none;
   display: flex;
   align-items: center;
   transition: opacity .3s linear;
+}
+
+.header__icon {
+  width: 38px;
+  height: 38px;
 }
 
 .header__nav:hover {
@@ -43,7 +48,7 @@
   display: block;
   border-radius: 3px;
   width: 76px;
-  min-height: 32px;
+  height: 32px;
   padding-top: 8px;
   box-sizing: border-box;
   font-weight: 500;
@@ -59,6 +64,7 @@
 
 .header__movies {
   color: #FFF;
+  font-weight: 400;
   text-decoration: none;
 }
 
@@ -66,9 +72,49 @@
   margin-left: 16px;
 }
 
+/* поставила 600, т. к. разница между 400/500 заметнее */
+.header__movies_active {
+  font-weight: 600;
+}
+
 .header__account {
-  background: url('../../images/profile-button.svg');
-  background-repeat: no-repeat;
   width: 100px;
   height: 32px;
+}
+
+.header__menu-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 5;
+}
+
+.header__menu-overlay_open {
+  display: block;
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    padding-top: 28px;
+  }
+
+  .header__burger-icon {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media screen and (max-width: 525px) {
+  .header {
+    padding-top: 18px;
+  }
+
+  .header__burger-icon {
+    width: 40px;
+    height: 43px;
+  }
 }

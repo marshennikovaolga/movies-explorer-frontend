@@ -1,46 +1,52 @@
 .profile {
     color: #FFF;
     align-items: center;
-    padding-top: 70px;
+    padding-top: 74px;
     margin: 0 auto;
-    width: 410px;
+    max-width: 410px;
     display: flex;
     flex-direction: column;
 }
 
+@media screen and (max-width: 768px) {
+    .profile {
+      padding-top: 236px;
+    }
+  }
+  
+  @media screen and (max-width: 525px) {
+    .profile {
+      padding-top: 70px;
+      max-width: 260px;
+    }
+  }
+
 .profile__title {
+    margin: 0;
     padding-bottom: 123px;
 }
 
-.profile__logout {
+.profile__button {
     text-decoration: none;
     border: none;
-    color: #EE3465;
     text-align: center;
     background-color: inherit;
     font-size: 13px;
     font-weight: 500;
     line-height: normal;
     margin-top: 16px;
+    color: #3DDC84;
+}
+
+.profile__button_logout {
+    color: #EE3465;
 }
 
 .profile__edit {
-    margin-top: 210px;
+    margin-top: 200px;
     text-decoration: none;
     border: none;
     color: #FFF;
-    text-align: center;
-    background-color: inherit;
-    font-size: 13px;
-    font-weight: 500;
-    line-height: normal;
-}
-
-.profile__save {
-    margin-top: 10px;
-    text-decoration: none;
-    border: none;
-    color: #3DDC84;
     text-align: center;
     background-color: inherit;
     font-size: 13px;

@@ -1,21 +1,8 @@
-import React from 'react';
-import './ProfileInput.css';
-export default function ProfileInput({
-    title,
-    type,
-    name,
-    onChange,
-    isSend,
-    error,
-    hasError,
-    value,
-    pattern,
-    isInputValid,
-    disabled,
-}) {
-    const inputClassName = `profileinput__field ${
-        isInputValid === undefined || isInputValid ? '' : 'profileinput_invalid'
-    }`;
+import './ProfileInput.css'
+
+export default function ProfileInput({ name, title, isInputValid, pattern, type, value, onChange, isSend, error, placeholder }) {
+
+    const inputClassName = `profileinput__field ${isInputValid === undefined || isInputValid ? '' : 'profileinput_invalid'}`;
 
     return (
         <label className="profileinput__label">
@@ -23,19 +10,18 @@ export default function ProfileInput({
             <input
                 required
                 className={inputClassName}
-                pattern={pattern instanceof RegExp ? pattern.source : pattern}
-                autoComplete="on"
-                type={type}
                 name={name}
+                type={type}
+                value={value || ''}
+                pattern={pattern instanceof RegExp ? pattern.source : pattern}
+                placeholder={placeholder}
                 onChange={onChange}
-                disabled={disabled || isSend}
-                value={value}
+                disabled={isSend}
+                autoComplete='on'
             />
-            {hasError && !isInputValid && (
-                <span className="profileinput__error" style={{ marginBottom: '10px' }}>
-                    {error}
-                </span>
-            )}
+            <span className='profileinput__error'>
+                {error}
+            </span>
         </label>
-    );
+    )
 }

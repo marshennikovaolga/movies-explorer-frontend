@@ -1,4 +1,5 @@
-class ApiUser {
+    // next sprint
+    class MainApi {
     constructor(options) {
         this._baseUrl = options.baseUrl;
     }
@@ -9,18 +10,22 @@ class ApiUser {
 
     register(username, email, password) {
         return fetch(`${this._baseUrl}/signup`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: username,
-                email: email,
-                password: password
-            })
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: username,
+            email: email,
+            password: password,
+          }),
         })
-            .then(res => this._checkResponse(res));
-    }
+          .then((res) => this._checkResponse(res))
+          .catch((err) => {
+            console.error(`Ошибка при регистрации: ${err}`);
+            return err;
+          });
+      }
 
     login(email, password) {
         return fetch(`${this._baseUrl}/signin`, {
@@ -115,7 +120,7 @@ class ApiUser {
     }
 }
 
-const UserApi = new ApiUser({
+const UserApi = new MainApi({
     baseUrl: 'https://api.movies-diploma.nomoredomainsmonster.ru'
 });
 

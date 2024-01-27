@@ -37,9 +37,3 @@
 .input__field:valid + .input__error {
     display: none;
 }
-
-@media screen and (max-width: 350px) {
-    .input__label {
-        width: 260px;
-    }
-}

@@ -1,5 +1,4 @@
 import React from 'react'
-import './Main.css'
 import Notfound from '../NotFound/NotFound.jsx'
 import Login from '../Authentication/Login.jsx'
 import Register from '../Authentication/Register.jsx'
@@ -9,20 +8,23 @@ import Techs from '../Techs/Techs.jsx'
 import AboutMe from '../AboutMe/AboutMe.jsx'
 import Portfolio from '../Portfolio/Portfolio.jsx'
 import Footer from '../Footer/Footer.jsx'
+import Movies from '../Movies/Movies.jsx'
+import SavedMovies from '../SavedMovies/SavedMovies.jsx'
 import Header from '../Header/Header.jsx'
-import SearchForm from '../SearchForm/SearchForm.jsx'
-
 import Profile from '../Profile/Profile.jsx'
 
-export default function Main({ name, handleLogin, handleRegister }) {
-
+export default function Main({ name }) {
     return (
         <main>
             {{
                 login:
-                    <Login handleLogin={handleLogin} />,
+                    <Login
+                    // handleLogin={handleLogin}
+                    />,
                 register:
-                    <Register handleRegister={handleRegister} />,
+                    <Register
+                    //  handleRegister={handleRegister}
+                    />,
                 profile:
                     <>
                         <Header name='universal' />
@@ -41,11 +43,14 @@ export default function Main({ name, handleLogin, handleRegister }) {
                 movies:
                     <>
                         <Header name='universal' />
-                        <SearchForm />
+                        <Movies />
+                        <Footer />
                     </>,
                 savedmovies:
                     <>
                         <Header name='universal' />
+                        <SavedMovies />
+                        <Footer />
                     </>,
                 404:
                     <Notfound />

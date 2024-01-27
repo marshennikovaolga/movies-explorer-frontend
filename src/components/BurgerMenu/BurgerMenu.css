@@ -1,0 +1,66 @@
+.burger {
+    width: 65%;
+    height: 100%;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    right: 0;
+    background-color: #202020;
+    z-index: 10;
+    overflow: hidden;
+  }
+  
+  .burger__nav {
+    padding-top: 159px;
+    margin: 0;
+    padding-left: 0;
+  }
+  
+  .burger__nav li {
+    margin-bottom: 28px;
+    text-decoration: none;
+    list-style: none;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .burger__close {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    transition: opacity .3s linear;
+  }
+  
+  .burger__close:hover {
+    opacity: 0.7;
+  }
+  
+  .burger__movies {
+    color: #FFF;
+    font-weight: 400;
+    text-decoration: none;
+  }
+  
+  .burger__movies_active {
+    font-weight: 600;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #fff;
+  }
+  
+  .burger__account {
+    position: fixed;
+    bottom: 90px;
+    right: 25%;
+  }
+
+  @media screen and (max-width: 525px) {
+    .burger__account {
+      right: 20%;
+    }
+
+    .burger__close {
+      width: 22px;
+      height: 22px;
+    }
+  }

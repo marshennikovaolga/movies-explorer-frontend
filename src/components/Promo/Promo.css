@@ -1,20 +1,20 @@
-.promo {
+.page__promo {
+    padding-top: 41px;
     display: flex;
     justify-content: center;
     align-items: center;
-    max-height: 100vh;
     color: #FFF;
-    margin-bottom: 10px;
-
+    max-width: 1200px;
 }
 
 .promo__container {
     display: flex;
+    border-radius: 10px;
     flex-direction: column;
     align-items: center;
-    margin: 0 40px;
+    margin: 0 auto;
     background-color: #272727;
-    width: 1200px;
+    width: 90%;
     height: 493px;
     align-items: center;
 }
@@ -37,15 +37,71 @@
 
 .promo__button {
     text-decoration: none;
+    text-align: center;
     color: #FFF;
+    font-size: 12px;
+    font-weight: 500;
     margin-right: 10px;
     border: 1px solid #303030;
     padding: 10px;
     border-radius: 10px;
-    border-color: #303030;
     background-color: #303030;
-  }
-  
-  .promo__button:last-child {
+    cursor: pointer;
+    transition: opacity .3s linear;
+}
+
+.promo__button:hover {
+    opacity: 0.7;
+}
+
+.promo__button:last-child {
     margin-right: 0;
-  }
+}
+
+@media screen and (max-width: 768px) {
+    .promo__container {
+        width: 95%;
+        height: 834px;
+    }
+
+    .promo__title {
+        max-width: 550px;
+        height: 104px;
+        font-size: 40px;
+        line-height: 52px;
+        padding-top: 350px;
+        letter-spacing: -1.6px;
+    }
+}
+
+@media screen and (max-width: 525px) {
+    .page__promo {
+        padding-top: 30px;
+    }
+
+    .promo__container {
+        height: 586px;
+    }
+
+    .promo__title {
+        font-size: 29px;
+        line-height: 37px;
+        letter-spacing: -1.16px;
+        width: 292px;
+        padding-top: 220px;
+    }
+
+    .promo__buttons {
+        margin: 0;
+        position: relative;
+        top: 212px;
+    }
+
+    .promo__button {
+        font-size: 10px;
+        line-height: 16px;
+        width: 82px;
+        height: 26px;
+        padding: 4px;
+    }
+}

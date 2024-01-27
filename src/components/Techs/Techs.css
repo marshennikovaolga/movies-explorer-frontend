@@ -1,5 +1,4 @@
 .techs {
-    width: 100%;
     background: #272727;
     padding: 100px 0;
     color: #fff;
@@ -44,12 +43,67 @@
     border-radius: 10px;
     background-color: #303030;
     padding: 21px 0;
+    transition: opacity .3s linear;
 }
+
+.techs__stack:hover {
+    opacity: 0.5;
+}
+
 
 @media screen and (max-width: 768px) {
 
+    .techs {
+        padding: 90px 0;
+    }
+
+    .techs__about {
+        font-size: 12px;
+        line-height: 18px;
+        letter-spacing: -0.48px;
+    }
+
+    .techs__list {
+        grid-template-columns: repeat(auto-fit, 84px);
+        max-width: 684px;
+    }
+
+    .techs__stack {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: normal;
+        letter-spacing: -0.48px;
+    }
 }
 
-@media screen and (max-width: 350px) {
-    
+.techs .about-title {
+    @media screen and (max-width: 525px) {
+        border-bottom: 1px solid black;
+    }
+}
+
+@media screen and (max-width: 525px) {
+    .techs {
+        padding: 70px 0;
+    }
+
+    .techs__about {
+        font-size: 11px;
+        line-height: 16px;
+        letter-spacing: -0.44px;
+        width: 292px;
+        margin-bottom: 83px;
+    }
+
+    .techs__subtitle {
+        font-size: 30px;
+        line-height: normal;
+        letter-spacing: -1.2px;
+    }
+
+    .techs__list {
+        grid-template-columns: repeat(auto-fit, 90px);
+
+        max-width: 200px;
+    }
 }

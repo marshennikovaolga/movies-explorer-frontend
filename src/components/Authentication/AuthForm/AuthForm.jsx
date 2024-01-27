@@ -3,74 +3,51 @@ import InputForm from '../InputForm/InputForm'
 import logo from '../../../images/green-logo.svg'
 import useFormValidation from '../../../hooks/useFormValidation'
 import {emailRegex, passwordRegex, nameRegex} from '../../../utils/constants'
+import { NavLink } from 'react-router-dom'
 
 export default function AuthForm({ type, loginLink }) {
 
-    const {
-        values: loginValues,
-        error: loginError,
-        isInputValid: loginIsInputValid,
-        isValidButton: loginIsValidButton,
-        reset: loginReset,
-        changeValues: loginChangeValues,
-        handleChange: loginHandleChange
-    } = useFormValidation();
-
-    const {
-        values: registerValues,
-        error: registerError,
-        isInputValid: registerIsInputValid,
-        isValidButton: registerIsValidButton,
-        reset: registerReset,
-        changeValues: registerChangeValues,
-        handleChange: registerHandleChange
-    } = useFormValidation();
-
-    const handleLoginSubmit = (event) => {
-        event.preventDefault();
-        console.log("вы авторизовались:", loginValues);
-        loginReset();
-    };
-
-    const handleRegisterSubmit = (event) => {
-        event.preventDefault();
-        console.log("регистрация прошла успешно:", registerValues);
-        registerReset();
-    };
-
+    const { values, error, isInputValid, isValidButton, handleChange } = useFormValidation()
     const submitLabel = type === 'login' ? 'Войти' : 'Зарегистрироваться';
     const submitBtn = type === 'login' ? 'Войти' : 'Зарегистрироваться';
 
-    const handleSubmit = type === 'login' ? handleLoginSubmit : handleRegisterSubmit;
-
-    
     return (
         <div className="authform">
             <div className="authform__logo-container">
-                <img className="authform__logo" src={logo} alt="Logo"></img>
+            <NavLink to={'/'}>
+                        <img alt='logo icon' className='header__icon' src={logo} />
+                    </NavLink>
             </div>
-            <form onSubmit={handleSubmit}>
+            <form >
                 {type === 'login' ? (
                     <div>
                         <h2 className='authform__title'>Рады видеть!</h2>
                         <InputForm
-                            title="Email"
-                            isInputValid={loginIsInputValid.email}
+                            title="Почта"
+                            name="email"
+                            value={values.email}
+                            isInputValid={isInputValid.email}
                             pattern={emailRegex}
                             type="email"
-                            onChange={loginHandleChange}
+                            onChange={(evt) => {
+                                handleChange(evt)
+                              }}
                             isSend={false}
-                            error={loginError.email}
+                            error={error.email}
                             hasError={true}
                         />
                         <InputForm
-                            title="Password"
-                            isInputValid={loginIsInputValid.password}
+                            title="Пароль"
+                            name="password"
+                            value={values.password}
+                            isInputValid={isInputValid.password}
                             pattern={passwordRegex}
                             type="password"
-                            onChange={loginHandleChange}
+                            onChange={(evt) => {
+                                handleChange(evt)
+                              }}
                             isSend={false}
-                            error={loginError.password}
+                            error={error.password}
                             hasError={true}
                         />
                     </div>
@@ -78,38 +55,55 @@ export default function AuthForm({ type, loginLink }) {
                     <div>
                         <h2 className='authform__title'>Добро пожаловать!</h2>
                         <InputForm
-                            title="Name"
-                            isInputValid={registerIsInputValid.text}
+                            title="Имя"
+                            name="username"
+                            value={values.username}
+                            isInputValid={isInputValid.text}
                             pattern={nameRegex}
                             type="text"
-                            onChange={registerHandleChange}
+                            onChange={(evt) => {
+                                handleChange(evt)
+                              }}
                             isSend={false}
-                            error={registerError.text}
+                            error={error.username}
                             hasError={true}
                         />
                         <InputForm
-                            title="Email"
-                            isInputValid={registerIsInputValid.email}
+                            title="Почта"
+                            name="email"
+                            value={values.email}
+                            isInputValid={isInputValid.email}
                             pattern={emailRegex}
                             type="email"
-                            onChange={registerHandleChange}
+                            onChange={(evt) => {
+                                handleChange(evt)
+                              }}
                             isSend={false}
-                            error={registerError.email}
+                            error={error.email}
                             hasError={true}
                         />
                         <InputForm
-                            title="Password"
-                            isInputValid={registerIsInputValid.password}
+                            title="Пароль"
+                            name="password"
+                            value={values.password}
+                            isInputValid={isInputValid.password}
                             pattern={passwordRegex}
                             type="password"
-                            onChange={registerHandleChange}
+                            onChange={(evt) => {
+                                handleChange(evt)
+                              }}
                             isSend={false}
-                            error={registerError.password}
+                            error={error.password}
                             hasError={true}
                         />
                     </div>
                 )}
-                <button className='authform__submit' aria-label={submitLabel} type='submit' disabled={type === 'login' ? !loginIsValidButton : !registerIsValidButton}>
+                <button
+                className='authform__submit'
+                aria-label={submitLabel}
+                type='submit'
+                disabled={!isValidButton}
+                >
                     {submitBtn}
                 </button>
             </form>

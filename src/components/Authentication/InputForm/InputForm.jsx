@@ -1,20 +1,9 @@
 import './InputForm.css'
 
-export default function InputForm({ title, isInputValid, pattern, type, onChange, isSend, error, hasError}) {
+export default function InputForm({ name, title, isInputValid, pattern, type, value, onChange, isSend, error, placeholder }) {
 
     const inputClassName = `input__field ${isInputValid === undefined || isInputValid ? '' : 'input__field_invalid'}`;
 
-
-    function getErrorText(type, error) {
-        switch (type) {
-            case 'email':
-                return 'Введите корректный адрес электронной почты';
-            case 'text':
-                return 'Введите корректное имя';
-            case 'password':
-                return 'Введите корректный пароль';
-        }
-    }
 
     return (
         <label className='input__label'>
@@ -22,17 +11,18 @@ export default function InputForm({ title, isInputValid, pattern, type, onChange
             <input
                 required
                 className={inputClassName}
-                pattern={pattern instanceof RegExp ? pattern.source : pattern}
-                autoComplete='on'
+                name={name}
                 type={type}
+                value={value || ''}
+                pattern={pattern instanceof RegExp ? pattern.source : pattern}
+                placeholder={placeholder}
                 onChange={onChange}
                 disabled={isSend}
+                autoComplete='on'
             />
-             {hasError && !isInputValid &&  (
                 <span className='input__error' style={{ marginBottom: '10px' }}>
-                    {getErrorText(type, error)}
+                    {error}
                 </span>
-            )}
         </label>
     )
 }

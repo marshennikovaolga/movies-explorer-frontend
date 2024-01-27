@@ -3,11 +3,12 @@
     align-items: center;
     padding-top: 70px;
     margin: 0 auto;
-    width: 396px;
+    width: 40%;
+    align-self: center;
 }
 
 .authform__logo-container {
-    float: left;
+    margin-bottom: 40px;
 }
 
 .authform__logo {
@@ -31,6 +32,8 @@
     font-size: 14px;
     font-weight: 400;
     line-height: normal;
+    position: relative;
+    top: 5em;
 }
 
 .authform__span a {
@@ -51,14 +54,18 @@
 
 .authform__submit {
     margin-top: 69px;
-    width: 396px;
+    align-self: center;
+    width: 100%;
     height: 45px;
+    align-items: center;
     border-radius: 3px;
     border: 1px solid #4285F4;
     background: #4285F4;
     color: #FFF;
     margin: 0 auto;
     text-align: center;
+    position: relative;
+    top: 5em;
 }
 
 .authform__submit:hover {
@@ -69,13 +76,20 @@
 
 /* .authform__submit_disabled {} */
 
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 768px) {
     .authform {
-        width: 290px;
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 525px) {
+
+    .authform {
+        width: 80%;
     }
 
-    .authform__submit {
-        width: 260px;
+    .authform__title {
+        text-align: center;
     }
 
     .authform__logo-container {

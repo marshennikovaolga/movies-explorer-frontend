@@ -9,3 +9,15 @@
     line-height: normal;
     letter-spacing: -0.88px;
 }
+
+@media screen and (max-width: 768px) {
+    .about-title {
+        margin-bottom: 60px;
+    }
+}
+
+@media screen and (max-width: 525px) {
+    .about-title {
+        padding-bottom: 28px;
+    }
+}

@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: center;
-    width: 410px;
+    max-width: 410px;
 }
 
 .profileinput__placeholder {
@@ -18,3 +18,9 @@
     border: none;
     background-color: inherit;
 }
+  
+  @media screen and (max-width: 525px) {
+    .profileinput__label {
+      max-width: 260px;
+    }
+  }

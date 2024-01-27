@@ -44,5 +44,4 @@ export default function useFormValidation() {
     }, [])
 
     return { values, error, isInputValid, isValidButton, reset, changeValues, handleChange }
-
 }

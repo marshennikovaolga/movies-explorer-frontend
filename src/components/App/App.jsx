@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
 import { Route, Routes } from 'react-router-dom'
 import Main from '../Main/Main.jsx'
-import UserApi from '../../utils/ApiUser.js'
+import { Navigate, useNavigate } from 'react-router-dom'
+import UserApi from '../../utils/MainApi.js'
 import CurrentUserContext from '../../contexts/CurrentUserContext.js'
 import Preloader from '../Preloader/Preloader.jsx'
-import ProtectedRoute from '../ProtectedRoute.jsx'
+// import ProtectedPage from '../ProtectedPage.jsx'
+// import ProtectedRoute from '../ProtectedRoute.jsx'
 
 export default function App() {
     const navigate = useNavigate();
@@ -13,13 +14,17 @@ export default function App() {
     const [currentUser, setCurrentUser] = useState({})
     const [loggedIn, setLoggedIn] = useState(false)
 
+    const [savedMovies, setSavedMovies] = useState([])
+    const [isEdit, setIsEdit] = useState(false)
+
     useEffect(() => {
         if (localStorage.jwt) {
             Promise.all([UserApi.getUser(localStorage.jwt)])
-                .then(([userData]) => {
-                    setCurrentUser(userData)
+                .then(([userData, dataMovies]) => {
                     setLoggedIn(true)
                     setIsCheckToken(false)
+                    setCurrentUser(userData)
+                    setSavedMovies(dataMovies.reverse())
                 })
                 .catch((err) => {
                     console.error(`Ошибка при загрузке начальных данных ${err}`)
@@ -37,7 +42,8 @@ export default function App() {
         UserApi.login(email, password)
             .then(res => {
                 localStorage.setItem('jwt', res.token)
-                setCurrentUser(res.userData);
+                console.log('переход на /movies')
+                navigate('/movies')
                 setLoggedIn(true)
                 window.scrollTo(0, 0)
             })
@@ -55,50 +61,61 @@ export default function App() {
                         .then(res => {
                             localStorage.setItem('jwt', res.token)
                             setLoggedIn(true)
+                            console.log('переход на /movies')
+                            navigate('/movies')
                             window.scrollTo(0, 0)
                         })
                         .catch((err) => {
-                            console.error(`Пользователь с таким email уже существует. ${err}`)
+                            console.error(`При регистрации пользователя произошла ошибка. ${err}`)
                         })
                 }
             })
             .catch((err) => {
-                console.error(`При регистрации пользователя произошла ошибка. ${err}`)
+                console.error(`Произошла ошибка. ${err}`)
             })
     }
 
-    const updateUserProfile = (newUserData) => {
-        setCurrentUser(newUserData);
+    function updateUserProfile(username, email) {
+        UserApi.setUserInfo(username, email, localStorage.jwt)
+            .then(res => {
+                setCurrentUser(res)
+                setIsEdit(false)
+            })
+            .catch((err) => {
+                console.error(`Ошибка при редактировании данных пользователя ${err}`)
+            })
     };
-
-    function logOut() {
-        localStorage.clear()
-        setLoggedIn(false)
-        navigate('/')
-    }
 
     return (
         <>
             {isCheckToken ? <Preloader /> :
                 <CurrentUserContext.Provider value={currentUser}>
-                    <Routes>
-                        <Route path='/' element={<Main name='projectpage' />} />
-                        <Route path='/signin' element={
-                            <Main name='login' handleLogin={handleLogin} />
-                        }></Route>
-                        <Route path='/signup' element={
-                            <Main name='register' handleRegister={handleRegister} />
-                        }></Route>
-                        <Route path='/profile' element={
-                            <Main name='profile' logOut={logOut} updateUserProfile={updateUserProfile} />} />
-                        <Route path='/movies' element={
-                            <Main name='movies' />
-                        } />
-                        <Route path='/saved-movies' element={
-                            <Main name='savedmovies' />
-                        } />
-                        <Route path='*' element={<Main name='404' />} />
-                    </Routes>
+                        <Routes>
+                            <Route path='/' element={<Main name='projectpage' />} />
+                            <Route path='/signin' element={
+                                <Main name='login' handleLogin={handleLogin}
+                                />
+                            } />
+                            <Route path='/signup' element={
+                                loggedIn ? <Navigate to='/movies' replace /> :
+                                    <Main name='register' handleRegister={handleRegister}
+                                    />
+                            } />
+                            <Route path='/profile' element={
+                                <Main name='profile'/>
+                            }/>
+                            <Route path='*' element={
+                                <Main name='404' />} />
+
+                            <Route path='/movies' element={
+                                < Main
+                                    name='movies' />
+                            } />
+                            <Route path='/saved-movies' element={
+                                <Main
+                                    name='savedmovies'
+                                />} />
+                        </Routes>
                 </CurrentUserContext.Provider>
             }
         </>

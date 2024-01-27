@@ -1,7 +1,7 @@
-body {
+.page {
   margin: 0 auto;
-  overflow: hidden;
   max-width: 1200px;
+  color: #FFF;
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

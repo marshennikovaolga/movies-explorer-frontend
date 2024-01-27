@@ -1,0 +1,42 @@
+.cardlist {
+    padding-top: 70px;
+    padding-bottom: 80px;
+    margin: 0 auto;
+    width: 95%;
+}
+
+.cardlist__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 360px);
+    justify-content: center;
+    column-gap: 30px;
+    row-gap: 60px;
+}
+
+.cardlist__serch-error {
+    text-align: center;
+}
+
+.cardlist__showmore {
+    width: 320px;
+    height: 36px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 50px;
+    padding: 0;
+    background-color: transparent;
+    border: 1px solid #424242;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: normal;
+    color: #FFF;
+    cursor: pointer;
+}
+
+.cardlist__showmore_hidden {
+    visibility: hidden;
+  }
