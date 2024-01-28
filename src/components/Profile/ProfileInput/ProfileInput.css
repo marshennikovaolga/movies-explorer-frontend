@@ -1,9 +1,10 @@
 .profileinput__label {
     color: #fff;
+    width: 90%;
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: center;
-    max-width: 410px;
+    padding-bottom: 16px;
 }
 
 .profileinput__placeholder {
@@ -22,5 +23,9 @@
   @media screen and (max-width: 525px) {
     .profileinput__label {
       max-width: 260px;
+    }
+
+    .profileinput__field {
+      margin-left: 50px;
     }
   }

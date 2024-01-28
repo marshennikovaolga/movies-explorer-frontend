@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
 import Main from '../Main/Main.jsx'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import UserApi from '../../utils/MainApi.js'
 import CurrentUserContext from '../../contexts/CurrentUserContext.js'
-import Preloader from '../Preloader/Preloader.jsx'
-// import ProtectedPage from '../ProtectedPage.jsx'
-// import ProtectedRoute from '../ProtectedRoute.jsx'
+import { Route, Routes } from 'react-router-dom'
+import Content from '../Content.jsx'
 
 export default function App() {
     const navigate = useNavigate();
@@ -87,37 +85,23 @@ export default function App() {
     };
 
     return (
-        <>
-            {isCheckToken ? <Preloader /> :
-                <CurrentUserContext.Provider value={currentUser}>
-                        <Routes>
-                            <Route path='/' element={<Main name='projectpage' />} />
-                            <Route path='/signin' element={
-                                <Main name='login' handleLogin={handleLogin}
-                                />
-                            } />
-                            <Route path='/signup' element={
-                                loggedIn ? <Navigate to='/movies' replace /> :
-                                    <Main name='register' handleRegister={handleRegister}
-                                    />
-                            } />
-                            <Route path='/profile' element={
-                                <Main name='profile'/>
-                            }/>
-                            <Route path='*' element={
-                                <Main name='404' />} />
-
-                            <Route path='/movies' element={
-                                < Main
-                                    name='movies' />
-                            } />
-                            <Route path='/saved-movies' element={
-                                <Main
-                                    name='savedmovies'
-                                />} />
-                        </Routes>
-                </CurrentUserContext.Provider>
-            }
-        </>
+        <CurrentUserContext.Provider value={currentUser}>
+            <Routes>
+                <Route path="/signin"
+                    element={<Content><Main name='login'handleLogin={handleLogin} /></Content>} />
+                <Route path="/signup"
+                    element={<Content><Main name='register' handleRegister={handleRegister} /></Content>} />
+                <Route path="/profile"
+                    element={<Content><Main name='profile' /></Content>} />
+                <Route path="/movies"
+                    element={<Content><Main name='movies' /></Content>} />
+                <Route path="/saved-movies"
+                    element={<Content><Main name='savedmovies' /></Content>} />
+                <Route path="/"
+                    element={<Content><Main name='projectpage' /></Content>} />
+                <Route path='*'
+                    element={<Main name='notfound' />} />
+            </Routes>
+        </CurrentUserContext.Provider>
     );
 }

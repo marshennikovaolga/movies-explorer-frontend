@@ -1,29 +1,25 @@
-import './MoviesCard.css'
+import './MoviesCard.css';
 import { useLocation } from 'react-router-dom'
-// import { Link } from 'react-router-dom'
-// import { useEffect, useState } from 'react'
 
-export default function MoviesCard() {
-    const { pathname } = useLocation()
-    // const [isSaved, setIsSaved] = useState(false)
+export default function MoviesCard({ movie }) {
+    const { pathname } = useLocation();
+
     return (
-        <li className='card'>
-            <article>
-                <div className='card__container'>
-                    <div className='card__picture'>
-                        <img className='card__image' />
-                        {pathname === '/movies' ? (
-                            <button type='button' className='card__button card__button_save'></button>
-                        ) : (
-                            <button type='button' className='card__button card__button_delete'></button>
-                        )}
-                    </div>
-                    <div className='card__text'>
-                        <p className='card__subtitle'>33 слова о дизайне</p>
-                        <span className='card__duration'>1ч 17м</span>
-                    </div>
+        <article className='card'>
+            <div className='card__container'>
+                <div className='card__picture'>
+                    <img className='card__image' alt='movie cover' src={movie.image} />
+                    {pathname === '/movies' ? (
+                        <button type='button' className='card__button card__button_save'></button>
+                    ) : (
+                        <button type='button' className='card__button card__button_delete'></button>
+                    )}
                 </div>
-            </article>
-        </li>
-    )
+                <div className='card__text'>
+                    <p className='card__subtitle'>{movie.title}</p>
+                    <span className='card__duration'>{movie.duration}</span>
+                </div>
+            </div>
+        </article>
+    );
 }

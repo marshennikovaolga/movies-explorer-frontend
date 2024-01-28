@@ -19,7 +19,7 @@ export default function AboutMe() {
                         <p className="aboutme__text">Привет, я фронтенд-разработчик на реакте. В данный момент расширяю свой стек изучая GraphQl и React Native. Сейчас нахожусь в Санкт-Петербурге, но готова рассмотреть вакансии с возможностью релокации. В дальнейшем заинтересована создавать маркетплейсы, мобильные приложения и мессенджеры 🌸</p>
                         <p className="aboutme__github"><Link className="aboutme__github_link" to={'https://github.com/marshennikovaolga'} target='_blank'>Github</Link></p>
                     </div>
-                    <img src={profilepic} alt="#" className="aboutme__pic" />
+                    <img src={profilepic} alt="фотография в портфолио" className="aboutme__pic" />
                 </div>
             </Container>
         </section>

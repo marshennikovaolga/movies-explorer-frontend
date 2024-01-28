@@ -1,14 +1,12 @@
 .card {
     background-color: #202020;
-    width: 100%;
+    width: 360px;
 }
 
 .card__container {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    /* padding: 0 30px 0 14px; */
-    min-height: 68px;
 }
 
 .card__picture {
@@ -81,9 +79,31 @@
     background: #2F2F2F;
 }
 
+@media screen and (max-width: 800px) {
+    .card {
+        width: 320px;
+    }
+
+    .card__image {
+        width: 320px;
+    }
+}
+
 @media screen and (max-width: 525px) {
+    .card {
+        width: 300px;
+    }
+
+    .card__text {
+        margin-top: 16px;
+    }
+
     .card__container {
-        padding: 0 10px;
         margin: 0 auto;
     }
-  }
+
+    .card__image {
+        width: 300px;
+        height: 168px;
+    }
+}

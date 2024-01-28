@@ -42,6 +42,7 @@ export default function Profile(
             <div className='profile__name'>
                 <ProfileInput
                     title="Имя"
+                    placeholder="введите ваше имя"
                     name="username"
                     type="text"
                     value={values.username}
@@ -58,6 +59,7 @@ export default function Profile(
             <div className='profile__email'>
                 <ProfileInput
                     title="Почта"
+                    placeholder="введите ваш email"
                     name="email"
                     type="email"
                     value={values.email}

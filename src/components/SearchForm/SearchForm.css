@@ -3,13 +3,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 90%;
     margin: 0 auto;
     margin-top: 80px;
 }
 
 .search__container {
-    width: 90%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,7 +42,8 @@
 }
 
 .search__submit {
-    background: url('../../images/search-icon.svg');
+    background: url('../../images/search-icon.svg') no-repeat;
+    background-size: contain;
     border: none;
     margin-left: 10px;
     width: 44px;
