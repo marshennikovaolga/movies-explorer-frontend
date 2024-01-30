@@ -1,0 +1,23 @@
+.about-title {
+    margin: 0 auto;
+    padding-bottom: 23px;
+    margin-bottom: 70px;
+    border-bottom: 1px solid #DADADA;
+    max-width: 100%;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.88px;
+}
+
+@media screen and (max-width: 768px) {
+    .about-title {
+        margin-bottom: 60px;
+    }
+}
+
+@media screen and (max-width: 525px) {
+    .about-title {
+        padding-bottom: 28px;
+    }
+}

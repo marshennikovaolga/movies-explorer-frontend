@@ -1,0 +1,15 @@
+.container {
+    margin: 0 auto;
+    max-width: 1140px;
+    width: calc(1140/1280*100%);
+  }
+  @media screen and (max-width: 1200px) {
+    .container {
+      width: calc(668/768*100%);
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .container {
+      width: calc(284/320*100%);
+    }
+  }

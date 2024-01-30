@@ -1,0 +1,20 @@
+.page {
+  margin: 0 auto;
+  min-width: 300px;
+  max-width: 1300px;
+  color: #FFF;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: #202020;
+}
+
+@import url(./vendor/fonts/fonts.css);
+@import url(./vendor/normalize.css);
