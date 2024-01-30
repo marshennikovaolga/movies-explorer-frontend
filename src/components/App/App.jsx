@@ -88,9 +88,9 @@ export default function App() {
         <CurrentUserContext.Provider value={currentUser}>
             <Routes>
                 <Route path="/signin"
-                    element={<Content><Main name='login'handleLogin={handleLogin} /></Content>} />
+                    element={<Main name='login' handleLogin={handleLogin} />} />
                 <Route path="/signup"
-                    element={<Content><Main name='register' handleRegister={handleRegister} /></Content>} />
+                    element={<Main name='register' handleRegister={handleRegister} />} />
                 <Route path="/profile"
                     element={<Content><Main name='profile' /></Content>} />
                 <Route path="/movies"
