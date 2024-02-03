@@ -12,7 +12,7 @@ import Preloader from '../Preloader/Preloader.jsx'
 import Register from '../Authentication/Register.jsx'
 import Login from '../Authentication/Login.jsx'
 
-export default function App({handleSubmit}) {
+export default function App() {
     const navigate = useNavigate()
     const [currentUser, setCurrentUser] = useState({})
     const [isCheckToken, setIsCheckToken] = useState(true)
