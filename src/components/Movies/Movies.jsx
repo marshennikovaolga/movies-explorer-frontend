@@ -9,6 +9,3 @@ export default function Movies() {
     </>
   )
 }
-
-// import { useCallback, useState } from "react"
-// import { useEffect } from "react"

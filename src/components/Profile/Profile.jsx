@@ -43,16 +43,15 @@ export default function Profile(
                 <ProfileInput
                     title="Имя"
                     placeholder="введите ваше имя"
-                    name="username"
+                    name="name"
                     type="text"
-                    value={values.username}
-                    isInputValid={isInputValid.text}
-                    pattern={nameRegex}
+                    value={values.name}
+                    isInputValid={isInputValid.name}
                     // onChange={(evt) => {
                     //     handleChange(evt)
                     // }}
                     isSend={false}
-                    error={error.username}
+                    error={error.name}
                     hasError={true}
                 />
             </div>

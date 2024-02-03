@@ -1,22 +1,21 @@
-    // next sprint
-    
-//     class MoviesApi {
-//     constructor(options) {
-//         this._baseUrl = options.baseUrl;
-//     }
+    class MoviesApi {
+    constructor(options) {
+        this._baseUrl = options.baseUrl;
+    }
 
-//     _checkResponse(res) {
-//         return res.ok ? res.json() : Promise.reject(`Ошибка checkResponse: ${res.status}`);
-//     }
+    _checkResponse(res) {
+        return res.ok ? res.json() : Promise.reject();
+    }
 
-//     getMovies() {
-//         return fetch(`${this._baseUrl}/movies`)
-//             .then(res => this._checkResponse(res));
-//     }
-// }
+    getMovies() {
+        const url = `${this._baseUrl}/`;
+        return fetch(url)
+            .then(this._checkResponse);
+    }
+}
 
-// const moviesApi = new MoviesApi({
-//     baseUrl: '',
-//   });
+const moviesApi = new MoviesApi({
+    baseUrl: 'https://api.nomoreparties.co/beatfilm-movies',
+  });
   
-//   export default moviesApi
+  export default moviesApi

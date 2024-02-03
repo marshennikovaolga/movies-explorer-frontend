@@ -1,5 +1,5 @@
-    // next sprint
-    class MainApi {
+// next sprint
+class MainApi {
     constructor(options) {
         this._baseUrl = options.baseUrl;
     }
@@ -8,24 +8,24 @@
         return res.ok ? res.json() : Promise.reject(`Ошибка checkResponse: ${res.status}`);
     }
 
-    register(username, email, password) {
+    register(name, email, password) {
         return fetch(`${this._baseUrl}/signup`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: username,
-            email: email,
-            password: password,
-          }),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password,
+            }),
         })
-          .then((res) => this._checkResponse(res))
-          .catch((err) => {
-            console.error(`Ошибка при регистрации: ${err}`);
-            return err;
-          });
-      }
+            .then((res) => this._checkResponse(res))
+            .catch((err) => {
+                console.error(`Ошибка при регистрации: ${err}`);
+                return err;
+            });
+    }
 
     login(email, password) {
         return fetch(`${this._baseUrl}/signin`, {
@@ -59,7 +59,7 @@
             .then(res => this._checkResponse(res));
     }
 
-    setUserInfo(username, email, token) {
+    setUserInfo(name, email, token) {
         return fetch(`${this._baseUrl}/users/me`, {
             method: 'PATCH',
             headers: {
@@ -67,12 +67,12 @@
                 "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({
-                name: username,
+                name: name,
                 email: email
             })
         })
-        .then(res => this._checkResponse(res))
-        .then(data => data); //?
+            .then(res => this._checkResponse(res))
+            .then(data => data); //?
     }
 
     getMovies(token) {

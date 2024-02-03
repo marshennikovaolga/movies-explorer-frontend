@@ -2,14 +2,25 @@ import './AuthForm.css'
 import InputForm from '../InputForm/InputForm'
 import logo from '../../../images/green-logo.svg'
 import useFormValidation from '../../../hooks/useFormValidation'
-import { emailRegex, passwordRegex, nameRegex } from '../../../utils/constants'
+import { emailRegex } from '../../../utils/constants'
 import { NavLink } from 'react-router-dom'
+import { useState } from 'react'
 
-export default function AuthForm({ type, loginLink }) {
+export default function AuthForm({ type, loginLink, onSubmit }) {
 
     const { values, error, isInputValid, isValidButton, handleChange } = useFormValidation()
-    const submitLabel = type === 'login' ? 'Войти' : 'Зарегистрироваться';
-    const submitBtn = type === 'login' ? 'Войти' : 'Зарегистрироваться';
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (type === 'login') {
+            onSubmit(email, password);
+        } else if (type === 'register') {
+            onSubmit(name, email, password);
+        }
+    };
 
     return (
         <div className="authform">
@@ -18,7 +29,7 @@ export default function AuthForm({ type, loginLink }) {
                     <img alt='logo icon' className='header__icon' src={logo} />
                 </NavLink>
             </div>
-            <form>
+            <form onSubmit={handleSubmit}>
                 {type === 'login' ? (
                     <div>
                         <h2 className='authform__title'>Рады видеть!</h2>
@@ -43,7 +54,6 @@ export default function AuthForm({ type, loginLink }) {
                             name="password"
                             value={values.password}
                             isInputValid={isInputValid.password}
-                            pattern={passwordRegex}
                             type="password"
                             onChange={(evt) => {
                                 handleChange(evt)
@@ -58,17 +68,18 @@ export default function AuthForm({ type, loginLink }) {
                         <h2 className='authform__title'>Добро пожаловать!</h2>
                         <InputForm
                             title="Имя"
-                            placeholder="введите ваше имя"
-                            name="username"
-                            value={values.username}
-                            isInputValid={isInputValid.text}
-                            pattern={nameRegex}
                             type="text"
+                            placeholder="введите ваше имя"
+                            name="name"
+                            value={values.name}
+                            isInputValid={isInputValid.name}
+                            minLength="2"
+                            maxLength="30"
                             onChange={(evt) => {
                                 handleChange(evt)
                             }}
                             isSend={false}
-                            error={error.username}
+                            error={error.name}
                             hasError={true}
                         />
                         <InputForm
@@ -92,7 +103,6 @@ export default function AuthForm({ type, loginLink }) {
                             name="password"
                             value={values.password}
                             isInputValid={isInputValid.password}
-                            pattern={passwordRegex}
                             type="password"
                             onChange={(evt) => {
                                 handleChange(evt)
@@ -104,12 +114,12 @@ export default function AuthForm({ type, loginLink }) {
                     </div>
                 )}
                 <button
-                    className='authform__submit'
-                    aria-label={submitLabel}
                     type='submit'
+                    className='authform__submit'
+                    aria-label={type === 'login' ? 'Войти' : 'Зарегистрироваться'}
                     disabled={!isValidButton}
                 >
-                    {submitBtn}
+                    {type === 'login' ? 'Войти' : 'Зарегистрироваться'}
                 </button>
             </form>
             <p className='authform__link'>

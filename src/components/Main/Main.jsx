@@ -1,7 +1,5 @@
 import React from 'react'
 import Notfound from '../NotFound/NotFound.jsx'
-import Login from '../Authentication/Login.jsx'
-import Register from '../Authentication/Register.jsx'
 import Promo from '../Promo/Promo.jsx'
 import AboutProject from '../AboutProject/AboutProject.jsx'
 import Techs from '../Techs/Techs.jsx'
@@ -16,8 +14,6 @@ export default function Main({ name }) {
     return (
         <main>
             {{
-                login: <Login />,
-                register: <Register />,
                 profile: <Profile />,
                 movies: <Movies />,
                 savedmovies: <SavedMovies />,

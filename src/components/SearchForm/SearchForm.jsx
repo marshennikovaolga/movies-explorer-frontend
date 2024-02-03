@@ -23,6 +23,7 @@ export default function SearchForm() {
               handleChange(evt)
             }}
             error={error.text}
+            autoComplete="off"
             hasError={true}
           />
           <button

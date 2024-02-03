@@ -1,6 +1,7 @@
 import './InputForm.css'
 
-export default function InputForm({ name, title, isInputValid, pattern, type, value, onChange, isSend, error, placeholder }) {
+export default function InputForm({ name, title, isInputValid, pattern, type,
+    value, onChange, isSend, error, placeholder, minLength, maxLength }) {
 
     const inputClassName = `input__field ${isInputValid === undefined || isInputValid ? '' : 'input__field_invalid'}`;
 
@@ -18,11 +19,13 @@ export default function InputForm({ name, title, isInputValid, pattern, type, va
                 placeholder={placeholder}
                 onChange={onChange}
                 disabled={isSend}
-                autoComplete='on'
+                minLength={minLength}
+                maxLength={maxLength}
+
             />
-                <span className='input__error' style={{ marginBottom: '10px' }}>
-                    {error}
-                </span>
+            <span className='input__error' style={{ marginBottom: '10px' }}>
+                {error}
+            </span>
         </label>
     )
 }

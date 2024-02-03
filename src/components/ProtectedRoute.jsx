@@ -1,8 +1,6 @@
-import { Navigate } from "react-router-dom"
+import React from 'react'
+import { Navigate } from 'react-router-dom'
 
-export default function ProtectedRoute({ element: Component, loggedIn, ...props }) {
-  return (
-    loggedIn ? <Component {...props} />
-    : <Navigate to={'/'} replace />
-  )
+export default function ProtectedRoute({ isLoggedIn, children }) {
+    return isLoggedIn ? children : <Navigate to="/signin" />;
 }
