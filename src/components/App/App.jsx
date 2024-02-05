@@ -27,7 +27,7 @@ export default function App() {
             Promise.all([UserApi.getUser(localStorage.jwt), UserApi.getMovies(localStorage.jwt)])
                 .then(([userData, dataMovies]) => {
                     setLoggedIn(true)
-                    setIsCheckToken(false)
+                    setIsCheckToken(true)
                     setCurrentUser(userData)
                     setSavedMovies(dataMovies.reverse())
                 })
@@ -48,10 +48,11 @@ export default function App() {
     function handleLogin(email, password) {
         UserApi.login(email, password)
             .then(res => {
-                localStorage.setItem('jwt', res.token)
-                setLoggedIn(true)
-                console.log('переход на /movies')
-                navigate('/movies')
+                localStorage.setItem('jwt', res.token);
+                setLoggedIn(true);
+                setIsCheckToken(true);
+                console.log('переход на /movies');
+                navigate('/movies');
                 window.scrollTo(0, 0)
             })
             .catch((err) => {
@@ -65,11 +66,12 @@ export default function App() {
                 if (res && res.token) {
                     localStorage.setItem('jwt', res.token);
                     setLoggedIn(true);
+                    setIsCheckToken(true);
                     console.log('переход на /movies');
                     navigate('/movies');
                     window.scrollTo(0, 0);
                 } else {
-                    console.error('Ошибка в регистрации пользователя.');
+                    console.error('Ошибка в регистрации пользователя');
                 }
             })
             .catch((err) => {
