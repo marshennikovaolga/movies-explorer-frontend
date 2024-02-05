@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, onMount } from 'react'
 import Main from '../Main/Main.jsx'
 import { useNavigate } from 'react-router-dom'
 import UserApi from '../../utils/MainApi.js'
@@ -21,6 +21,7 @@ export default function App() {
 
     const [savedMovies, setSavedMovies] = useState([])
     const [isEdit, setIsEdit] = useState(false)
+
 
     useEffect(() => {
         if (localStorage.jwt) {
@@ -114,6 +115,7 @@ export default function App() {
         }
     }
 
+    console.log(loggedIn, 'logged in')
     return (
         <>
             {isLoading ? <Preloader /> :
