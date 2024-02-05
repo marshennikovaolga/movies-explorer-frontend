@@ -118,7 +118,7 @@ export default function App() {
     console.log(loggedIn, 'logged in')
     return (
         <>
-            {isLoading ? <Preloader /> :
+            {isCheckToken ? <Preloader /> :
                 <CurrentUserContext.Provider value={currentUser}>
                     <Routes>
                         <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
