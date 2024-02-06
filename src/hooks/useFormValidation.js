@@ -10,9 +10,9 @@ export default function useFormValidation() {
     function handleChange(evt) {
         const name = evt.target.name;
         const value = evt.target.value;
+        const form = evt.target.form;
         // const validationMessage = evt.target.validationMessage;
         // const valid = evt.target.validity.valid;
-        const form = evt.target.form;
     
         setValues((initialValues) => ({
             ...initialValues,
