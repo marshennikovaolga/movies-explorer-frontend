@@ -20,11 +20,19 @@ class MainApi {
                 password: password,
             }),
         })
-            .then((res) => this._checkResponse(res))
-            .catch((err) => {
-                console.error(`Ошибка при регистрации: ${err}`);
-                return err;
-            });
+        .then((res) => this._checkResponse(res))
+        .then((data) => {
+            if (data && data.name && data.email) {
+                console.log('Регистрация прошла успешно:', data);
+                return data;
+            } else {
+                console.error('Ошибка в регистрации пользователя');
+            }
+        })
+        .catch((err) => {
+            console.error('Произошла ошибка при регистрации catch:', err);
+            throw err;
+        });
     }
 
     login(email, password) {
@@ -125,3 +133,23 @@ const UserApi = new MainApi({
 });
 
 export default UserApi;
+
+
+    // register(name, email, password) {
+    //     return fetch(`${this._baseUrl}/signup`, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //             name: name,
+    //             email: email,
+    //             password: password,
+    //         }),
+    //     })
+    //         .then((res) => this._checkResponse(res))
+    //         .catch((err) => {
+    //             console.error(`Ошибка при регистрации: ${err}`);
+    //             return err;
+    //         });
+    // }

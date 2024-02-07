@@ -4,22 +4,24 @@ import logo from '../../../images/green-logo.svg'
 import useFormValidation from '../../../hooks/useFormValidation'
 import { emailRegex } from '../../../utils/constants'
 import { NavLink } from 'react-router-dom'
-import { useState } from 'react'
+// import { useState } from 'react'
 
 export default function AuthForm({ type, loginLink, onSubmit }) {
 
     const { values, error, isInputValid, isValidButton, handleChange } = useFormValidation()
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     console.log("Submitting form with values:", { name, email, password });
+    //     if (type === 'login') {
+    //         onSubmit(email, password);
+    //     } else if (type === 'register') {
+    //         onSubmit(name, email, password);
+    //     }
+    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (type === 'login') {
-            onSubmit(email, password);
-        } else if (type === 'register') {
-            onSubmit(name, email, password);
-        }
+        onSubmit(e);
     };
 
     return (
@@ -37,13 +39,15 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             title="Почта"
                             placeholder="введите email"
                             name="email"
-                            value={values.email}
+                            // value={values.email}
+                            value={values.email || ''}
                             isInputValid={isInputValid.email}
                             pattern={emailRegex}
                             type="email"
-                            onChange={(evt) => {
-                                handleChange(evt)
-                            }}
+                            onChange={handleChange}
+                            // onChange={(evt) => {
+                            //     handleChange(evt)
+                            // }}
                             isSend={false}
                             error={error.email}
                             hasError={true}
@@ -52,12 +56,14 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             title="Пароль"
                             placeholder="введите пароль"
                             name="password"
-                            value={values.password}
+                            // value={values.password}
+                            value={values.password || ''}
                             isInputValid={isInputValid.password}
                             type="password"
-                            onChange={(evt) => {
-                                handleChange(evt)
-                            }}
+                            onChange={handleChange}
+                            // onChange={(evt) => {
+                            //     handleChange(evt)
+                            // }}
                             isSend={false}
                             error={error.password}
                             hasError={true}
@@ -71,13 +77,15 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             type="text"
                             placeholder="введите ваше имя"
                             name="name"
-                            value={values.name}
+                            value={values.name || ''}
                             isInputValid={isInputValid.name}
                             minLength="2"
                             maxLength="30"
-                            onChange={(evt) => {
-                                handleChange(evt)
-                            }}
+                            // onChange={(evt) => {
+                            //     handleChange(evt)
+                            // }}
+                            // onChange={(e) => setName(e.target.value)}
+                            onChange={handleChange}
                             isSend={false}
                             error={error.name}
                             hasError={true}
@@ -86,13 +94,14 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             title="Почта"
                             placeholder="введите почту"
                             name="email"
-                            value={values.email}
+                            value={values.email || ''}
                             isInputValid={isInputValid.email}
                             pattern={emailRegex}
                             type="email"
-                            onChange={(evt) => {
-                                handleChange(evt)
-                            }}
+                            // onChange={(evt) => {
+                            //     handleChange(evt)
+                            // }}
+                            onChange={handleChange}
                             isSend={false}
                             error={error.email}
                             hasError={true}
@@ -101,12 +110,13 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             title="Пароль"
                             placeholder="введите пароль"
                             name="password"
-                            value={values.password}
+                            value={values.password || ''}
                             isInputValid={isInputValid.password}
                             type="password"
-                            onChange={(evt) => {
-                                handleChange(evt)
-                            }}
+                            // onChange={(evt) => {
+                            //     handleChange(evt)
+                            // }}
+                            onChange={handleChange}
                             isSend={false}
                             error={error.password}
                             hasError={true}

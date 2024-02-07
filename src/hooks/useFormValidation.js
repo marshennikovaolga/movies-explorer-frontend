@@ -4,7 +4,7 @@ export default function useFormValidation() {
 
     const [ values, setValues ] = useState({})
     const [ error, setError ] = useState({})
-    const [ isInputValid, setIsInputValid ] = useState({}) //span
+    const [ isInputValid, setIsInputValid ] = useState({})
     const [ isValidButton, setIsValidButton ] = useState(false)
 
     function handleChange(evt) {

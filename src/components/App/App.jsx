@@ -62,6 +62,7 @@ export default function App() {
     }
 
     function handleRegister(name, email, password) {
+        console.log("Registering with:", { name, email, password });
         UserApi.register(name, email, password)
             .then((res) => {
                 if (res && res.token) {
