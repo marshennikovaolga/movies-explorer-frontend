@@ -9,15 +9,6 @@ import { NavLink } from 'react-router-dom'
 export default function AuthForm({ type, loginLink, onSubmit }) {
 
     const { values, error, isInputValid, isValidButton, handleChange } = useFormValidation()
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     console.log("Submitting form with values:", { name, email, password });
-    //     if (type === 'login') {
-    //         onSubmit(email, password);
-    //     } else if (type === 'register') {
-    //         onSubmit(name, email, password);
-    //     }
-    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -84,7 +75,6 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             // onChange={(evt) => {
                             //     handleChange(evt)
                             // }}
-                            // onChange={(e) => setName(e.target.value)}
                             onChange={handleChange}
                             isSend={false}
                             error={error.name}
@@ -127,7 +117,7 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                     type='submit'
                     className='authform__submit'
                     aria-label={type === 'login' ? 'Войти' : 'Зарегистрироваться'}
-                    disabled={!isValidButton}
+                    disabled={!isValidButton} 
                 >
                     {type === 'login' ? 'Войти' : 'Зарегистрироваться'}
                 </button>

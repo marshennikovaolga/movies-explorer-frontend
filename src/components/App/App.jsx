@@ -1,4 +1,4 @@
-import React, { useState, useEffect, onMount } from 'react'
+import React, { useState, useEffect } from 'react'
 import Main from '../Main/Main.jsx'
 import { useNavigate } from 'react-router-dom'
 import UserApi from '../../utils/MainApi.js'
@@ -25,7 +25,8 @@ export default function App() {
 
     useEffect(() => {
         if (localStorage.jwt) {
-            Promise.all([UserApi.getUser(localStorage.jwt), UserApi.getMovies(localStorage.jwt)])
+            Promise.all([UserApi.getUser(localStorage.jwt),
+                UserApi.getMovies(localStorage.jwt)])
                 .then(([userData, dataMovies]) => {
                     setLoggedIn(true)
                     setIsCheckToken(true)
@@ -116,22 +117,27 @@ export default function App() {
         }
     }
 
+    const logOut = () => {
+        localStorage.clear();
+        navigate('/');
+    };
+
     console.log(loggedIn, 'logged in')
     return (
         <>
-            {isCheckToken ? <Preloader /> :
+            {isLoading ? <Preloader /> :
                 <CurrentUserContext.Provider value={currentUser}>
                     <Routes>
                         <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
                         <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
                         <Route path="/profile" element={
-                            <ProtectedRoute isLoggedIn={loggedIn} element={
+                            <ProtectedRoute loggedIn={loggedIn} logOut={logOut} element={
                                 <Content><Main name='profile' /></Content>} />} />
                         <Route path="/movies" element={
-                            <ProtectedRoute isLoggedIn={loggedIn} element={
+                            <ProtectedRoute loggedIn={loggedIn} element={
                                 <Content><Main name='movies' /></Content>} />} />
                         <Route path="/saved-movies" element={
-                            <ProtectedRoute isLoggedIn={loggedIn} element={
+                            <ProtectedRoute loggedIn={loggedIn} element={
                                 <Content><Main name='savedmovies' /></Content>} />} />
                         <Route path="/" element={<Content><Main name='projectpage' /></Content>} />
                         <Route path='*' element={<Main name='notfound' />} />

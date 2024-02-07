@@ -1,18 +1,14 @@
-import './Profile.css';
-import ProfileInput from './ProfileInput/ProfileInput';
-// import UserApi from '../../utils/MainApi';
-import useFormValidation from '../../hooks/useFormValidation';
-import { emailRegex, nameRegex } from '../../utils/constants'
-import CurrentUserContext from '../../contexts/CurrentUserContext';
-import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import './Profile.css'
+import ProfileInput from './ProfileInput/ProfileInput'
+import UserApi from '../../utils/MainApi'
+import useFormValidation from '../../hooks/useFormValidation'
+import { emailRegex } from '../../utils/constants'
+import CurrentUserContext from '../../contexts/CurrentUserContext'
+import { useState, useContext } from 'react'
 
-export default function Profile(
-    // { updateUserProfile}
-    ) {
-    const navigate = useNavigate();
-    const [isEditing, setEditing] = useState(false);
+export default function Profile({ logOut, updateUserProfile }) {
     const currentUser = useContext(CurrentUserContext);
+    const [isEditing, setEditing] = useState(false);
     const { values, error, isInputValid, isValidButton, handleChange, reset } = useFormValidation()
 
     const handleEditClick = () => {
@@ -20,21 +16,16 @@ export default function Profile(
         reset(currentUser);
     };
 
-    const logOut = () => {
-        localStorage.clear();
-        navigate('/');
+    const saveChanges = () => {
+        UserApi.setUserInfo(values.name, values.email, localStorage.jwt)
+            .then((res) => {
+                updateUserProfile(res);
+                setEditing(false);
+            })
+            .catch((err) => {
+                console.error(`Произошла ошибка при сохранении изменений профиля: ${err}`);
+            });
     };
-
-    // const saveChanges = () => {
-    //     UserApi.setUserInfo(values.username, values.email, localStorage.jwt)
-    //         .then((res) => {
-    //             updateUserProfile(res);
-    //             setEditing(false);
-    //         })
-    //         .catch((err) => {
-    //             console.error(`Произошла ошибка при сохранении изменений профиля: ${err}`);
-    //         });
-    // };
 
     return (
         <div className="profile">
@@ -45,11 +36,9 @@ export default function Profile(
                     placeholder="введите ваше имя"
                     name="name"
                     type="text"
-                    value={values.name}
+                    value={values.name|| ''}
                     isInputValid={isInputValid.name}
-                    // onChange={(evt) => {
-                    //     handleChange(evt)
-                    // }}
+                    onChange={handleChange}
                     isSend={false}
                     error={error.name}
                     hasError={true}
@@ -61,12 +50,10 @@ export default function Profile(
                     placeholder="введите ваш email"
                     name="email"
                     type="email"
-                    value={values.email}
+                    value={values.email || ''}
                     isInputValid={isInputValid.email}
                     pattern={emailRegex}
-                    // onChange={(evt) => {
-                    //     handleChange(evt)
-                    // }}
+                    onChange={handleChange}
                     isSend={false}
                     error={error.email}
                     hasError={true}
@@ -84,7 +71,7 @@ export default function Profile(
                     <button
                         className='profile__button'
                         disabled={!isValidButton}
-                        // onClick={saveChanges}
+                        onClick={saveChanges}
                     >
                         Сохранить изменения
                     </button>

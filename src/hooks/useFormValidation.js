@@ -30,7 +30,6 @@ export default function useFormValidation() {
         setIsValidButton(form.checkValidity());
     }
 
-    // сброс ошибок
     function reset( data = {}) {
         setValues(data)
         setError({})
