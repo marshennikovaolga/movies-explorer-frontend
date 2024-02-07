@@ -11,8 +11,6 @@ export default function useFormValidation() {
         const name = evt.target.name;
         const value = evt.target.value;
         const form = evt.target.form;
-        // const validationMessage = evt.target.validationMessage;
-        // const valid = evt.target.validity.valid;
     
         setValues((initialValues) => ({
             ...initialValues,
@@ -28,18 +26,6 @@ export default function useFormValidation() {
             ...initialInput,
             [name]: evt.target.validity.valid
         }));
-
-        // setValues((initialValues) => {
-        //     return { ...initialValues, [name]: value };
-        // });
-    
-        // setError((initialError) => {
-        //     return { ...initialError, [name]: validationMessage };
-        // });
-    
-        // setIsInputValid((initialInput) => {
-        //     return { ...initialInput, [name]: valid };
-        // });
     
         setIsValidButton(form.checkValidity());
     }
