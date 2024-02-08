@@ -25,10 +25,16 @@ class MainApi {
             if (data && data.name && data.email) {
                 console.log('Регистрация прошла успешно:', data);
                 return data;
-            } else {
-                console.error('Ошибка в регистрации пользователя');
             }
         })
+        // .then((data) => {
+        //     if (data && data.name && data.email) {
+        //         console.log('Регистрация прошла успешно:', data);
+        //         return data;
+        //     } else {
+        //         console.error('Ошибка в регистрации пользователя');
+        //     }
+        // })
         .catch((err) => {
             console.error('Произошла ошибка при регистрации catch:', err);
             throw err;

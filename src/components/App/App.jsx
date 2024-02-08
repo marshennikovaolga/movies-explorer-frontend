@@ -25,10 +25,10 @@ export default function App() {
     useEffect(() => {
         if (localStorage.jwt) {
             Promise.all([UserApi.getUser(localStorage.jwt),
-                UserApi.getMovies(localStorage.jwt)])
+            UserApi.getMovies(localStorage.jwt)])
                 .then(([userData, dataMovies]) => {
                     setLoggedIn(true)
-                    setIsCheckToken(true)
+                    setIsCheckToken(false)
                     setCurrentUser(userData)
                     setSavedMovies(dataMovies.reverse())
                 })
@@ -41,8 +41,6 @@ export default function App() {
         } else {
             setLoggedIn(false)
             setIsCheckToken(false)
-            setCurrentUser({});
-            setSavedMovies([]);
             localStorage.clear()
         }
     }, [loggedIn])
@@ -52,7 +50,6 @@ export default function App() {
             .then(res => {
                 localStorage.setItem('jwt', res.token);
                 setLoggedIn(true);
-                setIsCheckToken(true);
                 console.log('переход на /movies');
                 navigate('/movies');
                 window.scrollTo(0, 0)
@@ -66,89 +63,95 @@ export default function App() {
         console.log("данные для регистрации:", { name, email, password });
         UserApi.register(name, email, password)
             .then((res) => {
-                if (res && res.token) {
-                    localStorage.setItem('jwt', res.token);
-                    setLoggedIn(true);
-                    setIsCheckToken(true);
-                    console.log('переход на /movies');
-                    navigate('/movies');
-                    window.scrollTo(0, 0);
-                } else {
-                    console.error('Ошибка в регистрации пользователя');
+                // if (res && res.token) {
+                if (res) {
+                    setLoggedIn(false);
+                    UserApi.login(email, password)
+                        .then(res => {
+                            localStorage.setItem('jwt', res.token);
+                            setLoggedIn(true);
+                            console.log('переход на /movies');
+                            navigate('/movies');
+                            window.scrollTo(0, 0);
+                        })
+                        .catch((err) => {
+                            console.error(`Произошла ошибка авторизации. ${err}`);
+                        });
                 }
             })
-            .catch((err) => {
-                console.error(`Произошла ошибка. ${err}`);
+            .catch((error) => {
+                console.error("Произошла ошибка при регистрации пользователя:", error);
             });
     }
+            
 
-    function updateUserProfile(name, email) {
-        UserApi.setUserInfo(name, email, localStorage.jwt)
-            .then(res => {
-                setCurrentUser(res)
-                setIsEdit(false)
-            })
-            .catch((err) => {
-                console.error(`Ошибка при редактировании данных пользователя ${err}`)
-            })
-    };
+                function updateUserProfile(name, email) {
+                    UserApi.setUserInfo(name, email, localStorage.jwt)
+                        .then(res => {
+                            setCurrentUser(res)
+                            setIsEdit(false)
+                        })
+                        .catch((err) => {
+                            console.error(`Ошибка при редактировании данных пользователя ${err}`)
+                        })
+                };
 
-    function deleteMovie(deleteMovieId) {
-        UserApi.deleteMovie(deleteMovieId, localStorage.jwt)
-            .then(() => {
-                setSavedMovies(savedMovies.filter(movie => { return movie._id !== deleteMovieId }))
-            })
-            .catch((err) => console.error(`Ошиюка при удалении фильма ${err}`))
-    }
+                function deleteMovie(deleteMovieId) {
+                    UserApi.deleteMovie(deleteMovieId, localStorage.jwt)
+                        .then(() => {
+                            setSavedMovies(savedMovies.filter(movie => { return movie._id !== deleteMovieId }))
+                        })
+                        .catch((err) => console.error(`Ошиюка при удалении фильма ${err}`))
+                }
 
-    function toggleMovie(data) {
-        const isAdded = savedMovies.some(element => data.id === element.movieId)
-        const seachMovie = savedMovies.filter((movie) => {
-            return movie.movieId === data.id
-        })
-        if (isAdded) {
-            deleteMovie(seachMovie[0]._id)
-        } else {
-            UserApi.addMovie(data, localStorage.jwt)
-                .then(res => {
-                    setSavedMovies([res, ...savedMovies])
-                })
-                .catch((err) => console.error(`Ошибка при добавлении лайка ${err}`))
-        }
-    }
+                function toggleMovie(data) {
+                    const isAdded = savedMovies.some(element => data.id === element.movieId)
+                    const seachMovie = savedMovies.filter((movie) => {
+                        return movie.movieId === data.id
+                    })
+                    if (isAdded) {
+                        deleteMovie(seachMovie[0]._id)
+                    } else {
+                        UserApi.addMovie(data, localStorage.jwt)
+                            .then(res => {
+                                setSavedMovies([res, ...savedMovies])
+                            })
+                            .catch((err) => console.error(`Ошибка при добавлении лайка ${err}`))
+                    }
+                }
 
-    const logOut = () => {
-        localStorage.clear();
-        setCurrentUser({});
-        setLoggedIn(false);
-        navigate('/');
-    };
+                const logOut = () => {
+                    localStorage.clear();
+                    setCurrentUser({});
+                    setLoggedIn(false);
+                    navigate('/');
+                };
 
-    console.log(loggedIn, 'logged in')
+                console.log(loggedIn, 'logged in')
 
-    return (
-        <>
-            {isLoading ? <Preloader /> :
-                <CurrentUserContext.Provider value={currentUser}>
-                    <Routes>
-                        <Route path="/signin" element={
-                        loggedIn ? <Navigate to='/movies' replace/> : <Login handleLogin={handleLogin} />} />
-                        <Route path="/signup" element={
-                        loggedIn ? <Navigate to='/movies' replace/> : <Register handleRegister={handleRegister} />} />
-                        <Route path="/profile" element={
-                            <ProtectedRoute loggedIn={loggedIn} logOut={logOut} updateUserProfile={updateUserProfile} element={
-                                <Content><Main name='profile' /></Content>} />} />
-                        <Route path="/movies" element={
-                            <ProtectedRoute loggedIn={loggedIn} element={
-                                <Content><Main name='movies' /></Content>} />} />
-                        <Route path="/saved-movies" element={
-                            <ProtectedRoute loggedIn={loggedIn} element={
-                                <Content><Main name='savedmovies' /></Content>} />} />
-                        <Route path="/" element={<Content><Main name='projectpage' /></Content>} />
-                        <Route path='*' element={<Main name='notfound' />} />
-                    </Routes>
-                </CurrentUserContext.Provider>
+                return (
+                    <>
+                        {isLoading ? <Preloader /> :
+                            <CurrentUserContext.Provider value={currentUser}>
+                                <Routes>
+                                    <Route path="/signin" element={
+                                        loggedIn ? <Navigate to='/movies' replace /> : <Login handleLogin={handleLogin} />} />
+                                    <Route path="/signup" element={
+                                        loggedIn ? <Navigate to='/movies' replace /> : <Register handleRegister={handleRegister} />} />
+                                    <Route path="/profile" element={
+                                        <ProtectedRoute loggedIn={loggedIn} logOut={logOut} updateUserProfile={updateUserProfile} element={
+                                            <Content><Main name='profile' /></Content>} />} />
+                                    <Route path="/movies" element={
+                                        <ProtectedRoute loggedIn={loggedIn} element={
+                                            <Content><Main name='movies' /></Content>} />} />
+                                    <Route path="/saved-movies" element={
+                                        <ProtectedRoute loggedIn={loggedIn} element={
+                                            <Content><Main name='savedmovies' /></Content>} />} />
+                                    <Route path="/" element={<Content><Main name='projectpage' /></Content>} />
+                                    <Route path='*' element={<Main name='notfound' />} />
+                                </Routes>
+                            </CurrentUserContext.Provider>
+                        }
+                    </>
+                )
             }
-        </>
-    );
-}
