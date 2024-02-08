@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom'
 
-export default function ProtectedRoute({ isLoggedIn, children }) {
+export default function ProtectedRoute({ loggedIn, children }) {
     return (
-        isLoggedIn ? children : <Navigate to={'/'} replace />
+        loggedIn ? children : <Navigate to={'/'} replace />
     )
 }

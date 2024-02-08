@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Main from '../Main/Main.jsx'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import UserApi from '../../utils/MainApi.js'
 import moviesApi from '../../utils/MoviesApi.js'
 import CurrentUserContext from '../../contexts/CurrentUserContext.js'
@@ -8,7 +8,6 @@ import { Route, Routes } from 'react-router-dom'
 import Content from '../Content.jsx'
 import ProtectedRoute from '../ProtectedRoute.jsx'
 import Preloader from '../Preloader/Preloader.jsx'
-
 import Register from '../Authentication/Register.jsx'
 import Login from '../Authentication/Login.jsx'
 
@@ -36,6 +35,7 @@ export default function App() {
                 .catch((err) => {
                     console.error(`Ошибка при загрузке начальных данных ${err}`)
                     setIsCheckToken(false)
+                    setCurrentUser({});
                     localStorage.clear()
                 })
         } else {
@@ -63,7 +63,7 @@ export default function App() {
     }
 
     function handleRegister(name, email, password) {
-        console.log("Registering with:", { name, email, password });
+        console.log("данные для регистрации:", { name, email, password });
         UserApi.register(name, email, password)
             .then((res) => {
                 if (res && res.token) {
@@ -119,19 +119,24 @@ export default function App() {
 
     const logOut = () => {
         localStorage.clear();
+        setCurrentUser({});
+        setLoggedIn(false);
         navigate('/');
     };
 
     console.log(loggedIn, 'logged in')
+
     return (
         <>
             {isLoading ? <Preloader /> :
                 <CurrentUserContext.Provider value={currentUser}>
                     <Routes>
-                        <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
-                        <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
+                        <Route path="/signin" element={
+                        loggedIn ? <Navigate to='/movies' replace/> : <Login handleLogin={handleLogin} />} />
+                        <Route path="/signup" element={
+                        loggedIn ? <Navigate to='/movies' replace/> : <Register handleRegister={handleRegister} />} />
                         <Route path="/profile" element={
-                            <ProtectedRoute loggedIn={loggedIn} logOut={logOut} element={
+                            <ProtectedRoute loggedIn={loggedIn} logOut={logOut} updateUserProfile={updateUserProfile} element={
                                 <Content><Main name='profile' /></Content>} />} />
                         <Route path="/movies" element={
                             <ProtectedRoute loggedIn={loggedIn} element={

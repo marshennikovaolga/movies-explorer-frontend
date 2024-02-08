@@ -1,15 +1,23 @@
 import './Profile.css'
 import ProfileInput from './ProfileInput/ProfileInput'
-import UserApi from '../../utils/MainApi'
 import useFormValidation from '../../hooks/useFormValidation'
 import { emailRegex } from '../../utils/constants'
 import CurrentUserContext from '../../contexts/CurrentUserContext'
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
+
 
 export default function Profile({ logOut, updateUserProfile }) {
     const currentUser = useContext(CurrentUserContext);
     const [isEditing, setEditing] = useState(false);
     const { values, error, isInputValid, isValidButton, handleChange, reset } = useFormValidation()
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+
+    useEffect(() => {
+        setName(currentUser.name || '');
+        setEmail(currentUser.email || '');
+    }, [currentUser]);
 
     const handleEditClick = () => {
         setEditing(!isEditing);
@@ -17,16 +25,9 @@ export default function Profile({ logOut, updateUserProfile }) {
     };
 
     const saveChanges = () => {
-        UserApi.setUserInfo(values.name, values.email, localStorage.jwt)
-            .then((res) => {
-                updateUserProfile(res);
-                setEditing(false);
-            })
-            .catch((err) => {
-                console.error(`Произошла ошибка при сохранении изменений профиля: ${err}`);
-            });
+        updateUserProfile(values.name, values.email);
+        setEditing(false);
     };
-
     return (
         <div className="profile">
             <h2 className='profile__title'>{`Привет, ${currentUser.name}!`}</h2>
@@ -36,9 +37,12 @@ export default function Profile({ logOut, updateUserProfile }) {
                     placeholder="введите ваше имя"
                     name="name"
                     type="text"
-                    value={values.name|| ''}
+                    value={values.name || ''}
                     isInputValid={isInputValid.name}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                        handleChange(e);
+                        setName(e.target.value);
+                    }}
                     isSend={false}
                     error={error.name}
                     hasError={true}
@@ -53,7 +57,10 @@ export default function Profile({ logOut, updateUserProfile }) {
                     value={values.email || ''}
                     isInputValid={isInputValid.email}
                     pattern={emailRegex}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                        handleChange(e);
+                        setEmail(e.target.value);
+                    }}
                     isSend={false}
                     error={error.email}
                     hasError={true}
