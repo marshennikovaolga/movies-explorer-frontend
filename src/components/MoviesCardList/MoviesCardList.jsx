@@ -1,80 +1,102 @@
+import React, { useEffect, useState } from 'react'
 import './MoviesCardList.css'
 import MoviesCard from '../MoviesCard/MoviesCard'
-import { useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
 import Preloader from '../Preloader/Preloader'
+import { useLocation } from 'react-router-dom'
+import {
+    MaxScreen, MediumScreen, SmallScreen,
+    InitMoreMaxScreen, InitLessMaxScreen, InitMediumScreen,
+    InitSmallScreen, StepMaxScreen, StepMediumScreen, StepSmallScreen
+} from '../../utils/constants'
 
-export default function MoviesCardList(
-    { globalError, movies, onDelete, addMovie, savedMovies, isLoading }) {
-
+export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies, isLoading, globalError }) {
     const { pathname } = useLocation()
-    const [cardCount, setCardCount] = useState(calculateCardCount())
-    const [showMoreButton, setShowMoreButton] = useState(true)
+    const [cardCount, setCardCount] = useState('')
+    const currentLength = movies.slice(0, cardCount)
 
     function calculateCardCount() {
-        const screenWidth = window.innerWidth;
-        if (screenWidth >= 800) {
-            return 4;
-        } else if (screenWidth >= 525) {
-            return 4;
-        } else {
-            return 5;
+        const cardCounter = { init: InitMoreMaxScreen, step: StepMaxScreen }
+        if (window.innerWidth < MaxScreen) {
+            cardCounter.init = InitLessMaxScreen
+            cardCounter.step = StepMediumScreen
         }
+        if (window.innerWidth < MediumScreen) {
+            cardCounter.init = InitMediumScreen
+            cardCounter.step = StepSmallScreen
+        }
+        if (window.innerWidth < SmallScreen) {
+            cardCounter.init = InitSmallScreen
+            cardCounter.step = StepSmallScreen
+        }
+        return cardCounter;
     }
 
     useEffect(() => {
-        const handleResize = () => {
-            setCardCount(calculateCardCount());
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (movies.length <= cardCount) {
-            setShowMoreButton(false);
-        } else {
-            setShowMoreButton(true);
+        if (pathname === '/movies') {
+            setCardCount(calculateCardCount().init)
+            function calculateCardCount() {
+                if (window.innerWidth >= StepMaxScreen) {
+                    setCardCount(calculateCardCount().init)
+                }
+                if (window.innerWidth < StepMaxScreen) {
+                    setCardCount(calculateCardCount().init)
+                }
+                if (window.innerWidth < MediumScreen) {
+                    setCardCount(calculateCardCount().init)
+                }
+                if (window.innerWidth < SmallScreen) {
+                    setCardCount(calculateCardCount().init)
+                }
+            }
+            window.addEventListener('resize', calculateCardCount)
+            return () => window.removeEventListener('resize', calculateCardCount)
         }
-    }, [movies, cardCount]);
+    }, [pathname, setCardCount, movies])
+
 
     const handleShowMore = () => {
-        setCardCount(prevCount => prevCount + 4);
+        setCardCount(cardCount + calculateCardCount().step);
     };
 
     return (
         <section className='cardlist'>
-            {isLoading ? (
-                <Preloader />
-            ) : globalError ? (
-                <p className="cardlist__global-error">
-                    Во время запроса произошла ошибка.
-                    Возможно, проблема с соединением или сервер недоступен.
-                    Подождите немного и попробуйте ещё раз
-                </p>
-            ) : movies.length === 0 ? (
-                <p className="cardlist__notfound">Ничего не найдено</p>
-            ) : (
-                <>
-                    <ul className='cardlist__list'>
-                        {movies.slice(0, cardCount).map(movie => (
-                            <li key={movie._id} className='cardlist__item'>
+            <ul className='cardlist__list'>
+                {isLoading ? <Preloader /> :
+                    (pathname === '/movies' && currentLength.length !== 0) ?
+                        currentLength.map(data => {
+                            return (
                                 <MoviesCard
-                                    data={movie}
+                                    key={data.id}
                                     savedMovies={savedMovies}
                                     addMovie={addMovie}
-                                    onDelete={onDelete}
+                                    data={data}
                                 />
-                            </li>
-                        ))}
-                    </ul>
-                    <button onClick={handleShowMore} type='button' className='cardlist__showmore'>Ещё</button>
-                </>
-            )}
+                            )
+                        }) : movies.length !== 0 ?
+                            movies.map(data => {
+                                return (
+                                    <MoviesCard
+                                        key={data._id}
+                                        onDelete={onDelete}
+                                        data={data}
+                                    />
+                                )
+                            }) : globalError ?
+                                <span className='cardlist__span'>
+                                    Во время запроса произошла ошибка.
+                                    Возможно, проблема с соединением или сервер недоступен.
+                                    Подождите немного и попробуйте ещё раз
+                                </span>
+                                : pathname === '/movies' ?
+                                    <span className='cardlist__span'>
+                                        Чтобы увидеть список фильмов выполните поиск
+                                    </span> :
+                                    <span className='cardlist__span'>
+                                        Нет сохранённых фильмов
+                                    </span>
+                }
+            </ul>
+            {pathname === '/movies' && <button type='button' className={`cardlist__showmore ${cardCount >= movies.length && 'cardlist__showmore_hidden'}`} onClick={handleShowMore}>Ёще</button>}
         </section>
     )
 }

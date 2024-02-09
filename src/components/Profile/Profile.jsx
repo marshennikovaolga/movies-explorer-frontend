@@ -6,28 +6,21 @@ import CurrentUserContext from '../../contexts/CurrentUserContext'
 import { useState, useContext, useEffect } from 'react'
 
 
-export default function Profile({ logOut, updateUserProfile }) {
+export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
     const currentUser = useContext(CurrentUserContext);
-    const [isEditing, setEditing] = useState(false);
     const { values, error, isInputValid, isValidButton, handleChange, reset } = useFormValidation()
 
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-
     useEffect(() => {
-        setName(currentUser.name || '');
-        setEmail(currentUser.email || '');
-    }, [currentUser]);
+        reset({ name: currentUser.name, email: currentUser.email })
+    }, [reset, isEdit, currentUser])
 
-    const handleEditClick = () => {
-        setEditing(!isEditing);
-        reset(currentUser);
-    };
-
-    const saveChanges = () => {
+    function handleEditClick(evt) {
+        evt.preventDefault();
         updateUserProfile(values.name, values.email);
-        setEditing(false);
-    };
+        setIsEdit(false);
+    }
+
+
     return (
         <div className="profile">
             <h2 className='profile__title'>{`Привет, ${currentUser.name}!`}</h2>
@@ -39,11 +32,9 @@ export default function Profile({ logOut, updateUserProfile }) {
                     type="text"
                     value={values.name || ''}
                     isInputValid={isInputValid.name}
-                    onChange={(e) => {
-                        handleChange(e);
-                        setName(e.target.value);
-                    }}
+                    onChange={handleChange}
                     isSend={false}
+                    isEdit={isEdit}
                     error={error.name}
                     hasError={true}
                 />
@@ -57,28 +48,24 @@ export default function Profile({ logOut, updateUserProfile }) {
                     value={values.email || ''}
                     isInputValid={isInputValid.email}
                     pattern={emailRegex}
-                    onChange={(e) => {
-                        handleChange(e);
-                        setEmail(e.target.value);
-                    }}
+                    onChange={handleChange}
                     isSend={false}
+                    isEdit={isEdit}
                     error={error.email}
                     hasError={true}
                 />
             </div>
 
-            {isEditing ? (
+            {isEdit ? (
                 <>
-                    <button
-                        className='profile__edit'
-                        onClick={handleEditClick}
-                    >
+                    <button className='profile__edit' onClick={() => setIsEdit(false)}>
                         Отменить редактирование
                     </button>
                     <button
-                        className='profile__button'
+                        className={`profile__button
+                        ${(values.name === currentUser.name && values.email === currentUser.email) || !isValidButton ? 'profile__button_disabled' : ''}`}
                         disabled={!isValidButton}
-                        onClick={saveChanges}
+                        onClick={handleEditClick}
                     >
                         Сохранить изменения
                     </button>
@@ -87,8 +74,7 @@ export default function Profile({ logOut, updateUserProfile }) {
                 <>
                     <button
                         className='profile__edit'
-                        onClick={handleEditClick}
-                    >
+                        onClick={() => { setIsEdit(true)}}>
                         Редактировать профиль
                     </button>
                     <button
