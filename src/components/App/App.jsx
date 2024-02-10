@@ -10,6 +10,9 @@ import Preloader from '../Preloader/Preloader.jsx'
 import Register from '../Authentication/Register.jsx'
 import Login from '../Authentication/Login.jsx'
 
+import Movies from '../Movies/Movies.jsx'
+import SavedMovies from '../SavedMovies/SavedMovies.jsx'
+
 export default function App() {
     const navigate = useNavigate()
     const [currentUser, setCurrentUser] = useState({})
@@ -22,23 +25,17 @@ export default function App() {
 
     useEffect(() => {
         if (localStorage.jwt) {
-            Promise.all([UserApi.getUser(localStorage.jwt),
-            UserApi.getMovies(localStorage.jwt)])
+            Promise.all([UserApi.getUser(localStorage.jwt), UserApi.getMovies(localStorage.jwt)])
                 .then(([userData, dataMovies]) => {
                     setLoggedIn(true)
                     setIsCheckToken(false)
                     setCurrentUser(userData)
                     setIsLoading(false)
-                    if (Array.isArray(dataMovies)) {
-                        setSavedMovies(dataMovies.reverse())
-                    } else {
-                        setSavedMovies([])
-                    }
+                    setSavedMovies(dataMovies.reverse())
                 })
                 .catch((err) => {
                     console.error(`Ошибка при загрузке начальных данных ${err}`)
                     setIsCheckToken(false)
-                    // setCurrentUser({});
                     localStorage.clear()
                 })
         } else {
@@ -46,8 +43,68 @@ export default function App() {
             setIsCheckToken(false)
             localStorage.clear()
         }
-    }, [])
+    }, [loggedIn])
 
+    function handleRegister(name, email, password) {
+        console.log("данные для регистрации:", { name, email, password });
+        UserApi.register(name, email, password)
+            .then((res) => {
+                if (res) {
+                    setLoggedIn(false);
+                    UserApi.login(email, password)
+                        .then(res => {
+                            localStorage.setItem('jwt', res.token);
+                            console.log('переход на /movies');
+                            setLoggedIn(true);
+                            navigate('/movies');
+                            window.scrollTo(0, 0);
+                        })
+                        .catch((err) => {
+                            console.error(`Ошибка при авторизации после регистрации ${err}`)
+                        })
+                }
+            })
+            .catch((err) => {
+                console.error(`Ошибка при регистрации ${err}`)
+            })
+    }
+
+    function handleLogin(email, password) {
+        UserApi.login(email, password)
+            .then(token => {
+                if (token) {
+                    localStorage.setItem('jwt', token);
+                    console.log('Токен после входа:', token);
+                    setLoggedIn(true);
+                    console.log('переход на /movies');
+                    navigate('/movies');
+                    window.scrollTo(0, 0);
+                } else {
+                    console.error('Ответ сервера не содержит токен');
+                }
+            })
+            .catch((err) => {
+                console.error(`Ошибка авторизации ${err}`);
+            })
+    }
+
+
+    function updateUserProfile(name, email) {
+        UserApi.setUserInfo(name, email, localStorage.jwt)
+            .then(res => {
+                setCurrentUser(res)
+                setIsEdit(false)
+            })
+            .catch((err) => {
+                console.error(`Ошибка при редактировании данных пользователя ${err}`)
+            })
+    };
+
+    const logOut = () => {
+        localStorage.clear();
+        setLoggedIn(false);
+        navigate('/');
+    };
     function deleteMovie(deleteMovieId) {
         UserApi.deleteMovie(deleteMovieId, localStorage.jwt)
             .then(() => {
@@ -72,58 +129,6 @@ export default function App() {
         }
     }
 
-    function handleLogin(email, password) {
-        UserApi.login(email, password)
-            .then(res => {
-                localStorage.setItem('jwt', res.token);
-                console.log('Токен после входа:', res.token);
-                setLoggedIn(true);
-                console.log('переход на /movies');
-                navigate('/movies');
-                window.scrollTo(0, 0)
-            })
-            .catch((err) => {
-                console.error(`Ошибка авторизации ${err}`)
-            })
-    }
-
-    function handleRegister(name, email, password) {
-        console.log("данные для регистрации:", { name, email, password });
-        UserApi.register(name, email, password)
-            .then((res) => {
-                if (res) {
-                    setLoggedIn(true);
-                    localStorage.setItem('jwt', res.token);
-                    console.log('переход на /movies');
-                    navigate('/movies');
-                    window.scrollTo(0, 0);
-                }
-            })
-            .catch((error) => {
-                console.error("Произошла ошибка при регистрации пользователя:", error);
-            });
-    }
-
-    function updateUserProfile(name, email) {
-        UserApi.setUserInfo(name, email, localStorage.jwt)
-            .then(res => {
-                setCurrentUser(res)
-                localStorage.setItem('currentUser', JSON.stringify(res));
-                setIsEdit(false)
-            })
-            .catch((err) => {
-                console.error(`Ошибка при редактировании данных пользователя ${err}`)
-            })
-    };
-
-    const logOut = () => {
-        localStorage.clear();
-        setCurrentUser({});
-        setLoggedIn(false);
-        setSavedMovies({});
-        navigate('/');
-    };
-    
     console.log(loggedIn, 'logged in')
 
     return (
@@ -148,17 +153,28 @@ export default function App() {
                         <Route path="/movies" element={
                             <ProtectedRoute loggedIn={loggedIn} element={
                                 <Content>
-                                    <Main name='movies'
+                                    <Movies
                                         isLoading={isLoading}
                                         setIsLoading={setIsLoading}
+                                        savedMovies={savedMovies}
+                                        addMovie={toggleMovie}
+                                        loggedIn={loggedIn}
                                     />
                                 </Content>} />} />
 
                         <Route path="/saved-movies" element={
                             <ProtectedRoute loggedIn={loggedIn} element={
-                                <Content><Main name='savedmovies' /></Content>} />} />
+                                <Content>
+                                    <SavedMovies
+                                        savedMovies={savedMovies}
+                                        loggedIn={loggedIn}
+                                        onDelete={deleteMovie} />
+                                </Content>} />} />
 
-                        <Route path="/" element={<Content><Main name='projectpage' /></Content>} />
+                        <Route path="/" element={
+                            <Content loggedIn={loggedIn} logOut={logOut} >
+                                <Main name='projectpage' />
+                            </Content>} />
                         <Route path='*' element={<Main name='notfound' />} />
                     </Routes>
                 </CurrentUserContext.Provider>

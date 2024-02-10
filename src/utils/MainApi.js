@@ -1,10 +1,15 @@
 class MainApi {
     constructor(options) {
-        this._baseUrl = options.baseUrl;
+        this._url = options.baseUrl;
+    }
+
+    _checkResponse(res) {
+        return res.ok ? res.json() : Promise.reject(`Ошибка checkResponse: ${res.status}`);
     }
 
     _req(url, options) {
-        return fetch(`${this._baseUrl}${url}`, options);
+        return fetch(`${this._url}${url}`, options)
+            .then(this._checkResponse);
     }
 
     register(name, email, password) {
@@ -18,6 +23,17 @@ class MainApi {
                 email: email,
                 password: password,
             }),
+        })
+        .then((data) => {
+            if (data && data.name && data.email) {
+                console.log('Регистрация прошла успешно:', data);
+                console.log(data);
+                return data;
+            }
+        })
+        .catch((err) => {
+            console.error('Произошла ошибка при регистрации catch:', err);
+            throw err;
         });
     }
 
@@ -31,10 +47,23 @@ class MainApi {
                 email: email,
                 password: password
             })
+        })
+        .then((data) => {
+            if (data && data.token) {
+                const token = data.token;
+                localStorage.setItem('jwt', token);
+                return token;
+            } else {
+                throw new Error('ответ сервера не содержит токен');
+            }
         });
     }
 
-    getUser(token) {
+    getUser() {
+        const token = localStorage.getItem('jwt');
+        if (!token) {
+            throw new Error('Токен не найден в localStorage');
+        }
         return this._req('/users/me', {
             method: 'GET',
             headers: {
@@ -42,6 +71,26 @@ class MainApi {
             }
         });
     }
+
+    // getUser(token) {
+    //     return this._req('/users/me', {
+    //         method: 'GET',
+    //         headers: {
+    //             "Authorization": `Bearer ${token}`
+    //         }
+    //     })
+    //     .then((data) => {
+    //         if (data) {
+    //             return data;
+    //         } else {
+    //             throw new Error('ответ сервера не содержит токена');
+    //         }
+    //     })
+    //     .catch((err) => {
+    //         console.error('Произошла ошибка при получении данных пользователя:', err);
+    //         throw err;
+    //     });
+    // }
 
     setUserInfo(name, email, token) {
         return this._req('/users/me', {
@@ -54,7 +103,8 @@ class MainApi {
                 name: name,
                 email: email
             })
-        });
+        })
+        // .then(data => data);
     }
 
     getMovies(token) {
@@ -79,9 +129,9 @@ class MainApi {
                 duration: data.duration,
                 year: data.year,
                 description: data.description,
-                image: `https://api.nomoreparties.co${data.image.url}`,
+                image: `${this._baseUrl}${data.image.url}`,
                 trailerLink: data.trailerLink,
-                thumbnail: `https://api.nomoreparties.co${data.image.formats.thumbnail.url}`,
+                thumbnail: `${this._baseUrl}${data.image.formats.thumbnail.url}`,
                 movieId: data.id,
                 nameRU: data.nameRU,
                 nameEN: data.nameEN
@@ -106,18 +156,23 @@ const UserApi = new MainApi({
 export default UserApi;
 
 
+
+
+
+
+
+
+
+
+
+
 // class MainApi {
 //     constructor(options) {
 //         this._baseUrl = options.baseUrl;
 //     }
 
-//     _checkResponse(res) {
-//         return res.ok ? res.json() : Promise.reject(`Ошибка checkResponse: ${res.status}`);
-//     }
-
 //     _req(url, options) {
-//         return fetch(`${this._baseUrl}${url}`, options)
-//             .then(this._checkResponse);
+//         return fetch(`${this._baseUrl}${url}`, options);
 //     }
 
 //     register(name, email, password) {
@@ -131,16 +186,6 @@ export default UserApi;
 //                 email: email,
 //                 password: password,
 //             }),
-//         })
-//         .then((data) => {
-//             if (data && data.name && data.email) {
-//                 console.log('Регистрация прошла успешно:', data);
-//                 return data;
-//             }
-//         })
-//         .catch((err) => {
-//             console.error('Произошла ошибка при регистрации catch:', err);
-//             throw err;
 //         });
 //     }
 
@@ -154,13 +199,6 @@ export default UserApi;
 //                 email: email,
 //                 password: password
 //             })
-//         })
-//         .then((data) => {
-//             if (data.token) {
-//                 const token = data.token;
-//                 localStorage.setItem('jwt', token);
-//                 return token;
-//             }
 //         });
 //     }
 
@@ -184,8 +222,7 @@ export default UserApi;
 //                 name: name,
 //                 email: email
 //             })
-//         })
-//         .then(data => data);
+//         });
 //     }
 
 //     getMovies(token) {
@@ -210,9 +247,9 @@ export default UserApi;
 //                 duration: data.duration,
 //                 year: data.year,
 //                 description: data.description,
-//                 image: `${this._baseUrl}${data.image.url}`,
+//                 image: `https://api.nomoreparties.co${data.image.url}`,
 //                 trailerLink: data.trailerLink,
-//                 thumbnail: `${this._baseUrl}${data.image.formats.thumbnail.url}`,
+//                 thumbnail: `https://api.nomoreparties.co${data.image.formats.thumbnail.url}`,
 //                 movieId: data.id,
 //                 nameRU: data.nameRU,
 //                 nameEN: data.nameEN

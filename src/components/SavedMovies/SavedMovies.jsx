@@ -2,8 +2,8 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import { useState, useEffect, useCallback } from "react";
 
-export default function SavedMovies({savedMovie, onDelete}) {
-  const [filteredMovies, setFilteredMovies] = useState(savedMovie)
+export default function SavedMovies({savedMovies, onDelete}) {
+  const [filteredMovies, setFilteredMovies] = useState(savedMovies)
   const [isChecked, setIsChecked] = useState(false)
   const [searchedMovie, setSearchedMovie] = useState('')
   const [firstSearch, setFirstSearch] = useState(true)
@@ -18,17 +18,17 @@ export default function SavedMovies({savedMovie, onDelete}) {
 
 function searchMovies(search) {
   setFirstSearch(false)
-  filter(search, isChecked, savedMovie)
+  filter(search, isChecked, savedMovies)
 }
 
 useEffect(() => {
-  if (savedMovie.length === 0) {
+  if (savedMovies.length === 0) {
     setFirstSearch(true)
   } else {
     setFirstSearch(false)
   }
-  filter(searchedMovie, isChecked, savedMovie)
-}, [filter, savedMovie, isChecked, searchedMovie])
+  filter(searchedMovie, isChecked, savedMovies)
+}, [filter, savedMovies, isChecked, searchedMovie])
 
   return (
     <>
@@ -36,7 +36,7 @@ useEffect(() => {
         isChecked={isChecked}
         searchMovies={searchMovies}
         setSearchedMovie={setSearchedMovie}
-        movies={savedMovie}
+        movies={savedMovies}
         filter={filter}
         setIsChecked={setIsChecked}
          />

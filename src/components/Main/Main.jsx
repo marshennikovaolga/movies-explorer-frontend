@@ -5,8 +5,8 @@ import AboutProject from '../AboutProject/AboutProject.jsx'
 import Techs from '../Techs/Techs.jsx'
 import AboutMe from '../AboutMe/AboutMe.jsx'
 import Portfolio from '../Portfolio/Portfolio.jsx'
-import Movies from '../Movies/Movies.jsx'
-import SavedMovies from '../SavedMovies/SavedMovies.jsx'
+// import Movies from '../Movies/Movies.jsx'
+// import SavedMovies from '../SavedMovies/SavedMovies.jsx'
 import Profile from '../Profile/Profile.jsx'
 import './Main.css'
 
@@ -15,8 +15,8 @@ export default function Main({ name }) {
         <main>
             {{
                 profile: <Profile />,
-                movies: <Movies />,
-                savedmovies: <SavedMovies />,
+                // movies: <Movies />,
+                // savedmovies: <SavedMovies />,
                 notfound: <Notfound />,
                 projectpage:
                     <>
