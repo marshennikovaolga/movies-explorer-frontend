@@ -12,6 +12,7 @@ class MainApi {
             .then(this._checkResponse);
     }
 
+
     register(name, email, password) {
         return this._req('/signup', {
             method: 'POST',
@@ -22,19 +23,8 @@ class MainApi {
                 name: name,
                 email: email,
                 password: password,
-            }),
+            })
         })
-        .then((data) => {
-            if (data && data.name && data.email) {
-                console.log('Регистрация прошла успешно:', data);
-                console.log(data);
-                return data;
-            }
-        })
-        .catch((err) => {
-            console.error('Произошла ошибка при регистрации catch:', err);
-            throw err;
-        });
     }
 
     login(email, password) {
@@ -72,25 +62,6 @@ class MainApi {
         });
     }
 
-    // getUser(token) {
-    //     return this._req('/users/me', {
-    //         method: 'GET',
-    //         headers: {
-    //             "Authorization": `Bearer ${token}`
-    //         }
-    //     })
-    //     .then((data) => {
-    //         if (data) {
-    //             return data;
-    //         } else {
-    //             throw new Error('ответ сервера не содержит токена');
-    //         }
-    //     })
-    //     .catch((err) => {
-    //         console.error('Произошла ошибка при получении данных пользователя:', err);
-    //         throw err;
-    //     });
-    // }
 
     setUserInfo(name, email, token) {
         return this._req('/users/me', {
@@ -104,7 +75,6 @@ class MainApi {
                 email: email
             })
         })
-        // .then(data => data);
     }
 
     getMovies(token) {

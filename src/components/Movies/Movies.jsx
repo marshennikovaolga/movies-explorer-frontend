@@ -3,7 +3,7 @@ import SearchForm from "../SearchForm/SearchForm"
 import moviesApi from '../../utils/MoviesApi'
 import { useEffect, useState, useCallback } from 'react'
 
-export default function Movies({addMovie, savedMovies, isLoading, setIsLoading}) {
+export default function Movies({ addMovie, savedMovies, isLoading, setIsLoading }) {
 
   const [globalError, setGlobalError] = useState(false)
   const [allMovies, setAllMovies] = useState([])

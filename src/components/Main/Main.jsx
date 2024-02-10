@@ -15,8 +15,6 @@ export default function Main({ name }) {
         <main>
             {{
                 profile: <Profile />,
-                // movies: <Movies />,
-                // savedmovies: <SavedMovies />,
                 notfound: <Notfound />,
                 projectpage:
                     <>

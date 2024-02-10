@@ -45,30 +45,6 @@ export default function App() {
         }
     }, [loggedIn])
 
-    function handleRegister(name, email, password) {
-        console.log("данные для регистрации:", { name, email, password });
-        UserApi.register(name, email, password)
-            .then((res) => {
-                if (res) {
-                    setLoggedIn(false);
-                    UserApi.login(email, password)
-                        .then(res => {
-                            localStorage.setItem('jwt', res.token);
-                            console.log('переход на /movies');
-                            setLoggedIn(true);
-                            navigate('/movies');
-                            window.scrollTo(0, 0);
-                        })
-                        .catch((err) => {
-                            console.error(`Ошибка при авторизации после регистрации ${err}`)
-                        })
-                }
-            })
-            .catch((err) => {
-                console.error(`Ошибка при регистрации ${err}`)
-            })
-    }
-
     function handleLogin(email, password) {
         UserApi.login(email, password)
             .then(token => {
@@ -80,7 +56,7 @@ export default function App() {
                     navigate('/movies');
                     window.scrollTo(0, 0);
                 } else {
-                    console.error('Ответ сервера не содержит токен');
+                    console.error('Ошибка проверки токена');
                 }
             })
             .catch((err) => {
@@ -88,6 +64,18 @@ export default function App() {
             })
     }
 
+    function handleRegister(name, email, password) {
+        console.log("данные для регистрации:", { name, email, password });
+        UserApi.register(name, email, password)
+            .then(() => {
+                setLoggedIn(true);
+                handleLogin(email, password)
+            })
+            .catch((err) => {
+                console.error(`Ошибка при регистации ${err}`)
+            })
+
+    }
 
     function updateUserProfile(name, email) {
         UserApi.setUserInfo(name, email, localStorage.jwt)
