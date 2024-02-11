@@ -1,16 +1,19 @@
     class MoviesApi {
     constructor(options) {
-        this._baseUrl = options.baseUrl;
+        this._url = options.baseUrl;
     }
 
     _checkResponse(res) {
         return res.ok ? res.json() : Promise.reject();
     }
 
-    getMovies() {
-        const url = `${this._baseUrl}/`;
-        return fetch(url)
+    _req(url, options) {
+        return fetch(`${this._url}${url}`, options)
             .then(this._checkResponse);
+    }
+
+    getMovies() {
+        return this._req('/')
     }
 }
 

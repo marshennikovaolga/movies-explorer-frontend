@@ -9,7 +9,7 @@ import {
     InitSmallScreen, StepMaxScreen, StepMediumScreen, StepSmallScreen
 } from '../../utils/constants'
 
-export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies, isLoading, globalError }) {
+export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies, isLoading, globalError, initialSearch }) {
     const { pathname } = useLocation()
     const [cardCount, setCardCount] = useState('')
     const currentLength = movies.slice(0, cardCount)
@@ -51,7 +51,7 @@ export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies
             window.addEventListener('resize', calculateCardCount)
             return () => window.removeEventListener('resize', calculateCardCount)
         }
-    }, [pathname, setCardCount, movies])
+    }, [pathname, movies])
 
 
     const handleShowMore = () => {
@@ -87,13 +87,17 @@ export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies
                                     Возможно, проблема с соединением или сервер недоступен.
                                     Подождите немного и попробуйте ещё раз
                                 </span>
-                                : pathname === '/movies' ?
-                                    <span className='cardlist__span'>
-                                        Чтобы увидеть список фильмов выполните поиск
-                                    </span> :
-                                    <span className='cardlist__span'>
-                                        Нет сохранённых фильмов
+                                : !initialSearch ?
+                                    <span className='cardlist__span' >
+                                        Ничего не найдено
                                     </span>
+                                    : pathname === '/movies' ?
+                                        <span className='cardlist__span'>
+                                            Чтобы увидеть список фильмов, выполните поиск
+                                        </span> :
+                                        <span className='cardlist__span'>
+                                            Нет сохранённых фильмов
+                                        </span>
                 }
             </ul>
             {pathname === '/movies' && <button type='button' className={`cardlist__showmore ${cardCount >= movies.length && 'cardlist__showmore_hidden'}`} onClick={handleShowMore}>Ёще</button>}

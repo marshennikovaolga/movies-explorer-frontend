@@ -39,6 +39,10 @@
     background: url(../../images/save-hover.svg);
 }
 
+.card__button_save_active {
+    background: url(../../images/liked_movie.svg);
+}
+
 .card__button_delete {
     background: url(../../images/delete-button.svg);
     width: 21px;

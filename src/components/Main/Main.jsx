@@ -5,16 +5,12 @@ import AboutProject from '../AboutProject/AboutProject.jsx'
 import Techs from '../Techs/Techs.jsx'
 import AboutMe from '../AboutMe/AboutMe.jsx'
 import Portfolio from '../Portfolio/Portfolio.jsx'
-// import Movies from '../Movies/Movies.jsx'
-// import SavedMovies from '../SavedMovies/SavedMovies.jsx'
-import Profile from '../Profile/Profile.jsx'
 import './Main.css'
 
 export default function Main({ name }) {
     return (
         <main>
             {{
-                profile: <Profile />,
                 notfound: <Notfound />,
                 projectpage:
                     <>

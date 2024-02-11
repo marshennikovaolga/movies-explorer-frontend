@@ -5,11 +5,22 @@ import { useLocation } from 'react-router-dom'
 
 export default function MoviesCard({ data, savedMovies, addMovie, onDelete }) {
     const { pathname } = useLocation();
-    const [isSaved, setIsSaved] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {
-        setIsSaved(savedMovies.some(element => data.id === element.movieId));
-    }, [savedMovies, data.id]);
+        if (pathname === '/movies')
+            setIsLiked(savedMovies.some(element => data.id === element.movieId));
+    }, [pathname, savedMovies, data.id, setIsLiked]);
+
+    function handleSave() {
+        if (savedMovies.some(element => data.id === element.movieId)) {
+            setIsLiked(true)
+            addMovie(data)
+        } else {
+            setIsLiked(false)
+            addMovie(data)
+        }
+    }
 
     function setTime(duration) {
         const minutes = duration % 60;
@@ -17,30 +28,25 @@ export default function MoviesCard({ data, savedMovies, addMovie, onDelete }) {
         return (hours === 0 ? `${minutes}м` : minutes === 0 ? `${hours}ч` : `${hours}ч${minutes}м`);
     }
 
-    function handleSaveOrDelete() {
-        if (isSaved) {
-            onDelete(data._id);
-        } else {
-            addMovie(data);
-        }
-        setIsSaved(!isSaved);
-    }
-
     return (
         <article className='card'>
             <div className='card__container'>
                 <div className='card__picture'>
-                    <img 
-                        src={pathname === '/movies' ?
-                            `https://api.nomoreparties.co${data.image.url}` : data.image}
-                        alt={data.name} 
-                        className='card__image' 
+                    <img
+                        src={pathname === '/movies' ? `https://api.nomoreparties.co${data.image.url}` : data.image}
+                        alt={data.name}
+                        className='card__image'
                     />
-                    <button 
-                        type='button' 
-                        className={`card__button ${pathname === '/movies' ? 'card__button_save' : 'card__button_delete'}`}
-                        onClick={handleSaveOrDelete}
-                    ></button>
+                    {pathname === '/movies' ?
+                        <button type='button'
+                            className={`card__button card__button_save
+                            ${isLiked ? 'card__button_save_active' : ''}`}
+                            onClick={handleSave}></button>
+                        :
+                        <button type='button'
+                            className={`card__button card__button_delete`}
+                            onClick={() => onDelete(data._id)}></button>
+                    }
                 </div>
                 <div className='card__text'>
                     <p className='card__subtitle'>{data.nameRU}</p>

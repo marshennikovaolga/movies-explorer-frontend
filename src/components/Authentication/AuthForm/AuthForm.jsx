@@ -4,7 +4,6 @@ import logo from '../../../images/green-logo.svg'
 import useFormValidation from '../../../hooks/useFormValidation'
 import { emailRegex } from '../../../utils/constants'
 import { NavLink } from 'react-router-dom'
-// import { useState } from 'react'
 
 export default function AuthForm({ type, loginLink, onSubmit }) {
 
@@ -30,15 +29,11 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             title="Почта"
                             placeholder="введите email"
                             name="email"
-                            // value={values.email}
                             value={values.email || ''}
                             isInputValid={isInputValid.email}
                             pattern={emailRegex}
                             type="email"
                             onChange={handleChange}
-                            // onChange={(evt) => {
-                            //     handleChange(evt)
-                            // }}
                             isSend={false}
                             error={error.email}
                             hasError={true}
@@ -47,14 +42,10 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             title="Пароль"
                             placeholder="введите пароль"
                             name="password"
-                            // value={values.password}
                             value={values.password || ''}
                             isInputValid={isInputValid.password}
                             type="password"
                             onChange={handleChange}
-                            // onChange={(evt) => {
-                            //     handleChange(evt)
-                            // }}
                             isSend={false}
                             error={error.password}
                             hasError={true}
@@ -72,9 +63,6 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             isInputValid={isInputValid.name}
                             minLength="2"
                             maxLength="30"
-                            // onChange={(evt) => {
-                            //     handleChange(evt)
-                            // }}
                             onChange={handleChange}
                             isSend={false}
                             error={error.name}
@@ -88,9 +76,6 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             isInputValid={isInputValid.email}
                             pattern={emailRegex}
                             type="email"
-                            // onChange={(evt) => {
-                            //     handleChange(evt)
-                            // }}
                             onChange={handleChange}
                             isSend={false}
                             error={error.email}
@@ -103,9 +88,6 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             value={values.password || ''}
                             isInputValid={isInputValid.password}
                             type="password"
-                            // onChange={(evt) => {
-                            //     handleChange(evt)
-                            // }}
                             onChange={handleChange}
                             isSend={false}
                             error={error.password}
@@ -117,7 +99,7 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                     type='submit'
                     className='authform__submit'
                     aria-label={type === 'login' ? 'Войти' : 'Зарегистрироваться'}
-                    disabled={!isValidButton} 
+                    disabled={!isValidButton}
                 >
                     {type === 'login' ? 'Войти' : 'Зарегистрироваться'}
                 </button>

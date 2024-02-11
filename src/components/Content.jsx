@@ -1,7 +1,7 @@
 import Header from "./Header/Header"
 import Footer from "./Footer/Footer"
 
-export default function Content({ children, loggedIn, logOut }) {
+export default function Content({ loggedIn, children, logOut }) {
     return (
         <>
             <Header loggedIn={loggedIn} />

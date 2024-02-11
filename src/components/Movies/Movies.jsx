@@ -3,13 +3,15 @@ import SearchForm from "../SearchForm/SearchForm"
 import moviesApi from '../../utils/MoviesApi'
 import { useEffect, useState, useCallback } from 'react'
 
-export default function Movies({ addMovie, savedMovies, isLoading, setIsLoading }) {
+export default function Movies({ addMovie, savedMovies }) {
 
   const [globalError, setGlobalError] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [allMovies, setAllMovies] = useState([])
   const [filteredMovies, setFilteredMovies] = useState([])
   const [searchedMovie, setSearchedMovie] = useState('')
   const [isChecked, setIsChecked] = useState(false)
+  const [initialSearch, setInitialSearch] = useState(true)
 
   const filter = useCallback((search, isChecked, movies) => {
     setSearchedMovie(search)
@@ -30,6 +32,7 @@ function searchMovies(search) {
                 setAllMovies(res)
                 setGlobalError(false)
                 setIsChecked(false)
+                setInitialSearch(false)
                 filter(search, isChecked, res)
             })
             .catch(err => {
@@ -48,6 +51,7 @@ useEffect(() => {
       const search = JSON.parse(localStorage.movie)
       const isChecked = JSON.parse(localStorage.shorts)
       setGlobalError(false)
+      setInitialSearch(false)
       setSearchedMovie(search)
       setIsChecked(isChecked)
       setAllMovies(movies)
@@ -61,13 +65,14 @@ useEffect(() => {
       isChecked={isChecked}
       searchMovies={searchMovies}
       setSearchedMovie={setSearchedMovie}
+      initialSearch={initialSearch}
       movies={allMovies}
       filter={filter}
       setIsChecked={setIsChecked}
       />
-
       <MoviesCardList
       movies={filteredMovies}
+      initialSearch={initialSearch}
       addMovie={addMovie}
       savedMovies={savedMovies}
       isLoading={isLoading}

@@ -49,11 +49,7 @@ class MainApi {
         });
     }
 
-    getUser() {
-        const token = localStorage.getItem('jwt');
-        if (!token) {
-            throw new Error('Токен не найден в localStorage');
-        }
+    getUser(token) {
         return this._req('/users/me', {
             method: 'GET',
             headers: {
@@ -83,7 +79,7 @@ class MainApi {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
-        });
+        })
     }
 
     addMovie(data, token) {
@@ -99,9 +95,9 @@ class MainApi {
                 duration: data.duration,
                 year: data.year,
                 description: data.description,
-                image: `${this._baseUrl}${data.image.url}`,
+                image: `https://api.nomoreparties.co${data.image.url}`,
                 trailerLink: data.trailerLink,
-                thumbnail: `${this._baseUrl}${data.image.formats.thumbnail.url}`,
+                thumbnail:  `https://api.nomoreparties.co${data.image.formats.thumbnail.url}`,
                 movieId: data.id,
                 nameRU: data.nameRU,
                 nameEN: data.nameEN
@@ -124,121 +120,3 @@ const UserApi = new MainApi({
 });
 
 export default UserApi;
-
-
-
-
-
-
-
-
-
-
-
-
-// class MainApi {
-//     constructor(options) {
-//         this._baseUrl = options.baseUrl;
-//     }
-
-//     _req(url, options) {
-//         return fetch(`${this._baseUrl}${url}`, options);
-//     }
-
-//     register(name, email, password) {
-//         return this._req('/signup', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({
-//                 name: name,
-//                 email: email,
-//                 password: password,
-//             }),
-//         });
-//     }
-
-//     login(email, password) {
-//         return this._req('/signin', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({
-//                 email: email,
-//                 password: password
-//             })
-//         });
-//     }
-
-//     getUser(token) {
-//         return this._req('/users/me', {
-//             method: 'GET',
-//             headers: {
-//                 "Authorization": `Bearer ${token}`
-//             }
-//         });
-//     }
-
-//     setUserInfo(name, email, token) {
-//         return this._req('/users/me', {
-//             method: 'PATCH',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 "Authorization": `Bearer ${token}`
-//             },
-//             body: JSON.stringify({
-//                 name: name,
-//                 email: email
-//             })
-//         });
-//     }
-
-//     getMovies(token) {
-//         return this._req('/movies', {
-//             method: 'GET',
-//             headers: {
-//                 "Authorization": `Bearer ${token}`
-//             }
-//         });
-//     }
-
-//     addMovie(data, token) {
-//         return this._req('/movies', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 "Authorization": `Bearer ${token}`
-//             },
-//             body: JSON.stringify({
-//                 country: data.country,
-//                 director: data.director,
-//                 duration: data.duration,
-//                 year: data.year,
-//                 description: data.description,
-//                 image: `https://api.nomoreparties.co${data.image.url}`,
-//                 trailerLink: data.trailerLink,
-//                 thumbnail: `https://api.nomoreparties.co${data.image.formats.thumbnail.url}`,
-//                 movieId: data.id,
-//                 nameRU: data.nameRU,
-//                 nameEN: data.nameEN
-//             }),
-//         });
-//     }
-
-//     deleteMovie(movieId, token) {
-//         return this._req(`/movies/${movieId}`, {
-//             method: 'DELETE',
-//             headers: {
-//                 "Authorization": `Bearer ${token}`
-//             }
-//         });
-//     }
-// }
-
-// const UserApi = new MainApi({
-//     baseUrl: 'https://api.movies-diploma.nomoredomainsmonster.ru'
-// });
-
-// export default UserApi;

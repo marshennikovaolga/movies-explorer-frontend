@@ -10,11 +10,12 @@ export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }
     const currentUser = useContext(CurrentUserContext);
     const { values, error, isInputValid, isValidButton, handleChange, reset } = useFormValidation()
 
+
     useEffect(() => {
         reset({ name: currentUser.name, email: currentUser.email })
     }, [reset, isEdit, currentUser])
 
-    function handleEditClick(evt) {
+    function handleSubmit(evt) {
         evt.preventDefault();
         updateUserProfile(values.name, values.email);
         setIsEdit(false);
@@ -22,7 +23,7 @@ export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }
 
 
     return (
-        <div className="profile">
+        <form className="profile" onSubmit={handleSubmit}>
             <h2 className='profile__title'>{`Привет, ${currentUser.name}!`}</h2>
             <div className='profile__name'>
                 <ProfileInput
@@ -62,10 +63,10 @@ export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }
                         Отменить редактирование
                     </button>
                     <button
+                        type='submit'
                         className={`profile__button
                         ${(values.name === currentUser.name && values.email === currentUser.email) || !isValidButton ? 'profile__button_disabled' : ''}`}
                         disabled={!isValidButton}
-                        onClick={handleEditClick}
                     >
                         Сохранить изменения
                     </button>
@@ -84,6 +85,6 @@ export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }
                     </button>
                 </>
             )}
-        </div>
+        </form>
     );
 }

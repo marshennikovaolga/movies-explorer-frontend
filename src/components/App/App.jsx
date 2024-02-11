@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import Main from '../Main/Main.jsx'
-import { Navigate, useNavigate } from 'react-router-dom'
 import UserApi from '../../utils/MainApi.js'
-import CurrentUserContext from '../../contexts/CurrentUserContext.js'
 import { Route, Routes } from 'react-router-dom'
-import Content from '../Content.jsx'
+import { Navigate, useNavigate } from 'react-router-dom'
+import CurrentUserContext from '../../contexts/CurrentUserContext.js'
 import ProtectedRoute from '../ProtectedRoute.jsx'
+import Main from '../Main/Main.jsx'
+import Content from '../Content.jsx'
 import Preloader from '../Preloader/Preloader.jsx'
 import Register from '../Authentication/Register.jsx'
 import Login from '../Authentication/Login.jsx'
-
+import Profile from '../Profile/Profile.jsx'
 import Movies from '../Movies/Movies.jsx'
 import SavedMovies from '../SavedMovies/SavedMovies.jsx'
 
@@ -18,10 +18,8 @@ export default function App() {
     const [currentUser, setCurrentUser] = useState({})
     const [isCheckToken, setIsCheckToken] = useState(true)
     const [loggedIn, setLoggedIn] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
     const [savedMovies, setSavedMovies] = useState([])
     const [isEdit, setIsEdit] = useState(false)
-
 
     useEffect(() => {
         if (localStorage.jwt) {
@@ -30,7 +28,6 @@ export default function App() {
                     setLoggedIn(true)
                     setIsCheckToken(false)
                     setCurrentUser(userData)
-                    setIsLoading(false)
                     setSavedMovies(dataMovies.reverse())
                 })
                 .catch((err) => {
@@ -74,7 +71,6 @@ export default function App() {
             .catch((err) => {
                 console.error(`Ошибка при регистации ${err}`)
             })
-
     }
 
     function updateUserProfile(name, email) {
@@ -93,6 +89,7 @@ export default function App() {
         setLoggedIn(false);
         navigate('/');
     };
+
     function deleteMovie(deleteMovieId) {
         UserApi.deleteMovie(deleteMovieId, localStorage.jwt)
             .then(() => {
@@ -125,39 +122,45 @@ export default function App() {
                 <CurrentUserContext.Provider value={currentUser}>
                     <Routes>
                         <Route path="/signin" element={
-                            loggedIn ? <Navigate to='/movies' replace /> : <Login handleLogin={handleLogin} />} />
+                            loggedIn ? <Navigate to='/movies' replace /> :
+                                <Login handleLogin={handleLogin} />} />
                         <Route path="/signup" element={
-                            loggedIn ? <Navigate to='/movies' replace /> : <Register handleRegister={handleRegister} />} />
+                            loggedIn ? <Navigate to='/movies' replace /> :
+                                <Register handleRegister={handleRegister} />} />
+
 
                         <Route path="/profile" element={
                             <ProtectedRoute loggedIn={loggedIn} element={
-                                <Content><Main name='profile'
-                                    logOut={logOut}
-                                    updateUserProfile={updateUserProfile}
-                                    setIsEdit={setIsEdit}
-                                    isEdit={isEdit}
-                                /></Content>} />} />
+                                <Content>
+                                    <Profile
+                                        logOut={logOut}
+                                        updateUserProfile={updateUserProfile}
+                                        setIsEdit={setIsEdit}
+                                        isEdit={isEdit}
+                                    />
+                                </Content>} />} />
+
 
                         <Route path="/movies" element={
                             <ProtectedRoute loggedIn={loggedIn} element={
-                                <Content>
+                                <Content loggedIn={loggedIn}>
                                     <Movies
-                                        isLoading={isLoading}
-                                        setIsLoading={setIsLoading}
                                         savedMovies={savedMovies}
                                         addMovie={toggleMovie}
                                         loggedIn={loggedIn}
                                     />
                                 </Content>} />} />
 
+
                         <Route path="/saved-movies" element={
                             <ProtectedRoute loggedIn={loggedIn} element={
-                                <Content>
+                                <Content loggedIn={loggedIn}>
                                     <SavedMovies
                                         savedMovies={savedMovies}
                                         loggedIn={loggedIn}
                                         onDelete={deleteMovie} />
                                 </Content>} />} />
+
 
                         <Route path="/" element={
                             <Content loggedIn={loggedIn} logOut={logOut} >
