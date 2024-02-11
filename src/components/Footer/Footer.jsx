@@ -4,7 +4,6 @@ export default function Footer({logOut}) {
     const isMobile = window.innerWidth < 525;
 
     return (
-        // <main>
             <footer className='footer'>
                 <p className='footer__title' >Учебный проект Яндекс.Практикум х BeatFilm.</p>
                 {isMobile ? (
@@ -34,6 +33,5 @@ export default function Footer({logOut}) {
                     </div>
                 )}
             </footer>
-        // </main>
     )
 }

@@ -1,4 +1,5 @@
 const emailRegex = /^\S+@\S+\.\S+$/
+const passwordRegex = /^[a-zA-Z0-9]{4,30}$/
 
 const MaxScreen = 1280
 const MediumScreen = 768
@@ -16,6 +17,7 @@ const StepSmallScreen = 2
 
 export {
     emailRegex,
+    passwordRegex,
     MaxScreen,
     MediumScreen,
     SmallScreen,
