@@ -156,7 +156,7 @@ export default function App() {
 
                         <Route path="/profile" element={
                             <ProtectedRoute loggedIn={loggedIn}>
-                                <Content loggedIn={loggedIn}>
+                                <Content loggedIn={loggedIn} hasFooter={false}>
                                     <Profile
                                         logOut={logOut}
                                         updateUserProfile={updateUserProfile}

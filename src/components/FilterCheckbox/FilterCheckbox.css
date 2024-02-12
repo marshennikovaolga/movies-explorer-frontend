@@ -4,6 +4,10 @@
     text-align: center;
 }
 
+.checkbox__image:hover {
+    cursor: pointer;
+}
+
 .checkbox__title {
     color: #FFF;
     margin: 0;
