@@ -32,11 +32,33 @@ export default function Header({ loggedIn }) {
 
     return (
         <header className='header'>
+            <Link to={'/'}>
+                <img alt='logo icon' className='header__icon' src={logo} />
+            </Link>
             {loggedIn ? (
-                <>
-                    <Link to={'/'}>
-                        <img alt='logo icon' className='header__icon' src={logo} />
-                    </Link>
+                isMobile ? (
+                    <>
+                        <img
+                            alt='menu'
+                            className='header__burger-icon'
+                            src={burger}
+                            onClick={toggleBurgerMenu}
+                        />
+                        <div
+                            className={`header__menu-overlay ${isMenuOpen ? 'header__menu-overlay_open' : ''}`}
+                            onClick={toggleBurgerMenu}>
+                            {isMenuOpen && (
+                                <BurgerMenu
+                                    isOpen={isMenuOpen}
+                                    toggleBurgerMenu={toggleBurgerMenu}
+                                    moviesMatch={moviesMatch}
+                                    savedMoviesMatch={savedMoviesMatch}
+                                />
+                            )}
+                        </div>
+                    </>
+                ) : (
+                    <>
                     <nav>
                         <ul className='header__nav-movies'>
                             <li>
@@ -57,56 +79,18 @@ export default function Header({ loggedIn }) {
                         <img src={profile} alt='перейти в профиль' className='header__account' />
                     </NavLink>
                 </>
+                )
             ) : (
-                <>
-                    {loggedIn && isMobile ? (
-                        <>
-                            <NavLink to={'/'}>
-                                <img alt='logo icon' className='header__icon' src={logo} />
-                            </NavLink>
-                            {isMobile && !isMenuOpen && (
-                                <img
-                                    alt='menu'
-                                    className='header__burger-icon'
-                                    src={burger}
-                                    onClick={toggleBurgerMenu}
-                                />
-                            )}
-                            <div
-                                className={`header__menu-overlay ${isMenuOpen ? 'header__menu-overlay_open' : ''
-                                    }`}
-                                onClick={toggleBurgerMenu}>
-                                {isMenuOpen && (
-                                    <BurgerMenu
-                                        isOpen={isMenuOpen}
-                                        toggleBurgerMenu={toggleBurgerMenu}
-                                        moviesMatch={moviesMatch}
-                                        savedMoviesMatch={savedMoviesMatch}
-                                    />
-                                )}
-                            </div>
-                        </>) : (
-                        <>
-                            {!loggedIn && pathname === '/' &&
-                                <>
-                                    <NavLink to={'/'}>
-                                        <img alt='logo icon' className='header__icon' src={logo} />
-                                    </NavLink>
-                                    <nav>
-                                        <ul className='header__nav'>
-                                            <li>
-                                                <Link to={'/signup'} className="header__signup">Регистрация</Link>
-                                            </li>
-                                            <li>
-                                                <Link to={'/signin'} className="header__signin">Войти</Link>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </>
-                            }
-                        </>
-                    )}
-                </>
+                <nav>
+                    <ul className='header__nav'>
+                        <li>
+                            <Link to={'/signup'} className="header__signup">Регистрация</Link>
+                        </li>
+                        <li>
+                            <Link to={'/signin'} className="header__signin">Войти</Link>
+                        </li>
+                    </ul>
+                </nav>
             )}
         </header>
     );
