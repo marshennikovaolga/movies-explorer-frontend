@@ -14,13 +14,33 @@
     width: 50px;
 }
 
+
 .profileinput__field {
-    margin-left: 147px;
-    border: none;
-    background-color: inherit;
-    color: #fff;
+  margin-left: 147px;
+  border: none;
+  background-color: inherit;
+  color: #fff;
 }
-  
+
+/* .profileinput__error {
+  position: absolute;
+  color: #EE3465;
+  font-size: 14px;
+  top: 15em;
+  margin: auto;
+} */
+
+.profileinput__error {
+  position: absolute;
+  color: #EE3465;
+  font-size: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 382px;
+}
+
+
   @media screen and (max-width: 525px) {
     .profileinput__label {
       max-width: 260px;

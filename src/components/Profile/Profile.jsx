@@ -8,11 +8,16 @@ import { useContext } from 'react'
 
 export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
     const currentUser = useContext(CurrentUserContext);
-    const { values, error, isInputValid, isValidButton, handleChange } = useFormValidation()
+    const { values, error, isInputValid, isValidButton, handleChange, reset } = useFormValidation()
 
     function handleSubmit(evt) {
         evt.preventDefault();
         updateUserProfile(values.name, values.email);
+        setIsEdit(false);
+    }
+
+    function handleCancelEdit() {
+        reset();
         setIsEdit(false);
     }
 
@@ -53,7 +58,7 @@ export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }
 
             {isEdit ? (
                 <>
-                    <button className='profile__edit' onClick={() => setIsEdit(false)}>
+                    <button className='profile__edit' onClick={handleCancelEdit}>
                         Отменить редактирование
                     </button>
                     <button
@@ -69,7 +74,7 @@ export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }
                 <>
                     <button
                         className='profile__edit'
-                        onClick={() => { setIsEdit(true)}}>
+                        onClick={() => { setIsEdit(true) }}>
                         Редактировать профиль
                     </button>
                     <button
