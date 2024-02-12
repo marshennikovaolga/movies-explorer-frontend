@@ -30,18 +30,32 @@ export default function useFormValidation() {
         setIsValidButton(form.checkValidity());
     }
 
-    function reset( data = {}) {
-        setValues(data)
-        setError({})
-        setIsInputValid({})
-        setIsValidButton(false)
-    }
+    const reset = useCallback((data = {}) => {
+        setValues(data);
+        setError({});
+        setIsInputValid({});
+        setIsValidButton(false);
+    }, []);
 
     const changeValues = useCallback((name, value) => {
-        setValues((initialValues) => {
-            return { ...initialValues, [name]: value }
-        })
-    }, [])
+        setValues((initialValues) => ({
+            ...initialValues,
+            [name]: value
+        }));
+    }, []);
+
+    // function reset( data = {}) {
+    //     setValues(data)
+    //     setError({})
+    //     setIsInputValid({})
+    //     setIsValidButton(false)
+    // }
+
+    // const changeValues = useCallback((name, value) => {
+    //     setValues((initialValues) => {
+    //         return { ...initialValues, [name]: value }
+    //     })
+    // }, [])
 
     return { values, error, isInputValid, isValidButton, reset, changeValues, handleChange }
 }

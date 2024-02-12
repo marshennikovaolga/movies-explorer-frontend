@@ -1,21 +1,21 @@
 import './FilterCheckbox.css'
-import { useState } from 'react';
+import checkbox from '../../images/shorts-inactive.svg'
+import activecheckbox from '../../images/shorts-active.svg'
 
-export default function FilterCheckbox({ disabled, toggleButton }) {
-
-  const [isActive, setIsActive] = useState(false);
-
-  function toggleButton() {
-    setIsActive(!isActive);
-  };
-
+export default function FilterCheckbox({ isChecked, showShorts, initialSearch }) {
   return (
-    <label className='checkbox'>
-      <button
-        className={`checkbox__button ${isActive ? 'checkbox__button_active' : ''}`}
-        onClick={toggleButton}
-        disabled={disabled}>
-      </button>
+    <label
+      className={`checkbox ${initialSearch && 'checkbox_disabled'}`}>
+      <input type='checkbox'
+      onChange={() => showShorts()}
+      className='checkbox__search'
+        disabled={initialSearch}
+       />
+       <img
+        alt='поиск короткометражек'
+        src={isChecked ? activecheckbox : checkbox}
+        className={`checkbox__image ${isChecked ? 'checkbox__image_active' : ''}`}
+      />
       <p className='checkbox__title'>Короткометражки</p>
     </label>
   )

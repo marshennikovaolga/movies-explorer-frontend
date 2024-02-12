@@ -41,6 +41,7 @@ class MainApi {
         .then((data) => {
             if (data && data.token) {
                 const token = data.token;
+                console.log('does this run...')
                 localStorage.setItem('jwt', token);
                 return token;
             } else {
@@ -57,7 +58,6 @@ class MainApi {
             }
         });
     }
-
 
     setUserInfo(name, email, token) {
         return this._req('/users/me', {

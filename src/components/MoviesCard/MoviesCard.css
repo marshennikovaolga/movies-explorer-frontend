@@ -18,6 +18,12 @@
     height: 201px;
     object-fit: cover;
     cursor: pointer;
+    border-radius: 5px;
+}
+
+.card__picture img {
+    width: 100%;
+    object-fit: cover;
 }
 
 .card__button {
@@ -37,14 +43,20 @@
 
 .card__button_save {
     background: url(../../images/save-hover.svg);
+    background-repeat: no-repeat;
 }
 
 .card__button_save_active {
     background: url(../../images/liked_movie.svg);
+    background-repeat: no-repeat;
+    width: 21px;
+    height: 21px;
+
 }
 
 .card__button_delete {
     background: url(../../images/delete-button.svg);
+    background-repeat: no-repeat;
     width: 21px;
     height: 21px;
 }

@@ -21,26 +21,51 @@ export default function App() {
     const [savedMovies, setSavedMovies] = useState([])
     const [isEdit, setIsEdit] = useState(false)
 
+    console.log(loggedIn, 'really logged in')
+
+    useEffect(() => {
+        const jwt = localStorage.getItem('jwt')
+        console.log(jwt, 'jwt')
+        if (jwt) {
+            setLoggedIn(true)
+        }
+    }, [])
+
     useEffect(() => {
         if (localStorage.jwt) {
-            Promise.all([UserApi.getUser(localStorage.jwt), UserApi.getMovies(localStorage.jwt)])
-                .then(([userData, dataMovies]) => {
-                    setLoggedIn(true)
-                    setIsCheckToken(false)
-                    setCurrentUser(userData)
+            UserApi.getUser(localStorage.jwt)
+                .then(userData => {
+                    setLoggedIn(true);
+                    setIsCheckToken(false);
+                    setCurrentUser(userData);
+                })
+                .catch(err => {
+                    console.error(`Ошибка при загрузке начальных данных ${err}`);
+                    setIsCheckToken(false);
+                    localStorage.clear();
+                });
+        } else {
+            setLoggedIn(false);
+            setIsCheckToken(false);
+            localStorage.clear();
+        }
+    }, [loggedIn]);
+
+    useEffect(() => {
+        if (localStorage.jwt) {
+            UserApi.getMovies(localStorage.jwt)
+                .then(dataMovies => {
                     setSavedMovies(dataMovies.reverse())
                 })
-                .catch((err) => {
-                    console.error(`Ошибка при загрузке начальных данных ${err}`)
-                    setIsCheckToken(false)
-                    localStorage.clear()
-                })
+                .catch(err => {
+                    console.error(`Ошибка при загрузке фильмов ${err}`);
+                });
         } else {
-            setLoggedIn(false)
-            setIsCheckToken(false)
-            localStorage.clear()
+            setLoggedIn(false);
+            setIsCheckToken(false);
+            localStorage.clear();
         }
-    }, [loggedIn])
+    }, [loggedIn]);
 
     function handleLogin(email, password) {
         UserApi.login(email, password)
@@ -130,37 +155,39 @@ export default function App() {
 
 
                         <Route path="/profile" element={
-                            <ProtectedRoute loggedIn={loggedIn} element={
-                                <Content>
+                            <ProtectedRoute loggedIn={loggedIn}>
+                                <Content loggedIn={loggedIn}>
                                     <Profile
                                         logOut={logOut}
                                         updateUserProfile={updateUserProfile}
                                         setIsEdit={setIsEdit}
                                         isEdit={isEdit}
                                     />
-                                </Content>} />} />
-
+                                </Content>
+                            </ProtectedRoute>
+                        } />
 
                         <Route path="/movies" element={
-                            <ProtectedRoute loggedIn={loggedIn} element={
+                            <ProtectedRoute loggedIn={loggedIn}>
                                 <Content loggedIn={loggedIn}>
                                     <Movies
                                         savedMovies={savedMovies}
                                         addMovie={toggleMovie}
                                         loggedIn={loggedIn}
                                     />
-                                </Content>} />} />
-
+                                </Content>
+                            </ProtectedRoute>} />
 
                         <Route path="/saved-movies" element={
-                            <ProtectedRoute loggedIn={loggedIn} element={
+                            <ProtectedRoute loggedIn={loggedIn}>
                                 <Content loggedIn={loggedIn}>
                                     <SavedMovies
                                         savedMovies={savedMovies}
                                         loggedIn={loggedIn}
                                         onDelete={deleteMovie} />
-                                </Content>} />} />
-
+                                </Content>
+                            </ProtectedRoute>}
+                        />
 
                         <Route path="/" element={
                             <Content loggedIn={loggedIn} logOut={logOut} >

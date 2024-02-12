@@ -3,24 +3,18 @@ import ProfileInput from './ProfileInput/ProfileInput'
 import useFormValidation from '../../hooks/useFormValidation'
 import { emailRegex } from '../../utils/constants'
 import CurrentUserContext from '../../contexts/CurrentUserContext'
-import { useState, useContext, useEffect } from 'react'
+import { useContext } from 'react'
 
 
 export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
     const currentUser = useContext(CurrentUserContext);
-    const { values, error, isInputValid, isValidButton, handleChange, reset } = useFormValidation()
-
-
-    useEffect(() => {
-        reset({ name: currentUser.name, email: currentUser.email })
-    }, [reset, isEdit, currentUser])
+    const { values, error, isInputValid, isValidButton, handleChange } = useFormValidation()
 
     function handleSubmit(evt) {
         evt.preventDefault();
         updateUserProfile(values.name, values.email);
         setIsEdit(false);
     }
-
 
     return (
         <form className="profile" onSubmit={handleSubmit}>
@@ -31,7 +25,7 @@ export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }
                     placeholder="введите ваше имя"
                     name="name"
                     type="text"
-                    value={values.name || ''}
+                    value={!isEdit ? currentUser.name : values.name || ''}
                     isInputValid={isInputValid.name}
                     onChange={handleChange}
                     isSend={false}
@@ -46,7 +40,7 @@ export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }
                     placeholder="введите ваш email"
                     name="email"
                     type="email"
-                    value={values.email || ''}
+                    value={!isEdit ? currentUser.email : values.email || ''}
                     isInputValid={isInputValid.email}
                     pattern={emailRegex}
                     onChange={handleChange}

@@ -1,6 +1,6 @@
 import './Footer.css'
 
-export default function Footer({logOut}) {
+export default function Footer() {
     const isMobile = window.innerWidth < 525;
 
     return (
@@ -29,7 +29,6 @@ export default function Footer({logOut}) {
                                 <a href={'https://github.com/marshennikovaolga'} rel="noreferrer" target='_blank'>Github</a>
                             </div>
                         </nav>
-                        <button onClick={logOut}>выйти</button>
                     </div>
                 )}
             </footer>

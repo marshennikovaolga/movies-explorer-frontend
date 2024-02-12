@@ -19,7 +19,9 @@ export default function Movies({ addMovie, savedMovies }) {
     localStorage.setItem('shorts', JSON.stringify(isChecked))
     localStorage.setItem('allmovies', JSON.stringify(movies))
     setFilteredMovies(movies.filter((movie) => {
-      const searchName = movie.nameRU.toLowerCase().includes(search.toLowerCase())
+      const searchName = typeof search === 'string' && movie.nameRU.toLowerCase().includes(search.toLowerCase());
+
+      // const searchName = movie.nameRU.toLowerCase().includes(search.toLowerCase())
       return isChecked ? (searchName && movie.duration <= 40) : searchName
     }))
   }, [])
@@ -69,6 +71,7 @@ useEffect(() => {
       movies={allMovies}
       filter={filter}
       setIsChecked={setIsChecked}
+      searchedMovies={searchMovies}
       />
       <MoviesCardList
       movies={filteredMovies}

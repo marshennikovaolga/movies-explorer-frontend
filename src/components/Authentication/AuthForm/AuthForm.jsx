@@ -2,7 +2,7 @@ import './AuthForm.css'
 import InputForm from '../InputForm/InputForm'
 import logo from '../../../images/green-logo.svg'
 import useFormValidation from '../../../hooks/useFormValidation'
-import { emailRegex, passwordRegex } from '../../../utils/constants'
+import { emailRegex } from '../../../utils/constants'
 import { NavLink } from 'react-router-dom'
 
 export default function AuthForm({ type, loginLink, onSubmit }) {
@@ -42,7 +42,7 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             title="Пароль"
                             placeholder="введите пароль"
                             name="password"
-                            pattern={passwordRegex}
+                            // pattern={passwordRegex}
                             value={values.password || ''}
                             isInputValid={isInputValid.password}
                             type="password"
@@ -86,7 +86,7 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             title="Пароль"
                             placeholder="введите пароль"
                             name="password"
-                            pattern={passwordRegex}
+                            // pattern={passwordRegex}
                             value={values.password || ''}
                             isInputValid={isInputValid.password}
                             type="password"

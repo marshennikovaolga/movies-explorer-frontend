@@ -14,49 +14,49 @@ export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies
     const [cardCount, setCardCount] = useState('')
     const currentLength = movies.slice(0, cardCount)
 
-    function calculateCardCount() {
-        const cardCounter = { init: InitMoreMaxScreen, step: StepMaxScreen }
-        if (window.innerWidth < MaxScreen) {
-            cardCounter.init = InitLessMaxScreen
-            cardCounter.step = StepMediumScreen
-        }
-        if (window.innerWidth < MediumScreen) {
-            cardCounter.init = InitMediumScreen
-            cardCounter.step = StepSmallScreen
-        }
-        if (window.innerWidth < SmallScreen) {
-            cardCounter.init = InitSmallScreen
-            cardCounter.step = StepSmallScreen
-        }
-        return cardCounter;
-    }
-
     useEffect(() => {
         if (pathname === '/movies') {
-            setCardCount(calculateCardCount().init)
-            function calculateCardCount() {
-                if (window.innerWidth >= StepMaxScreen) {
-                    setCardCount(calculateCardCount().init)
-                }
-                if (window.innerWidth < StepMaxScreen) {
-                    setCardCount(calculateCardCount().init)
-                }
-                if (window.innerWidth < MediumScreen) {
-                    setCardCount(calculateCardCount().init)
-                }
-                if (window.innerWidth < SmallScreen) {
-                    setCardCount(calculateCardCount().init)
-                }
-            }
-            window.addEventListener('resize', calculateCardCount)
-            return () => window.removeEventListener('resize', calculateCardCount)
+            const cardCounter = calculateCardCount();
+            setCardCount(cardCounter.init);
+    
+            const handleResize = () => {
+                const newCardCounter = calculateCardCount();
+                setCardCount(newCardCounter.init);
+            };
+    
+            window.addEventListener('resize', handleResize);
+    
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            };
         }
-    }, [pathname, movies])
-
+    }, [pathname, movies]);
+    
+    function calculateCardCount() {
+        const cardCounter = { init: InitMoreMaxScreen, step: StepMaxScreen };
+    
+        if (window.innerWidth < MaxScreen) {
+            if (window.innerWidth < MediumScreen) {
+                if (window.innerWidth < SmallScreen) {
+                    cardCounter.init = InitSmallScreen;
+                    cardCounter.step = StepSmallScreen;
+                } else {
+                    cardCounter.init = InitMediumScreen;
+                    cardCounter.step = StepMediumScreen;
+                }
+            } else {
+                cardCounter.init = InitLessMaxScreen;
+            }
+        }
+        return cardCounter;
+    }    
 
     const handleShowMore = () => {
         setCardCount(cardCount + calculateCardCount().step);
     };
+
+    console.log('movies:', movies);
+    console.log('savedMovies:', savedMovies);
 
     return (
         <section className='cardlist'>
@@ -100,7 +100,9 @@ export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies
                                         </span>
                 }
             </ul>
-            {pathname === '/movies' && <button type='button' className={`cardlist__showmore ${cardCount >= movies.length && 'cardlist__showmore_hidden'}`} onClick={handleShowMore}>Ёще</button>}
+            {pathname === '/movies' && <button type='button'
+                className={`cardlist__showmore ${cardCount >= movies.length && 'cardlist__showmore_hidden'}`}
+                onClick={handleShowMore}>Ёще</button>}
         </section>
     )
 }

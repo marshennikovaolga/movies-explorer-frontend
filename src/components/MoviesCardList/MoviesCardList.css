@@ -18,6 +18,10 @@
       width: 360px;
   }
 
+  .cardlist__span {
+    margin: 0 auto;
+  }
+
   .cardlist__serch-error {
       text-align: center;
   }

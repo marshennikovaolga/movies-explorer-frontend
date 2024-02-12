@@ -13,6 +13,7 @@ export default function Header({ loggedIn }) {
     const [isMobile, setIsMobile] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+
     const { pathname } = useLocation();
 
     useEffect(() => {
@@ -31,7 +32,7 @@ export default function Header({ loggedIn }) {
 
     return (
         <header className='header'>
-            {loggedIn && pathname === '/' ? (
+            {loggedIn ? (
                 <>
                     <Link to={'/'}>
                         <img alt='logo icon' className='header__icon' src={logo} />
@@ -58,7 +59,7 @@ export default function Header({ loggedIn }) {
                 </>
             ) : (
                 <>
-                    {isMobile ? (
+                    {loggedIn && isMobile ? (
                         <>
                             <NavLink to={'/'}>
                                 <img alt='logo icon' className='header__icon' src={logo} />
@@ -85,21 +86,25 @@ export default function Header({ loggedIn }) {
                                 )}
                             </div>
                         </>) : (
-                            <>
-                                <NavLink to={'/'}>
-                                    <img alt='logo icon' className='header__icon' src={logo} />
-                                </NavLink>
-                                <nav>
-                                    <ul className='header__nav'>
-                                        <li>
-                                            <Link to={'/signup'} className="header__signup">Регистрация</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={'/signin'} className="header__signin">Войти</Link>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </>
+                        <>
+                            {!loggedIn && pathname === '/' &&
+                                <>
+                                    <NavLink to={'/'}>
+                                        <img alt='logo icon' className='header__icon' src={logo} />
+                                    </NavLink>
+                                    <nav>
+                                        <ul className='header__nav'>
+                                            <li>
+                                                <Link to={'/signup'} className="header__signup">Регистрация</Link>
+                                            </li>
+                                            <li>
+                                                <Link to={'/signin'} className="header__signin">Войти</Link>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </>
+                            }
+                        </>
                     )}
                 </>
             )}

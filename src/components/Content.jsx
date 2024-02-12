@@ -1,12 +1,12 @@
 import Header from "./Header/Header"
 import Footer from "./Footer/Footer"
 
-export default function Content({ loggedIn, children, logOut }) {
+export default function Content({ loggedIn, children }) {
     return (
         <>
             <Header loggedIn={loggedIn} />
             {children}
-            <Footer logOut={logOut} />
+            <Footer/>
         </>
     );
 }
