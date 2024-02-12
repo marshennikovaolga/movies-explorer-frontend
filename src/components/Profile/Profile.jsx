@@ -8,7 +8,10 @@ import { useContext } from 'react'
 
 export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
     const currentUser = useContext(CurrentUserContext);
-    const { values, error, isInputValid, isValidButton, handleChange, reset } = useFormValidation()
+    const { values, error, isInputValid, isValidButton, handleChange, reset } = useFormValidation({
+        name: currentUser.name || '',
+        email: currentUser.email || ''
+    });
 
     function handleSubmit(evt) {
         evt.preventDefault();
