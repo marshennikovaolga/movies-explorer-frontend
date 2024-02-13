@@ -2,13 +2,14 @@ import './SearchForm.css'
 import useFormValidation from '../../hooks/useFormValidation';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import { useLocation } from 'react-router-dom'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function SearchForm(
-  {movies, filter, initialSearch, savedMovies, isChecked, setIsChecked, searchMovies }) {
+  { movies, filter, initialSearch, savedMovies, isChecked, setIsChecked, searchMovies }) {
 
-  const{ pathname } = useLocation();
+  const { pathname } = useLocation();
   const { values, error, handleChange, reset } = useFormValidation()
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     if (pathname === '/saved-movies' && (!savedMovies || savedMovies.length === 0)) {
@@ -20,10 +21,11 @@ export default function SearchForm(
 
   function onSubmit(evt) {
     evt.preventDefault();
-    if (evt.target.search.value) {
+    if (evt.target.search.value.trim() !== '') {
       searchMovies(evt.target.search.value);
+      setErrorMessage('');
     } else {
-      console.log('фильм не найден');
+      setErrorMessage('Нужно ввести ключевое слово');
     }
   }
 
@@ -40,7 +42,8 @@ export default function SearchForm(
   return (
     <section className="search">
       <div className="search__container">
-        <form className="search__form" onSubmit={onSubmit}>
+      {errorMessage && <p className='search__error_message'>{errorMessage}</p>}
+        <form className="search__form" noValidate onSubmit={onSubmit}>
           <input
             required
             className='search__input'

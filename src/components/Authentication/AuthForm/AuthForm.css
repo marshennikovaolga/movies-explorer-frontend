@@ -74,7 +74,14 @@
     transition: opacity 0.3s ease;
 }
 
-/* .authform__submit_disabled {} */
+.authform__submit_disabled {
+    opacity: 0.5;
+}
+
+.authform__submit_disabled:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}
 
 @media screen and (max-width: 768px) {
     .authform {
@@ -83,7 +90,6 @@
 }
 
 @media screen and (max-width: 525px) {
-
     .authform {
         width: 80%;
     }

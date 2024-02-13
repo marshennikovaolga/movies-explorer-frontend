@@ -1,7 +1,7 @@
 import './MoviesCard.css';
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-
+import { Link } from 'react-router-dom';
 
 export default function MoviesCard({ data, savedMovies, addMovie, onDelete }) {
     const { pathname } = useLocation();
@@ -32,11 +32,13 @@ export default function MoviesCard({ data, savedMovies, addMovie, onDelete }) {
         <article className='card'>
             <div className='card__container'>
                 <div className='card__picture'>
-                    <img
+                <Link to={data.trailerLink} target='_blank'>
+                <img
                         src={pathname === '/movies' ? `https://api.nomoreparties.co${data.image.url}` : data.image}
                         alt={data.name}
                         className='card__image'
                     />
+                </Link>
                     {pathname === '/movies' ?
                         <button type='button'
                             className={`card__button card__button_save

@@ -13,6 +13,13 @@
     padding-bottom: 123px;
 }
 
+.profile_success {
+  font-size: 16px;
+  color: #91d4a2;
+  margin-bottom: 50px;
+  margin-top: 0;
+}
+
 .profile__button {
     text-decoration: none;
     border: none;
@@ -56,6 +63,17 @@
 .profile__edit,
 .profile__button {
     cursor: pointer;
+}
+
+.profile__button_disabled {
+  color: #a4a2a2;
+}
+
+.profile__error-edit {
+  color: #EE3465;
+  margin-top: 10px;
+  width: 350px;
+  text-align: center;
 }
 
 @media screen and (max-width: 768px) {

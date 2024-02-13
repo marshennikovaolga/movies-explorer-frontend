@@ -54,3 +54,11 @@
 .search__submit:hover {
     opacity: 0.7;
 }
+
+.search__error_message {
+    color:#EE3465;
+    font-size: 12px;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+

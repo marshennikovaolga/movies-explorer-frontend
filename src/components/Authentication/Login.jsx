@@ -1,8 +1,7 @@
 import AuthForm from './AuthForm/AuthForm'
-import { Link } from 'react-router-dom'
 
 export default function Login({ handleLogin }) {
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -14,7 +13,6 @@ export default function Login({ handleLogin }) {
   return (
     <AuthForm
       type="login"
-      loginLink={<Link to='/signup'>Регистрация</Link>}
       onSubmit={handleSubmit}
     />
   );

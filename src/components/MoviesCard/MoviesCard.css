@@ -59,10 +59,16 @@
     background-repeat: no-repeat;
     width: 21px;
     height: 21px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.card__container:hover .card__button_delete {
+    opacity: 1;
 }
 
 .card__button:hover {
-    opacity: 0.7;
+    opacity: 0.6;
     cursor: pointer;
 }
 

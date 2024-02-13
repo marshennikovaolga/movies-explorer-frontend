@@ -3,11 +3,13 @@ import InputForm from '../InputForm/InputForm'
 import logo from '../../../images/green-logo.svg'
 import useFormValidation from '../../../hooks/useFormValidation'
 import { emailRegex } from '../../../utils/constants'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
-export default function AuthForm({ type, loginLink, onSubmit }) {
+export default function AuthForm({ type, onSubmit }) {
 
     const { values, error, isInputValid, isValidButton, handleChange } = useFormValidation()
+
+    const loginLink = type === 'login' ? <Link to='/signup'>Регистрация</Link> : <Link to='/signin'>Войти</Link>;
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -42,7 +44,6 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             title="Пароль"
                             placeholder="введите пароль"
                             name="password"
-                            // pattern={passwordRegex}
                             value={values.password || ''}
                             isInputValid={isInputValid.password}
                             type="password"
@@ -86,7 +87,6 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                             title="Пароль"
                             placeholder="введите пароль"
                             name="password"
-                            // pattern={passwordRegex}
                             value={values.password || ''}
                             isInputValid={isInputValid.password}
                             type="password"
@@ -99,7 +99,7 @@ export default function AuthForm({ type, loginLink, onSubmit }) {
                 )}
                 <button
                     type='submit'
-                    className='authform__submit'
+                    className={`authform__submit ${!isValidButton ? 'authform__submit_disabled' : ''}`}
                     aria-label={type === 'login' ? 'Войти' : 'Зарегистрироваться'}
                     disabled={!isValidButton}
                 >
