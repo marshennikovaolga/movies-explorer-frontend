@@ -60,6 +60,7 @@ export default function SearchForm(
         </form>
         <FilterCheckbox
           isChecked={isChecked}
+          setIsChecked={setIsChecked}
           showShorts={showShorts}
           initialSearch={initialSearch}
         />

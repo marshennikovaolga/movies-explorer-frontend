@@ -10,6 +10,7 @@ export default function FilterCheckbox({ isChecked, showShorts, initialSearch })
       onChange={() => showShorts()}
       className='checkbox__search'
         disabled={initialSearch}
+        checked={isChecked}
        />
        <img
         alt='поиск короткометражек'
