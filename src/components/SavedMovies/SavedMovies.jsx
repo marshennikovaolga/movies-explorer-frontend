@@ -1,51 +1,24 @@
-import SearchForm from "../SearchForm/SearchForm";
+
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import { useState, useEffect, useCallback } from "react";
+import SearchForm from '../SearchForm/SearchForm';
+import { useState, useCallback, useEffect } from 'react';
 
-export default function SavedMovies( {savedMovies, onDelete} ) {
-  const [filteredMovies, setFilteredMovies] = useState(savedMovies)
-  const [isChecked, setIsChecked] = useState(false)
-  const [searchedMovie, setSearchedMovie] = useState('')
-  const [firstSearch, setFirstSearch] = useState(true)
-
-  const filter = useCallback((search, isChecked, movies) => {
-    setSearchedMovie(search)
-    setFilteredMovies(movies.filter((movie) => {
-      const searchName = movie.nameRU.toLowerCase().includes(search.toLowerCase())
-      return isChecked ? (searchName && movie.duration <= 40) : searchName
-    }))
-  }, [])
-
-function searchMovies(search) {
-  setFirstSearch(false)
-  filter(search, isChecked, savedMovies)
-}
-
-useEffect((savedMovies) => {
-  if (savedMovies.length === 0) {
-    setFirstSearch(true)
-  } else {
-    setFirstSearch(false)
-  }
-  filter(searchedMovie, isChecked, savedMovies)
-}, [filter, savedMovies, isChecked, searchedMovie])
-
+export default function SavedMovies({ 
+  savedMovies, onDelete, 
+}) {
+  
   return (
     <>
       <SearchForm
-        isChecked={isChecked}
-        searchMovies={searchMovies}
-        setSearchedMovie={setSearchedMovie}
-        movies={savedMovies}
-        filter={filter}
-        setIsChecked={setIsChecked}
-        searchedMovies={searchMovies}
-         />
+
+      />
       <MoviesCardList
-      firstSearch={firstSearch}
-      movies={filteredMovies}
-      onDelete={onDelete}
+        movies={savedMovies}
+        onDelete={onDelete}
+        savedMovies={savedMovies}
+
+        
       />
     </>
-  )
+  );
 }

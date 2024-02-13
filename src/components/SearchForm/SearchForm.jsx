@@ -5,23 +5,23 @@ import { useLocation } from 'react-router-dom'
 import { useEffect } from 'react';
 
 export default function SearchForm(
-  {movies, filter, initialSearch, savedMovies, isChecked, setIsChecked, searchedMovies }) {
+  {movies, filter, initialSearch, savedMovies, isChecked, setIsChecked, searchMovies }) {
 
   const{ pathname } = useLocation();
   const { values, error, handleChange, reset } = useFormValidation()
 
   useEffect(() => {
-    if ((pathname === '/saved-movies' && savedMovies.length === 0)) {
+    if (pathname === '/saved-movies' && (!savedMovies || savedMovies.length === 0)) {
       reset({ search: '' })
     } else {
-      reset({ search: searchedMovies })
+      reset({ search: searchMovies })
     }
-  }, [searchedMovies, reset, pathname, savedMovies])
+  }, [searchMovies, reset, pathname, savedMovies])
 
   function onSubmit(evt) {
     evt.preventDefault();
     if (evt.target.search.value) {
-      searchedMovies(evt.target.search.value);
+      searchMovies(evt.target.search.value);
     } else {
       console.log('фильм не найден');
     }
@@ -40,9 +40,7 @@ export default function SearchForm(
   return (
     <section className="search">
       <div className="search__container">
-        <form className="search__form"
-        onSubmit={onSubmit}
-        >
+        <form className="search__form" onSubmit={onSubmit}>
           <input
             required
             className='search__input'
@@ -53,18 +51,19 @@ export default function SearchForm(
             onChange={handleChange}
             error={error.text}
             autoComplete="off"
-            hasError={true}
-            disabled={savedMovies ? (savedMovies.length === 0 && true) : false}
+            disabled={savedMovies && savedMovies.length === 0}
           />
-            <button type='submit'
-            className={`search__submit ${savedMovies ? (pathname === '/saved-movies' && savedMovies.length === 0)
-            && 'search__submit_disabled' : ''}`}></button>
+          <button
+            type='submit'
+            className={`search__submit ${savedMovies ? (pathname === '/saved-movies' && savedMovies.length === 0) && 'search__submit_disabled' : ''}`}
+          ></button>
         </form>
         <FilterCheckbox
-        isChecked={isChecked} showShorts={showShorts} initialSearch={initialSearch}
+          isChecked={isChecked}
+          showShorts={showShorts}
+          initialSearch={initialSearch}
         />
       </div>
     </section>
   );
 }
-

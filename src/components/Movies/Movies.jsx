@@ -21,7 +21,6 @@ export default function Movies({ addMovie, savedMovies }) {
     setFilteredMovies(movies.filter((movie) => {
       const searchName = typeof search === 'string' && movie.nameRU.toLowerCase().includes(search.toLowerCase());
 
-      // const searchName = movie.nameRU.toLowerCase().includes(search.toLowerCase())
       return isChecked ? (searchName && movie.duration <= 40) : searchName
     }))
   }, [])

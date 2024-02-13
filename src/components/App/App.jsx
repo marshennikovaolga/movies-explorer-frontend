@@ -103,6 +103,7 @@ export default function App() {
             .then(res => {
                 setCurrentUser(res)
                 setIsEdit(false)
+                console.log('Обновленный currentUser:', res);
             })
             .catch((err) => {
                 console.error(`Ошибка при редактировании данных пользователя ${err}`)
@@ -125,11 +126,11 @@ export default function App() {
 
     function toggleMovie(data) {
         const isAdded = savedMovies.some(element => data.id === element.movieId)
-        const seachMovie = savedMovies.filter((movie) => {
+        const searchMovie = savedMovies.filter((movie) => {
             return movie.movieId === data.id
         })
         if (isAdded) {
-            deleteMovie(seachMovie[0]._id)
+            deleteMovie(searchMovie[0]._id)
         } else {
             UserApi.addMovie(data, localStorage.jwt)
                 .then(res => {
