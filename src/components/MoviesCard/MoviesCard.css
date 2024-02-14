@@ -128,4 +128,8 @@
         width: 300px;
         height: 168px;
     }
+
+    .card__button_delete {
+        opacity: 1;
+    }
 }
