@@ -1,33 +1,31 @@
 const emailRegex = /^\S+@\S+\.\S+$/
-// const passwordRegex = /^[a-zA-Z0-9]{4,30}$/
 
-const MaxScreen = 1280
-const MediumScreen = 768
-const SmallScreen = 500
+const MAX_SCREEN_WIDTH = 1280;
+const MEDIUM_SCREEN_WIDTH = 768;
+const SMALL_SCREEN_WIDTH = 500;
 
-const InitMoreMaxScreen = 16
-const InitLessMaxScreen = 12
-const InitMediumScreen = 8
-const InitSmallScreen = 5
+const INIT_MORE_MAX_SCREEN = 16;
+const INIT_LESS_MAX_SCREEN = 12;
+const INIT_MEDIUM_SCREEN = 8;
+const INIT_SMALL_SCREEN = 5;
 
-const StepMaxScreen = 4
-const StepMediumScreen = 3
-const StepSmallScreen = 2
+const STEP_MAX_SCREEN = 4;
+const STEP_MEDIUM_SCREEN = 3;
+const STEP_SMALL_SCREEN = 2;
 
 export {
     emailRegex,
-    // passwordRegex,
 
-    MaxScreen,
-    MediumScreen,
-    SmallScreen,
+    MAX_SCREEN_WIDTH,
+    MEDIUM_SCREEN_WIDTH,
+    SMALL_SCREEN_WIDTH,
 
-    InitMoreMaxScreen,
-    InitLessMaxScreen,
-    InitMediumScreen,
-    InitSmallScreen,
+    INIT_MORE_MAX_SCREEN,
+    INIT_LESS_MAX_SCREEN,
+    INIT_MEDIUM_SCREEN,
+    INIT_SMALL_SCREEN,
 
-    StepMaxScreen,
-    StepMediumScreen,
-    StepSmallScreen
+    STEP_MAX_SCREEN,
+    STEP_MEDIUM_SCREEN,
+    STEP_SMALL_SCREEN
 }

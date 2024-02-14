@@ -4,7 +4,7 @@ import logo from '../../../images/green-logo.svg'
 import useFormValidation from '../../../hooks/useFormValidation'
 import { emailRegex } from '../../../utils/constants'
 import { Link, NavLink } from 'react-router-dom'
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useState } from 'react'
 import ErrorContext from '../../../contexts/ErrorContext'
 
 export default function AuthForm({ type, onSubmit, errorMessage }) {
@@ -18,11 +18,14 @@ export default function AuthForm({ type, onSubmit, errorMessage }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(e);
-        setFormSubmitted(true)
-        setErrorVisible(true)
-        setTimeout(() => {
-            setErrorVisible(false);
-        }, 2000);
+        setFormSubmitted(true);
+
+        if (contextError || errorMessage) {
+            setErrorVisible(true);
+            setTimeout(() => {
+                setErrorVisible(false);
+            }, 2000);
+        }
     };
 
     return (

@@ -4,10 +4,10 @@ import MoviesCard from '../MoviesCard/MoviesCard'
 import Preloader from '../Preloader/Preloader'
 import { useLocation } from 'react-router-dom'
 import {
-    MaxScreen, MediumScreen, SmallScreen,
-    InitMoreMaxScreen, InitLessMaxScreen, InitMediumScreen,
-    InitSmallScreen, StepMaxScreen, StepMediumScreen, StepSmallScreen
-} from '../../utils/constants'
+    MAX_SCREEN_WIDTH, MEDIUM_SCREEN_WIDTH, SMALL_SCREEN_WIDTH,
+    INIT_MORE_MAX_SCREEN, INIT_LESS_MAX_SCREEN, INIT_MEDIUM_SCREEN,
+    INIT_SMALL_SCREEN, STEP_MAX_SCREEN, STEP_MEDIUM_SCREEN, STEP_SMALL_SCREEN
+} from '../../utils/constants';
 
 export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies, isLoading, globalError, initialSearch }) {
     const { pathname } = useLocation()
@@ -33,23 +33,23 @@ export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies
     }, [pathname, movies]);
     
     function calculateCardCount() {
-        const cardCounter = { init: InitMoreMaxScreen, step: StepMaxScreen };
+        const cardCounter = { init: INIT_MORE_MAX_SCREEN, step: STEP_MAX_SCREEN };
     
-        if (window.innerWidth < MaxScreen) {
-            if (window.innerWidth < MediumScreen) {
-                if (window.innerWidth < SmallScreen) {
-                    cardCounter.init = InitSmallScreen;
-                    cardCounter.step = StepSmallScreen;
+        if (window.innerWidth < MAX_SCREEN_WIDTH) {
+            if (window.innerWidth < MEDIUM_SCREEN_WIDTH) {
+                if (window.innerWidth < SMALL_SCREEN_WIDTH) {
+                    cardCounter.init = INIT_SMALL_SCREEN;
+                    cardCounter.step = STEP_SMALL_SCREEN;
                 } else {
-                    cardCounter.init = InitMediumScreen;
-                    cardCounter.step = StepMediumScreen;
+                    cardCounter.init = INIT_MEDIUM_SCREEN;
+                    cardCounter.step = STEP_MEDIUM_SCREEN;
                 }
             } else {
-                cardCounter.init = InitLessMaxScreen;
+                cardCounter.init = INIT_LESS_MAX_SCREEN;
             }
         }
         return cardCounter;
-    }    
+    }  
 
     const handleShowMore = () => {
         setCardCount(cardCount + calculateCardCount().step);

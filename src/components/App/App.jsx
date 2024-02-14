@@ -33,6 +33,12 @@ export default function App() {
         }
     }, [])
 
+    const logOut = () => {
+        localStorage.clear();
+        setLoggedIn(false);
+        navigate('/');
+    };
+    
     useEffect(() => {
         if (localStorage.jwt) {
             UserApi.getUser(localStorage.jwt)
@@ -88,6 +94,7 @@ export default function App() {
             })
     }
 
+
     function handleRegister(name, email, password) {
         console.log("данные для регистрации:", { name, email, password });
         UserApi.register(name, email, password)
@@ -110,12 +117,6 @@ export default function App() {
             .catch((err) => {
                 console.error(`Ошибка при редактировании данных пользователя ${err}`)
             })
-    };
-
-    const logOut = () => {
-        localStorage.clear();
-        setLoggedIn(false);
-        navigate('/');
     };
 
     function deleteMovie(deleteMovieId) {
