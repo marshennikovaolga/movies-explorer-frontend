@@ -22,6 +22,7 @@ export default function App() {
     const [loggedIn, setLoggedIn] = useState(false)
     const [savedMovies, setSavedMovies] = useState([])
     const [isEdit, setIsEdit] = useState(false)
+    // const [userDetails, setUserDetails] = useState({})
 
     console.log(loggedIn, 'really logged in')
 

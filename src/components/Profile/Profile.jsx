@@ -5,16 +5,17 @@ import { emailRegex } from '../../utils/constants';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import { useState, useEffect, useContext } from 'react';
 
-export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
+function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
     const currentUser = useContext(CurrentUserContext);
-    const { error: validationError, values, reset, isInputValid, isValidButton, handleChange } = useFormValidation({ name: currentUser.name || '', email: currentUser.email || '' });
+    const { error: validationError, values, reset, isInputValid, isValidButton, handleChange }
+    = useFormValidation({ name: currentUser.name || '', email: currentUser.email || '' });
     const [updateSuccessMessage, setUpdateSuccessMessage] = useState('');
-    const [editedUserData, setEditedUserData] = useState({ name: '', email: '' });
     const [showCurrentDataError, setShowCurrentDataError] = useState(false);
+    const [isDataChanged, setIsDataChanged] = useState(false);
 
     useEffect(() => {
-        setEditedUserData({ name: currentUser.name || '', email: currentUser.email || '' });
-    }, [currentUser]);
+        setIsDataChanged(values.name !== currentUser.name || values.email !== currentUser.email);
+    }, [values, currentUser]);
 
     useEffect(() => {
         setShowCurrentDataError(false);
@@ -22,17 +23,14 @@ export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }
 
     function handleSubmit(evt) {
         evt.preventDefault();
-        if (values.name !== editedUserData.name || values.email !== editedUserData.email) {
+        if (isDataChanged) {
             updateUserProfile(values.name, values.email);
             setUpdateSuccessMessage('Данные профиля успешно обновлены');
         } else {
             setShowCurrentDataError(true);
-            setTimeout(() => {
-                setShowCurrentDataError(false);
-            }, 3000); 
-         }
-         setIsEdit(false);
-     }
+        }
+        setIsEdit(false);
+    }
 
     function handleEditProfile() {
         setIsEdit(true);
@@ -128,3 +126,6 @@ export default function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }
         </form>
     );
 }
+
+export default Profile;
+

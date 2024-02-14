@@ -67,6 +67,7 @@
 
 .profile__button_disabled {
   color: #a4a2a2;
+  cursor: auto;
 }
 
 .profile__error-edit {
