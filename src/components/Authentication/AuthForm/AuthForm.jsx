@@ -4,16 +4,25 @@ import logo from '../../../images/green-logo.svg'
 import useFormValidation from '../../../hooks/useFormValidation'
 import { emailRegex } from '../../../utils/constants'
 import { Link, NavLink } from 'react-router-dom'
+import { useContext, useState, useEffect } from 'react'
+import ErrorContext from '../../../contexts/ErrorContext'
 
-export default function AuthForm({ type, onSubmit }) {
+export default function AuthForm({ type, onSubmit, errorMessage }) {
 
+    const { error: contextError } = useContext(ErrorContext)
     const { values, error, isInputValid, isValidButton, handleChange } = useFormValidation()
-
-    const loginLink = type === 'login' ? <Link to='/signup'>Регистрация</Link> : <Link to='/signin'>Войти</Link>;
+    const [formSubmitted, setFormSubmitted] = useState(false)
+    const [errorVisible, setErrorVisible] = useState(false)
+    const loginLink = type === 'login' ? <Link to='/signup'>Регистрация</Link> : <Link to='/signin'>Войти</Link>
 
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(e);
+        setFormSubmitted(true)
+        setErrorVisible(true)
+        setTimeout(() => {
+            setErrorVisible(false);
+        }, 2000);
     };
 
     return (
@@ -97,6 +106,8 @@ export default function AuthForm({ type, onSubmit }) {
                         />
                     </div>
                 )}
+                {(formSubmitted && (contextError || errorMessage) && errorVisible)
+                    && <p className='authform__error'>{contextError || errorMessage}</p>}
                 <button
                     type='submit'
                     className={`authform__submit ${!isValidButton ? 'authform__submit_disabled' : ''}`}

@@ -12,8 +12,10 @@ import Login from '../Authentication/Login.jsx'
 import Profile from '../Profile/Profile.jsx'
 import Movies from '../Movies/Movies.jsx'
 import SavedMovies from '../SavedMovies/SavedMovies.jsx'
+import ErrorContext from '../../contexts/ErrorContext.js'
 
 export default function App() {
+    const [error, setError] = useState(null);
     const navigate = useNavigate()
     const [currentUser, setCurrentUser] = useState({})
     const [isCheckToken, setIsCheckToken] = useState(true)
@@ -146,6 +148,7 @@ export default function App() {
         <>
             {isCheckToken ? <Preloader /> :
                 <CurrentUserContext.Provider value={currentUser}>
+                   <ErrorContext.Provider value={{ error, setError }}>
                     <Routes>
                         <Route path="/signin" element={
                             loggedIn ? <Navigate to='/movies' replace /> :
@@ -196,6 +199,7 @@ export default function App() {
                             </Content>} />
                         <Route path='*' element={<Main name='notfound' />} />
                     </Routes>
+                    </ErrorContext.Provider>
                 </CurrentUserContext.Provider>
             }
         </>

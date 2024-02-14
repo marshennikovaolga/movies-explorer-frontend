@@ -1,7 +1,9 @@
-import React from 'react';
-import AuthForm from './AuthForm/AuthForm';
+import { useContext } from 'react'
+import AuthForm from './AuthForm/AuthForm'
+import ErrorContext from '../../contexts/ErrorContext'
 
 export default function Register({ handleRegister }) {
+  const { error: contextError } = useContext(ErrorContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,10 +14,13 @@ export default function Register({ handleRegister }) {
     handleRegister(name, email, password);
   };
 
+  const errorMessage = 'Произошла ошибка. Попробуйте еще раз.';
+
   return (
     <AuthForm
       type="register"
       onSubmit={handleSubmit}
+      errorMessage={contextError || errorMessage}
     />
   );
 }

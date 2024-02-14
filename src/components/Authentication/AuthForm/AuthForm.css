@@ -83,6 +83,10 @@
     opacity: 0.5;
 }
 
+.authform__error {
+    color: #EE3465;
+}
+
 @media screen and (max-width: 768px) {
     .authform {
         width: 50%;
