@@ -22,7 +22,6 @@ export default function App() {
     const [loggedIn, setLoggedIn] = useState(false)
     const [savedMovies, setSavedMovies] = useState([])
     const [isEdit, setIsEdit] = useState(false)
-    // const [userDetails, setUserDetails] = useState({})
 
     console.log(loggedIn, 'really logged in')
 
@@ -83,30 +82,38 @@ export default function App() {
                     localStorage.setItem('jwt', token);
                     console.log('Токен после входа:', token);
                     setLoggedIn(true);
-                    console.log('переход на /movies');
-                    navigate('/movies');
+                    if (!error) {
+                        console.log('переход на /movies');
+                        navigate('/movies');
+                    }
                     window.scrollTo(0, 0);
+                    setError(null);
                 } else {
                     console.error('Ошибка проверки токена');
                 }
             })
             .catch((err) => {
                 console.error(`Ошибка авторизации ${err}`);
+                setError('Что-то пошло не так... Попробуйте ещё раз. ');
             })
     }
-
 
     function handleRegister(name, email, password) {
         console.log("данные для регистрации:", { name, email, password });
         UserApi.register(name, email, password)
             .then(() => {
                 setLoggedIn(true);
-                handleLogin(email, password)
+                if (!error) {
+                    handleLogin(email, password);
+                }
+                setError(null);
             })
             .catch((err) => {
-                console.error(`Ошибка при регистации ${err}`)
+                console.error(`Ошибка при регистрации ${err}`)
+                setError('Что-то пошло не так... Попробуйте ещё раз.');
             })
     }
+
 
     function updateUserProfile(name, email) {
         UserApi.setUserInfo(name, email, localStorage.jwt)
@@ -154,7 +161,7 @@ export default function App() {
                     <Routes>
                         <Route path="/signin" element={
                             loggedIn ? <Navigate to='/movies' replace /> :
-                                <Login handleLogin={handleLogin} />} />
+                                <Login handleLogin={handleLogin}  />} />
                         <Route path="/signup" element={
                             loggedIn ? <Navigate to='/movies' replace /> :
                                 <Register handleRegister={handleRegister} />} />
@@ -207,3 +214,40 @@ export default function App() {
         </>
     )
 }
+
+
+
+   // function handleLogin(email, password) {
+    //     UserApi.login(email, password)
+    //         .then(token => {
+    //             if (token) {
+    //                 localStorage.setItem('jwt', token);
+    //                 console.log('Токен после входа:', token);
+    //                 setLoggedIn(true);
+    //                 console.log('переход на /movies');
+    //                 navigate('/movies');
+    //                 window.scrollTo(0, 0);
+    //                 setError(null);
+    //             } else {
+    //                 console.error('Ошибка проверки токена');
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             console.error(`Ошибка авторизации ${err}`);
+    //             setError('Что-то пошло не так... Попробуйте ещё раз. ');
+    //         })
+    // }
+
+    // function handleRegister(name, email, password) {
+    //     console.log("данные для регистрации:", { name, email, password });
+    //     UserApi.register(name, email, password)
+    //         .then(() => {
+    //             setLoggedIn(true);
+    //             handleLogin(email, password)
+    //             setError(null);
+    //         })
+    //         .catch((err) => {
+    //             console.error(`Ошибка при регистации ${err}`)
+    //             setError('Что-то пошло не так... Попробуйте ещё раз.');
+    //         })
+    // }

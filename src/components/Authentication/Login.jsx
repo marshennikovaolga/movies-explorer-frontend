@@ -1,9 +1,6 @@
 import AuthForm from './AuthForm/AuthForm'
-import React, { useContext } from 'react'
-import ErrorContext from '../../contexts/ErrorContext'
 
 export default function Login({ handleLogin }) {
-  const { error: contextError } = useContext(ErrorContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,13 +14,10 @@ export default function Login({ handleLogin }) {
     }
   };
 
-  const errorMessage = 'Произошла ошибка. Попробуйте еще раз.';
-
   return (
-      <AuthForm
-          type="login"
-          onSubmit={handleSubmit}
-          errorMessage={contextError || errorMessage} 
-      />
+    <AuthForm
+      type="login"
+      onSubmit={handleSubmit}
+    />
   );
 }

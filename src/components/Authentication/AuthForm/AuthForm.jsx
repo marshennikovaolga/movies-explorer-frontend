@@ -4,28 +4,31 @@ import logo from '../../../images/green-logo.svg'
 import useFormValidation from '../../../hooks/useFormValidation'
 import { emailRegex } from '../../../utils/constants'
 import { Link, NavLink } from 'react-router-dom'
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import ErrorContext from '../../../contexts/ErrorContext'
 
-export default function AuthForm({ type, onSubmit, errorMessage }) {
+export default function AuthForm({ type, onSubmit }) {
 
     const { error: contextError } = useContext(ErrorContext)
     const { values, error, isInputValid, isValidButton, handleChange } = useFormValidation()
     const [formSubmitted, setFormSubmitted] = useState(false)
-    const [errorVisible, setErrorVisible] = useState(false)
     const loginLink = type === 'login' ? <Link to='/signup'>Регистрация</Link> : <Link to='/signin'>Войти</Link>
+    const [errorVisible, setErrorVisible] = useState(false);
+
+    useEffect(() => {
+        if (contextError && formSubmitted) {
+            setErrorVisible(true);
+            const timer = setTimeout(() => {
+                setErrorVisible(false);
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [contextError, formSubmitted]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(e);
         setFormSubmitted(true);
-
-        if (contextError || errorMessage) {
-            setErrorVisible(true);
-            setTimeout(() => {
-                setErrorVisible(false);
-            }, 2000);
-        }
     };
 
     return (
@@ -109,8 +112,9 @@ export default function AuthForm({ type, onSubmit, errorMessage }) {
                         />
                     </div>
                 )}
-                {(formSubmitted && (contextError || errorMessage) && errorVisible)
-                    && <p className='authform__error'>{contextError || errorMessage}</p>}
+                {(formSubmitted && contextError) && (
+                <p className='authform__error'>{contextError}</p>
+            )}
                 <button
                     type='submit'
                     className={`authform__submit ${!isValidButton ? 'authform__submit_disabled' : ''}`}
