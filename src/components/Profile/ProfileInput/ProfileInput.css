@@ -22,24 +22,22 @@
   color: #fff;
 }
 
-/* .profileinput__error {
-  position: absolute;
-  color: #EE3465;
-  font-size: 14px;
-  top: 15em;
-  margin: auto;
-} */
-
 .profileinput__error {
   position: absolute;
   color: #EE3465;
   font-size: 14px;
-  top: 50%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: 382px;
 }
 
+@media screen and (max-width: 760px) {
+  .profileinput__error {
+    top: 70%;
+    max-width: 100%;
+  }
+}
 
   @media screen and (max-width: 525px) {
     .profileinput__label {
@@ -49,4 +47,10 @@
     .profileinput__field {
       margin-left: 50px;
     }
+
+    .profileinput__error {
+      font-size: 12px;
+      top: 75%;
+    }
+
   }
