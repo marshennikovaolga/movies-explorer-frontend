@@ -5,7 +5,9 @@ import Preloader from '../Preloader/Preloader'
 import { useLocation } from 'react-router-dom'
 import {
     MAX_SCREEN_WIDTH, MEDIUM_SCREEN_WIDTH, SMALL_SCREEN_WIDTH,
-    INIT_MORE_MAX_SCREEN, INIT_LESS_MAX_SCREEN, INIT_MEDIUM_SCREEN,
+    INIT_MORE_MAX_SCREEN,
+    // INIT_LESS_MAX_SCREEN,
+    INIT_MEDIUM_SCREEN,
     INIT_SMALL_SCREEN, STEP_MAX_SCREEN, STEP_MEDIUM_SCREEN, STEP_SMALL_SCREEN
 } from '../../utils/constants';
 
@@ -44,8 +46,9 @@ export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies
                     cardCounter.init = INIT_MEDIUM_SCREEN;
                     cardCounter.step = STEP_MEDIUM_SCREEN;
                 }
-            } else {
-                cardCounter.init = INIT_LESS_MAX_SCREEN;
+            }
+            else {
+                cardCounter.init = INIT_MORE_MAX_SCREEN;
             }
         }
         return cardCounter;
