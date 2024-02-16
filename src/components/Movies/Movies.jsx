@@ -24,27 +24,26 @@ export default function Movies({ addMovie, savedMovies }) {
     }));
   }, []);
 
+
   useEffect(() => {
-    console.log('search:', searchedMovie);
-    console.log('isChecked:', isChecked);
-    
     const storedMovies = localStorage.getItem('allmovies');
     const storedSearch = localStorage.getItem('movie');
     const storedShorts = localStorage.getItem('shorts');
 
     if (storedMovies && storedSearch && storedShorts) {
-      const movies = JSON.parse(storedMovies);
-      const search = JSON.parse(storedSearch);
-      const isChecked = JSON.parse(storedShorts);
+        const movies = JSON.parse(storedMovies);
+        const search = JSON.parse(storedSearch);
+        const isChecked = JSON.parse(storedShorts);
 
-      setGlobalError(false);
-      setInitialSearch(false);
-      setSearchedMovie(search);
-      setIsChecked(isChecked);
-      setAllMovies(movies);
-      filter(search, isChecked, movies);
+        setGlobalError(false);
+        setInitialSearch(false);
+        setSearchedMovie(search);
+        setIsChecked(isChecked);
+        setAllMovies(movies);
+        filter(search, isChecked, movies);
     }
-  }, [filter, isChecked, searchedMovie]);
+}, [filter, isChecked, searchedMovie]);
+
 
   function searchMovies(search) {
     if (allMovies.length === 0) {

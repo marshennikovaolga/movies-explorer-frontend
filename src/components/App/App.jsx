@@ -51,11 +51,13 @@ export default function App() {
                     console.error(`Ошибка при загрузке начальных данных ${err}`);
                     setIsCheckToken(false);
                     localStorage.clear();
+                    logOut();
                 });
         } else {
             setLoggedIn(false);
             setIsCheckToken(false);
             localStorage.clear();
+            logOut();
         }
     }, [loggedIn]);
 

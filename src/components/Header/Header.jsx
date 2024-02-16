@@ -5,16 +5,12 @@ import profile from '../../images/profile-button.svg'
 import burger from '../../images/burger-icon.svg'
 import { Link, NavLink, useMatch } from 'react-router-dom'
 import BurgerMenu from '../BurgerMenu/BurgerMenu'
-import { useLocation } from 'react-router-dom'
 
 export default function Header({ loggedIn }) {
     const moviesMatch = useMatch('/movies');
     const savedMoviesMatch = useMatch('/saved-movies');
     const [isMobile, setIsMobile] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-
-    const { pathname } = useLocation();
 
     useEffect(() => {
         const handleResize = () => {
