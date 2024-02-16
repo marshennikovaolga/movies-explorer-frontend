@@ -1,7 +1,7 @@
-import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import SearchForm from "../SearchForm/SearchForm";
-import moviesApi from '../../utils/MoviesApi';
-import { useEffect, useState, useCallback } from 'react';
+import MoviesCardList from "../MoviesCardList/MoviesCardList"
+import SearchForm from "../SearchForm/SearchForm"
+import moviesApi from '../../utils/MoviesApi'
+import { useEffect, useState, useCallback } from 'react'
 
 export default function Movies({ addMovie, savedMovies }) {
 
@@ -84,12 +84,12 @@ export default function Movies({ addMovie, savedMovies }) {
     <>
       <SearchForm
         isChecked={isChecked}
+        setIsChecked={setIsChecked}
         searchMovies={searchMovies}
         setSearchedMovie={setSearchedMovie}
         initialSearch={initialSearch}
         movies={allMovies}
         filter={filter}
-        setIsChecked={setIsChecked}
         searchedMovies={searchMovies}
       />
       <MoviesCardList

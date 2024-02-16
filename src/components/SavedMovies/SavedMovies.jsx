@@ -1,21 +1,21 @@
-import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import SearchForm from '../SearchForm/SearchForm';
-import { useState, useCallback, useEffect } from 'react';
+import MoviesCardList from "../MoviesCardList/MoviesCardList"
+import SearchForm from '../SearchForm/SearchForm'
+import { useState, useCallback, useEffect } from 'react'
 
-export default function SavedMovies({
-  savedMovies, onDelete, isChecked, setIsChecked
-}) {
+export default function SavedMovies({ savedMovies, onDelete }) {
   const [searchedMovies, setSearchedMovies] = useState(savedMovies);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const filter = useCallback((search, isChecked, movies) => {
+    setSearchedMovies(movies.filter((movie) => {
+      const searchName = typeof savedMovies.title === 'string' && savedMovies.title.toLowerCase().includes(savedMovies.title.toLowerCase());
+      return isChecked ? (searchName && movie.duration <= 40) : searchName;
+    }));
+  }, []);
 
   const searchMovies = useCallback((searchQuery) => {
-    const filteredMovies = savedMovies.filter(savedMovie => {
-      const searchName = typeof savedMovie.title === 'string' && savedMovie.title.toLowerCase().includes(savedMovies.title.toLowerCase());
-      return searchName;
-    });
-
-    setSearchedMovies(filteredMovies);
-  }, [savedMovies]);
-
+    filter(searchQuery, isChecked, savedMovies);
+  }, [filter, isChecked, savedMovies]);
 
   useEffect(() => {
     setSearchedMovies(savedMovies);
@@ -25,9 +25,11 @@ export default function SavedMovies({
     <>
       <SearchForm
         searchMovies={searchMovies}
+        movies={savedMovies}
         isChecked={isChecked}
         setIsChecked={setIsChecked}
-        movies={savedMovies}
+        filter={filter}
+        searchedMovies={searchMovies}
       />
       <MoviesCardList
         movies={searchedMovies}

@@ -12,17 +12,22 @@ export default function SearchForm(
   const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
-    if (pathname === '/saved-movies' && (!savedMovies || savedMovies.length === 0)) {
-      reset({ search: '' })
+    const storedSearchData = JSON.parse(localStorage.getItem('searchData'));
+    if (storedSearchData) {
+      reset({ search: storedSearchData.search });
+      setIsChecked(storedSearchData.isChecked);
     } else {
-      reset({ search: searchMovies })
+      reset({ search: initialSearch });
+      setIsChecked(false);
     }
-  }, [searchMovies, reset, pathname, savedMovies])
-
+  }, [reset, initialSearch, setIsChecked]);
+  
   function onSubmit(evt) {
     evt.preventDefault();
-    if (evt.target.search.value.trim() !== '') {
-      searchMovies(evt.target.search.value);
+    const searchValue = evt.target.search.value.trim();
+    if (searchValue !== '') {
+      searchMovies(searchValue);
+      localStorage.setItem('searchData', JSON.stringify({ search: searchValue, isChecked }));
       setErrorMessage('');
     } else {
       setErrorMessage('Нужно ввести ключевое слово');
