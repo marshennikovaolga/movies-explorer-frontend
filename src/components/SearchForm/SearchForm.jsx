@@ -5,11 +5,12 @@ import { useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 
 export default function SearchForm(
-  { movies, filter, initialSearch, savedMovies, isChecked, setIsChecked, searchMovies }) {
+  { movies, filter, initialSearch, isChecked, setIsChecked, searchMovies, savedMovies }) {
 
   const { pathname } = useLocation();
   const { values, error, handleChange, reset } = useFormValidation()
   const [errorMessage, setErrorMessage] = useState('')
+  const [inputEmpty, setInputEmpty] = useState(true);
 
   useEffect(() => {
     const storedSearchData = JSON.parse(localStorage.getItem('searchData'));
@@ -31,6 +32,9 @@ export default function SearchForm(
       setErrorMessage('');
     } else {
       setErrorMessage('Нужно ввести ключевое слово');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 1500);
     }
   }
 
@@ -42,6 +46,12 @@ export default function SearchForm(
       setIsChecked(true)
       filter(values.search, true, movies)
     }
+  }
+
+  function handleInputChange(event) {
+    const inputValue = event.target.value;
+    setInputEmpty(inputValue === ''); 
+    handleChange(event);
   }
 
   return (
@@ -56,14 +66,13 @@ export default function SearchForm(
             name="search"
             type="text"
             value={values.search || ''}
-            onChange={handleChange}
+            onChange={handleInputChange}
             error={error.text}
             autoComplete="off"
-            disabled={savedMovies && savedMovies.length === 0}
           />
           <button
             type='submit'
-            className={`search__submit ${savedMovies ? (pathname === '/saved-movies' && savedMovies.length === 0) && 'search__submit_disabled' : ''}`}
+            className={`search__submit ${inputEmpty ? 'search__submit_inactive' : ''}`}
           ></button>
         </form>
         <FilterCheckbox
