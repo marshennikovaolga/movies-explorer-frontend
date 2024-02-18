@@ -51,7 +51,7 @@ export default function AuthForm({ type, onSubmit }) {
                             pattern={emailRegex}
                             type="email"
                             onChange={handleChange}
-                            isSend={false}
+                            send={false}
                             error={error.email}
                             hasError={true}
                         />
@@ -63,7 +63,7 @@ export default function AuthForm({ type, onSubmit }) {
                             isInputValid={isInputValid.password}
                             type="password"
                             onChange={handleChange}
-                            isSend={false}
+                            send={false}
                             error={error.password}
                             hasError={true}
                         />
@@ -81,7 +81,7 @@ export default function AuthForm({ type, onSubmit }) {
                             minLength="2"
                             maxLength="30"
                             onChange={handleChange}
-                            isSend={false}
+                            send={false}
                             error={error.name}
                             hasError={true}
                         />
@@ -94,7 +94,7 @@ export default function AuthForm({ type, onSubmit }) {
                             pattern={emailRegex}
                             type="email"
                             onChange={handleChange}
-                            isSend={false}
+                            send={false}
                             error={error.email}
                             hasError={true}
                         />
@@ -106,7 +106,7 @@ export default function AuthForm({ type, onSubmit }) {
                             isInputValid={isInputValid.password}
                             type="password"
                             onChange={handleChange}
-                            isSend={false}
+                            send={false}
                             error={error.password}
                             hasError={true}
                         />

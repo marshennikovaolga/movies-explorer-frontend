@@ -7,14 +7,17 @@ import { emailRegex } from '../../utils/constants';
 
 function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
     const currentUser = useContext(CurrentUserContext);
-    const { error: validationError, values, reset, isInputValid, isValidButton, handleChange } = useProfileValidation({ name: currentUser.name || '', email: currentUser.email || '' });
+    const { error: validationError, values, reset, isInputValid, isValidButton, handleChange } =
+    useProfileValidation({ name: currentUser.name || '', email: currentUser.email || '' });
     const [updateSuccessMessage, setUpdateSuccessMessage] = useState('');
     const [initialValues, setInitialValues] = useState({ name: currentUser.name || '', email: currentUser.email || '' });
-    const [isDataChanged, setIsDataChanged] = useState(false);
+    const [isNameChanged, setIsNameChanged] = useState(false);
+    const [isEmailChanged, setIsEmailChanged] = useState(false);
     const [showCurrentDataError, setShowCurrentDataError] = useState(false);
 
     useEffect(() => {
-        setIsDataChanged(values.name !== initialValues.name || values.email !== initialValues.email);
+        setIsNameChanged(values.name !== initialValues.name);
+        setIsEmailChanged(values.email !== initialValues.email);
     }, [values, initialValues]);
 
     useEffect(() => {
@@ -38,7 +41,7 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
     function handleSubmit(evt) {
         evt.preventDefault();
         if (isEdit) {
-            if (values.name !== initialValues.name || values.email !== initialValues.email) {
+            if (isNameChanged || isEmailChanged) {
                 updateUserProfile(values.name, values.email);
                 setUpdateSuccessMessage('Данные профиля успешно обновлены');
             } else {
@@ -48,7 +51,6 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
             setIsEdit(false);
         }
     }
-
 
     useEffect(() => {
         if (updateSuccessMessage) {
@@ -76,7 +78,7 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
                 <p className="profile_success">{updateSuccessMessage}</p>
             )}
             {showCurrentDataError && (
-                <p className="profile_data-error">нет изменений в данных профиля</p>
+                <p className="profile_data-error">вы не внесли изменения в данные профиля</p>
             )}
             <div className='profile__name'>
                 <ProfileInput
@@ -117,8 +119,8 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
                     </button>
                     <button
                         type='submit'
-                        className={`profile__button ${!isValidButton ? 'profile__button_disabled' : ''}`}
-                        disabled={!isValidButton}
+                        className={`profile__button ${(!isValidButton || (!isNameChanged && !isEmailChanged)) ? 'profile__button_disabled' : ''}`}
+                        disabled={!isValidButton || (!isNameChanged && !isEmailChanged)}
                     >
                         Сохранить изменения
                     </button>

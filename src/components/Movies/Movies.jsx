@@ -2,6 +2,7 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import SearchForm from "../SearchForm/SearchForm"
 import moviesApi from '../../utils/MoviesApi'
 import { useEffect, useState, useCallback } from 'react'
+import { SHORT_MOVIE_DURATION } from "../../utils/constants"
 
 export default function Movies({ addMovie, savedMovies }) {
 
@@ -20,7 +21,7 @@ export default function Movies({ addMovie, savedMovies }) {
     localStorage.setItem('allmovies', JSON.stringify(movies)); 
     setFilteredMovies(movies.filter((movie) => {
       const searchName = typeof search === 'string' && movie.nameRU.toLowerCase().includes(search.toLowerCase());
-      return isChecked ? (searchName && movie.duration <= 40) : searchName;
+      return isChecked ? (searchName && movie.duration <= SHORT_MOVIE_DURATION) : searchName;
     }));
   }, []);
 
