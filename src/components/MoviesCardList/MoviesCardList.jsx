@@ -4,9 +4,11 @@ import MoviesCard from '../MoviesCard/MoviesCard'
 import Preloader from '../Preloader/Preloader'
 import { useLocation } from 'react-router-dom'
 import {
-    MAX_SCREEN_WIDTH, MEDIUM_SCREEN_WIDTH, SMALL_SCREEN_WIDTH,
+    MAX_SCREEN_WIDTH, SMALL_SCREEN_WIDTH,
     INIT_MAX_SCREEN, INIT_MEDIUM_SCREEN, INIT_SMALL_SCREEN,
-    STEP_MAX_SCREEN, STEP_MEDIUM_SCREEN, STEP_SMALL_SCREEN
+    STEP_MAX_SCREEN, STEP_SMALL_SCREEN,
+    // STEP_MEDIUM_SCREEN,
+    // MEDIUM_SCREEN_WIDTH,
 } from '../../utils/constants';
 
 export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies, isLoading, globalError, initialSearch }) {
@@ -32,58 +34,27 @@ export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies
         }
     }, [pathname, movies]);
 
-    // function calculateCardCount() {
-    //     let cardCounter = { init: INIT_MAX_SCREEN, step: STEP_MAX_SCREEN };
-
-    //     if (window.innerWidth < MAX_SCREEN_WIDTH) {
-    //         if (window.innerWidth < MEDIUM_SCREEN_WIDTH) {
-    //             if (window.innerWidth < SMALL_SCREEN_WIDTH) {
-    //                 cardCounter.init = INIT_SMALL_SCREEN;
-    //                 cardCounter.step = STEP_SMALL_SCREEN;
-    //             } else {
-    //                 cardCounter.init = INIT_MEDIUM_SCREEN;
-    //                 cardCounter.step = STEP_MEDIUM_SCREEN;
-    //             }
-    //         } else {
-    //             cardCounter.init = INIT_MAX_SCREEN;
-    //             cardCounter.step = STEP_MAX_SCREEN;
-    //         }
-    //     }
-
-    //     if (window.innerWidth >= MEDIUM_SCREEN_WIDTH && window.innerWidth < MAX_SCREEN_WIDTH) {
-    //         cardCounter.init = INIT_MEDIUM_SCREEN;
-    //         cardCounter.step = STEP_MEDIUM_SCREEN;
-    //     }
-
-    //     return cardCounter;
-    // }
-
     function calculateCardCount() {
         let cardCounter = { init: INIT_MAX_SCREEN, step: STEP_MAX_SCREEN };
-    
-        if (window.innerWidth < MAX_SCREEN_WIDTH) {
-            if (window.innerWidth <= SMALL_SCREEN_WIDTH) {
-                cardCounter.init = INIT_SMALL_SCREEN;
-                cardCounter.step = STEP_SMALL_SCREEN;
-            } 
-            else if (window.innerWidth < MEDIUM_SCREEN_WIDTH) {
-                cardCounter.init = INIT_MEDIUM_SCREEN;
-                cardCounter.step = STEP_MEDIUM_SCREEN;
-            } 
-            else {
-                cardCounter.init = INIT_MAX_SCREEN;
-                cardCounter.step = STEP_MAX_SCREEN;
-            }
+        if (window.innerWidth > MAX_SCREEN_WIDTH) {
+            cardCounter.init = INIT_MAX_SCREEN
+            cardCounter.step = STEP_MAX_SCREEN
         }
-    
-        return cardCounter;
+        if (window.innerWidth < MAX_SCREEN_WIDTH) {
+            cardCounter.init = INIT_MEDIUM_SCREEN
+            cardCounter.step = STEP_SMALL_SCREEN
+        }
+        if (window.innerWidth <= SMALL_SCREEN_WIDTH) {
+            cardCounter.init = INIT_SMALL_SCREEN
+            cardCounter.step = STEP_SMALL_SCREEN
+        }
+        return cardCounter
     }
-    
+
     const handleShowMore = () => {
         let newCardCount = cardCount + calculateCardCount().step;
         setCardCount(newCardCount);
     };
-    
 
     console.log('movies:', movies);
     console.log('savedMovies:', savedMovies);
@@ -136,3 +107,22 @@ export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies
         </section>
     )
 }
+
+
+
+// function calculateCardCount() {
+//     let cardCounter = { init: INIT_MAX_SCREEN, step: STEP_MAX_SCREEN };
+//     if (window.innerWidth < MAX_SCREEN_WIDTH) {
+//         cardCounter.init = INIT_MAX_SCREEN
+//         cardCounter.step = STEP_MAX_SCREEN
+//     }
+//     if (window.innerWidth < MEDIUM_SCREEN_WIDTH) {
+//         cardCounter.init = INIT_MEDIUM_SCREEN
+//         cardCounter.step = STEP_SMALL_SCREEN
+//     }
+//     if (window.innerWidth < SMALL_SCREEN_WIDTH) {
+//         cardCounter.init = INIT_SMALL_SCREEN
+//         cardCounter.step = STEP_SMALL_SCREEN
+//     }
+//     return cardCounter
+//   }

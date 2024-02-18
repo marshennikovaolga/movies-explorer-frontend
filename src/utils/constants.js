@@ -3,7 +3,7 @@ const emailRegex = /^\S+@\S+\.\S+$/
 const SHORT_MOVIE_DURATION = 40;
 
 const MAX_SCREEN_WIDTH = 1267;
-const MEDIUM_SCREEN_WIDTH = 1267;
+const MEDIUM_SCREEN_WIDTH = 1020;
 const SMALL_SCREEN_WIDTH = 750;
 
 const INIT_MAX_SCREEN = 12;

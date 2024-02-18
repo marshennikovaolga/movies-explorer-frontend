@@ -16,7 +16,6 @@ import CurrentUserContext from '../../contexts/CurrentUserContext.js'
 import ErrorContext from '../../contexts/ErrorContext.js'
 import SendContext from '../../contexts/SendContext.js'
 
-
 export default function App() {
     const navigate = useNavigate()
     const [error, setError] = useState(null)
