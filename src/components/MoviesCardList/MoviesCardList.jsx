@@ -11,7 +11,7 @@ import {
     // MEDIUM_SCREEN_WIDTH,
 } from '../../utils/constants';
 
-export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies, isLoading, globalError, initialSearch }) {
+export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies, isLoading, searchedMovie, globalError, initialSearch }) {
     const { pathname } = useLocation()
     const [cardCount, setCardCount] = useState(0);
     const currentLength = movies.slice(0, cardCount)
@@ -107,22 +107,3 @@ export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies
         </section>
     )
 }
-
-
-
-// function calculateCardCount() {
-//     let cardCounter = { init: INIT_MAX_SCREEN, step: STEP_MAX_SCREEN };
-//     if (window.innerWidth < MAX_SCREEN_WIDTH) {
-//         cardCounter.init = INIT_MAX_SCREEN
-//         cardCounter.step = STEP_MAX_SCREEN
-//     }
-//     if (window.innerWidth < MEDIUM_SCREEN_WIDTH) {
-//         cardCounter.init = INIT_MEDIUM_SCREEN
-//         cardCounter.step = STEP_SMALL_SCREEN
-//     }
-//     if (window.innerWidth < SMALL_SCREEN_WIDTH) {
-//         cardCounter.init = INIT_SMALL_SCREEN
-//         cardCounter.step = STEP_SMALL_SCREEN
-//     }
-//     return cardCounter
-//   }

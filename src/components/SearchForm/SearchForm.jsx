@@ -1,16 +1,24 @@
-import './SearchForm.css'
+import React, { useEffect, useState } from 'react';
+import './SearchForm.css';
 import useFormValidation from '../../hooks/useFormValidation';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
-import { useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
-export default function SearchForm(
-  { movies, filter, initialSearch, isChecked, setIsChecked, searchMovies, savedMovies }) {
-
-  const { pathname } = useLocation();
+export default function SearchForm({
+  movies,
+  filter,
+  initialSearch,
+  isChecked,
+  setIsChecked,
+  searchMovies,
+  searchedMovie,
+  savedMovies
+}) {
+  const { pathname } = useLocation()
   const { values, error, handleChange, reset } = useFormValidation()
   const [errorMessage, setErrorMessage] = useState('')
-  const [inputEmpty, setInputEmpty] = useState(true);
+  const [inputEmpty, setInputEmpty] = useState(true)
+  const [searchResults, setSearchResults] = useState([])
 
   useEffect(() => {
     const storedSearchData = JSON.parse(localStorage.getItem('searchData'));
@@ -22,12 +30,23 @@ export default function SearchForm(
       setIsChecked(false);
     }
   }, [reset, initialSearch, setIsChecked]);
-  
+
+  useEffect(() => {
+    if ((pathname === '/saved-movies' && savedMovies.length === 0)) {
+      reset({ search: '' });
+    } else {
+      reset({ search: searchedMovie });
+    }
+  }, [searchedMovie, reset, pathname, savedMovies]);
+
   function onSubmit(evt) {
     evt.preventDefault();
     const searchValue = evt.target.search.value.trim();
     if (searchValue !== '') {
       searchMovies(searchValue);
+      const results = searchMovies(searchValue);
+      setSearchResults(results);
+      localStorage.setItem('searchResults', JSON.stringify(results));
       localStorage.setItem('searchData', JSON.stringify({ search: searchValue, isChecked }));
       setErrorMessage('');
     } else {
@@ -40,24 +59,24 @@ export default function SearchForm(
 
   function showShorts() {
     if (isChecked) {
-      setIsChecked(false)
-      filter(values.search, false, movies)
+      setIsChecked(false);
+      filter(values.search, false, movies);
     } else {
-      setIsChecked(true)
-      filter(values.search, true, movies)
+      setIsChecked(true);
+      filter(values.search, true, movies);
     }
   }
 
   function handleInputChange(event) {
     const inputValue = event.target.value;
-    setInputEmpty(inputValue === ''); 
+    setInputEmpty(inputValue === '');
     handleChange(event);
   }
 
   return (
     <section className="search">
       <div className="search__container">
-      {errorMessage && <p className='search__error_message'>{errorMessage}</p>}
+        {errorMessage && <p className='search__error_message'>{errorMessage}</p>}
         <form className="search__form" noValidate onSubmit={onSubmit}>
           <input
             required

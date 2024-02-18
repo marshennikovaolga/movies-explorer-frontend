@@ -44,41 +44,26 @@ export default function App() {
 
     useEffect(() => {
         if (localStorage.jwt) {
-            UserApi.getUser(localStorage.jwt)
-                .then(userData => {
-                    setLoggedIn(true);
+          Promise.all([UserApi.getUser(localStorage.jwt), UserApi.getMovies(localStorage.jwt)])
+            .then(([userData, dataMovies]) => {
+                setLoggedIn(true);
                     setIsCheckToken(false);
                     setCurrentUser(userData);
-                })
-                .catch(err => {
-                    console.error(`Ошибка при загрузке начальных данных ${err}`);
-                    setIsCheckToken(false);
-                    localStorage.clear();
-                    logOut();
-                });
-        } else {
-            setLoggedIn(false);
-            setIsCheckToken(false);
-            localStorage.clear();
-            logOut();
-        }
-    }, [loggedIn]);
-
-    useEffect(() => {
-        if (localStorage.jwt) {
-            UserApi.getMovies(localStorage.jwt)
-                .then(dataMovies => {
                     setSavedMovies(dataMovies.reverse())
-                })
-                .catch(err => {
-                    console.error(`Ошибка при загрузке фильмов ${err}`);
-                });
+            })
+            .catch((err) => {
+              console.error(`Ошибка при загрузке начальных данных ${err}`)
+              setIsCheckToken(false)
+              localStorage.clear()
+              logOut();
+            })
         } else {
-            setLoggedIn(false);
-            setIsCheckToken(false);
-            localStorage.clear();
+          setLoggedIn(false)
+          setIsCheckToken(false)
+          localStorage.clear()
         }
-    }, [loggedIn]);
+      }, [loggedIn])
+    
 
     function handleLogin(email, password) {
         setSend(true)
@@ -143,7 +128,7 @@ export default function App() {
             .then(() => {
                 setSavedMovies(savedMovies.filter(movie => { return movie._id !== deleteMovieId }))
             })
-            .catch((err) => console.error(`Ошиюка при удалении фильма ${err}`))
+            .catch((err) => console.error(`Ошибка при удалении фильма ${err}`))
     }
 
     function toggleMovie(data) {

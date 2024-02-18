@@ -7,16 +7,11 @@ export default function MoviesCard({ data, savedMovies, addMovie, onDelete }) {
     const { pathname } = useLocation();
     const [isLiked, setIsLiked] = useState(false);
 
-    // useEffect(() => {
-    //     if (pathname === '/movies')
-    //         setIsLiked(savedMovies.some(element => data.id === element.movieId));
-    // }, [pathname, savedMovies, data.id, setIsLiked]);
-
     useEffect(() => {
-        if (pathname === '/movies' && savedMovies) { // Добавлено условие savedMovies
+        if (pathname === '/movies')
             setIsLiked(savedMovies.some(element => data.id === element.movieId));
-        }
     }, [pathname, savedMovies, data.id, setIsLiked]);
+
 
     function handleSave() {
         if (savedMovies.some(element => data.id === element.movieId)) {

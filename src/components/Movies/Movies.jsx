@@ -25,27 +25,6 @@ export default function Movies({ addMovie, savedMovies }) {
     }));
   }, []);
 
-
-  useEffect(() => {
-    const storedMovies = localStorage.getItem('allmovies');
-    const storedSearch = localStorage.getItem('movie');
-    const storedShorts = localStorage.getItem('shorts');
-
-    if (storedMovies && storedSearch && storedShorts) {
-        const movies = JSON.parse(storedMovies);
-        const search = JSON.parse(storedSearch);
-        const isChecked = JSON.parse(storedShorts);
-
-        setGlobalError(false);
-        setInitialSearch(false);
-        setSearchedMovie(search);
-        setIsChecked(isChecked);
-        setAllMovies(movies);
-        filter(search, isChecked, movies);
-    }
-}, [filter, isChecked, searchedMovie]);
-
-
   function searchMovies(search) {
     if (allMovies.length === 0) {
       setIsLoading(true);
@@ -87,11 +66,10 @@ export default function Movies({ addMovie, savedMovies }) {
         isChecked={isChecked}
         setIsChecked={setIsChecked}
         searchMovies={searchMovies}
-        setSearchedMovie={setSearchedMovie}
+        searchedMovie={searchedMovie}
         initialSearch={initialSearch}
         movies={allMovies}
         filter={filter}
-        searchedMovies={searchMovies}
       />
       <MoviesCardList
         movies={filteredMovies}
