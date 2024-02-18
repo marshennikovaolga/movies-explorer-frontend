@@ -1,14 +1,13 @@
+import React, { useState, useEffect, useContext } from 'react';
 import './Profile.css';
 import ProfileInput from './ProfileInput/ProfileInput';
-import useFormValidation from '../../hooks/useFormValidation';
-import { emailRegex } from '../../utils/constants';
+import useProfileValidation from '../../hooks/useProfileValidation';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
-import { useState, useEffect, useContext } from 'react';
+import { emailRegex } from '../../utils/constants';
 
 function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
     const currentUser = useContext(CurrentUserContext);
-    const { error: validationError, values, reset, isInputValid, isValidButton, handleChange }
-    = useFormValidation({ name: currentUser.name || '', email: currentUser.email || '' });
+    const { error: validationError, values, reset, isInputValid, isValidButton, handleChange } = useProfileValidation({ name: currentUser.name || '', email: currentUser.email || '' });
     const [updateSuccessMessage, setUpdateSuccessMessage] = useState('');
     const [initialValues, setInitialValues] = useState({ name: currentUser.name || '', email: currentUser.email || '' });
     const [isDataChanged, setIsDataChanged] = useState(false);
@@ -20,17 +19,18 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
 
     useEffect(() => {
         if (isEdit) {
-            setInitialValues({ name: currentUser.name, email: currentUser.email  });
+            setInitialValues({ name: currentUser.name, email: currentUser.email });
         }
     }, [isEdit, currentUser]);
 
     function handleEditProfile() {
         reset();
         setIsEdit(true);
+        setShowCurrentDataError(false);
     }
 
     function handleCancelEdit() {
-        reset();
+        reset(initialValues);
         setIsEdit(false);
         setUpdateSuccessMessage('Редактирование отменено');
     }
@@ -42,12 +42,13 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
                 updateUserProfile(values.name, values.email);
                 setUpdateSuccessMessage('Данные профиля успешно обновлены');
             } else {
-                setUpdateSuccessMessage('Редактирование отменено');
                 setShowCurrentDataError(true);
+                return;
             }
             setIsEdit(false);
         }
     }
+
 
     useEffect(() => {
         if (updateSuccessMessage) {
@@ -63,7 +64,7 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
             const timer = setTimeout(() => {
                 setShowCurrentDataError(false);
             }, 2000);
-    
+
             return () => clearTimeout(timer);
         }
     }, [showCurrentDataError]);
@@ -74,8 +75,8 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
             {updateSuccessMessage && (
                 <p className="profile_success">{updateSuccessMessage}</p>
             )}
-                         {showCurrentDataError && (
-                <p className="profile_data-error">Вы ввели текущие данные</p>
+            {showCurrentDataError && (
+                <p className="profile_data-error">нет изменений в данных профиля</p>
             )}
             <div className='profile__name'>
                 <ProfileInput
@@ -86,7 +87,7 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
                     value={isEdit ? values.name : currentUser.name}
                     isInputValid={isInputValid.name}
                     onChange={handleChange}
-                    isSend={false}
+                    send={false}
                     isEdit={isEdit}
                     error={validationError.name}
                     hasError={true}
@@ -102,7 +103,7 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
                     isInputValid={isInputValid.email}
                     pattern={emailRegex}
                     onChange={handleChange}
-                    isSend={false}
+                    send={false}
                     isEdit={isEdit}
                     error={validationError.email}
                     hasError={true}
