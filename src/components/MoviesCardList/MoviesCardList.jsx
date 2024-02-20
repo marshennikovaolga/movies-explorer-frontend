@@ -6,9 +6,7 @@ import { useLocation } from 'react-router-dom'
 import {
     MAX_SCREEN_WIDTH, SMALL_SCREEN_WIDTH,
     INIT_MAX_SCREEN, INIT_MEDIUM_SCREEN, INIT_SMALL_SCREEN,
-    STEP_MAX_SCREEN, STEP_SMALL_SCREEN,
-    // STEP_MEDIUM_SCREEN,
-    // MEDIUM_SCREEN_WIDTH,
+    STEP_MAX_SCREEN, STEP_SMALL_SCREEN
 } from '../../utils/constants';
 
 export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies, isLoading, searchedMovie, globalError, initialSearch }) {

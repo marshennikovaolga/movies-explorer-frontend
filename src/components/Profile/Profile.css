@@ -78,9 +78,9 @@
 }
 
 .profile_data-error {
-  color: #ffffff;
-  margin-bottom: 20px;
-  margin-top: 0;
+  color:#91d4a2;
+  font-size: 12px;
+  margin-top: 10px;
   width: 350px;
   text-align: center;
 }

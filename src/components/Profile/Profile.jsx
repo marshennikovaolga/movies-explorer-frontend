@@ -8,12 +8,11 @@ import { emailRegex } from '../../utils/constants';
 function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
     const currentUser = useContext(CurrentUserContext);
     const { error: validationError, values, reset, isInputValid, isValidButton, handleChange } =
-    useProfileValidation({ name: currentUser.name || '', email: currentUser.email || '' });
+        useProfileValidation({ name: currentUser.name || '', email: currentUser.email || '' });
     const [updateSuccessMessage, setUpdateSuccessMessage] = useState('');
     const [initialValues, setInitialValues] = useState({ name: currentUser.name || '', email: currentUser.email || '' });
     const [isNameChanged, setIsNameChanged] = useState(false);
     const [isEmailChanged, setIsEmailChanged] = useState(false);
-    const [showCurrentDataError, setShowCurrentDataError] = useState(false);
 
     useEffect(() => {
         setIsNameChanged(values.name !== initialValues.name);
@@ -29,7 +28,7 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
     function handleEditProfile() {
         reset();
         setIsEdit(true);
-        setShowCurrentDataError(false);
+        setUpdateSuccessMessage('');
     }
 
     function handleCancelEdit() {
@@ -45,7 +44,6 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
                 updateUserProfile(values.name, values.email);
                 setUpdateSuccessMessage('Данные профиля успешно обновлены');
             } else {
-                setShowCurrentDataError(true);
                 return;
             }
             setIsEdit(false);
@@ -56,29 +54,17 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
         if (updateSuccessMessage) {
             const timer = setTimeout(() => {
                 setUpdateSuccessMessage('');
-            }, 3000);
+            }, 1000);
             return () => clearTimeout(timer);
         }
-    }, [updateSuccessMessage]);
+    }, [updateSuccessMessage, setUpdateSuccessMessage]);
 
-    useEffect(() => {
-        if (showCurrentDataError) {
-            const timer = setTimeout(() => {
-                setShowCurrentDataError(false);
-            }, 2000);
-
-            return () => clearTimeout(timer);
-        }
-    }, [showCurrentDataError]);
 
     return (
         <form className="profile" onSubmit={handleSubmit} onInvalid={(e) => { e.preventDefault(); }}>
             <h2 className='profile__title'>{`Привет, ${currentUser.name}!`}</h2>
             {updateSuccessMessage && (
                 <p className="profile_success">{updateSuccessMessage}</p>
-            )}
-            {showCurrentDataError && (
-                <p className="profile_data-error">вы не внесли изменения в данные профиля</p>
             )}
             <div className='profile__name'>
                 <ProfileInput
@@ -114,6 +100,9 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
 
             {isEdit ? (
                 <>
+                    {!isNameChanged && !isEmailChanged && (
+                        <p className="profile_data-error">сейчас в данных профиля нет изменений</p>
+                    )}
                     <button className='profile__edit' onClick={handleCancelEdit}>
                         Отменить редактирование
                     </button>
