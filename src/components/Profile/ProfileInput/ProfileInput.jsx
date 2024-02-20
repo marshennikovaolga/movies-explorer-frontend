@@ -1,7 +1,12 @@
 import './ProfileInput.css'
+import SendContext from '../../../contexts/SendContext'
+import { useContext } from 'react'
 
-const ProfileInput = ({ isEdit, name, title, isInputValid, pattern, type, value, onChange, send, error, placeholder }) => {
-    const inputClassName = `profileinput__field ${isInputValid === undefined || isInputValid ? '' : 'profileinput_invalid'}`;
+const ProfileInput = ({ isEdit, name, title, isInputValid, pattern, type, value, onChange, error, placeholder }) => {
+
+    const send = useContext(SendContext)
+    const isDisabled = !isEdit || send
+    const inputClassName = `profileinput__field ${isInputValid === undefined || isInputValid ? '' : 'profileinput_invalid'}`
 
     return (
         <label className="profileinput__label">
@@ -15,7 +20,7 @@ const ProfileInput = ({ isEdit, name, title, isInputValid, pattern, type, value,
                 pattern={pattern instanceof RegExp ? pattern.source : pattern}
                 placeholder={placeholder}
                 onChange={isEdit ? onChange : null}
-                disabled={!isEdit}
+                disabled={isDisabled}
                 autoComplete='on'
             />
             <span className='profileinput__error'>

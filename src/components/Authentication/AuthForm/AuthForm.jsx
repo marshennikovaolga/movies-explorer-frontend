@@ -6,9 +6,10 @@ import { emailRegex } from '../../../utils/constants'
 import { Link, NavLink } from 'react-router-dom'
 import { useContext, useState, useEffect } from 'react'
 import ErrorContext from '../../../contexts/ErrorContext'
+import SendContext from '../../../contexts/SendContext'
 
 export default function AuthForm({ type, onSubmit }) {
-
+    const send = useContext(SendContext);
     const { error: contextError } = useContext(ErrorContext)
     const { values, error, isInputValid, isValidButton, handleChange } = useFormValidation()
     const [formSubmitted, setFormSubmitted] = useState(false)
@@ -51,7 +52,7 @@ export default function AuthForm({ type, onSubmit }) {
                             pattern={emailRegex}
                             type="email"
                             onChange={handleChange}
-                            // send={false}
+                            send={send}
                             error={error.email}
                             hasError={true}
                         />
@@ -63,7 +64,7 @@ export default function AuthForm({ type, onSubmit }) {
                             isInputValid={isInputValid.password}
                             type="password"
                             onChange={handleChange}
-                            // send={false}
+                            sens={send}
                             error={error.password}
                             hasError={true}
                         />
@@ -81,7 +82,7 @@ export default function AuthForm({ type, onSubmit }) {
                             minLength="2"
                             maxLength="30"
                             onChange={handleChange}
-                            // send={false}
+                            sens={send}
                             error={error.name}
                             hasError={true}
                         />
@@ -94,7 +95,7 @@ export default function AuthForm({ type, onSubmit }) {
                             pattern={emailRegex}
                             type="email"
                             onChange={handleChange}
-                            // send={false}
+                            sens={send}
                             error={error.email}
                             hasError={true}
                         />
@@ -106,7 +107,7 @@ export default function AuthForm({ type, onSubmit }) {
                             isInputValid={isInputValid.password}
                             type="password"
                             onChange={handleChange}
-                            // send={false}
+                            sens={send}
                             error={error.password}
                             hasError={true}
                         />

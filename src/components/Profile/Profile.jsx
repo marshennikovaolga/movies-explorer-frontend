@@ -1,22 +1,24 @@
-import React, { useState, useEffect, useContext } from 'react';
-import './Profile.css';
-import ProfileInput from './ProfileInput/ProfileInput';
-import useProfileValidation from '../../hooks/useProfileValidation';
-import CurrentUserContext from '../../contexts/CurrentUserContext';
-import { emailRegex } from '../../utils/constants';
+import React, { useState, useEffect, useContext } from 'react'
+import useProfileValidation from '../../hooks/useProfileValidation'
+import CurrentUserContext from '../../contexts/CurrentUserContext'
+import SendContext from '../../contexts/SendContext'
+import { emailRegex } from '../../utils/constants'
+import ProfileInput from './ProfileInput/ProfileInput'
+import './Profile.css'
 
 function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
-    const currentUser = useContext(CurrentUserContext);
+    const send = useContext(SendContext)
+    const currentUser = useContext(CurrentUserContext)
     const { error: validationError, values, reset, isInputValid, isValidButton, handleChange } =
-        useProfileValidation({ name: currentUser.name || '', email: currentUser.email || '' });
-    const [updateSuccessMessage, setUpdateSuccessMessage] = useState('');
-    const [initialValues, setInitialValues] = useState({ name: currentUser.name || '', email: currentUser.email || '' });
-    const [isNameChanged, setIsNameChanged] = useState(false);
-    const [isEmailChanged, setIsEmailChanged] = useState(false);
+    useProfileValidation({ name: currentUser.name || '', email: currentUser.email || '' })
+    const [updateSuccessMessage, setUpdateSuccessMessage] = useState('')
+    const [initialValues, setInitialValues] = useState({ name: currentUser.name || '', email: currentUser.email || '' })
+    const [isNameChanged, setIsNameChanged] = useState(false)
+    const [isEmailChanged, setIsEmailChanged] = useState(false)
 
     useEffect(() => {
-        setIsNameChanged(values.name !== initialValues.name);
-        setIsEmailChanged(values.email !== initialValues.email);
+        setIsNameChanged(values.name !== initialValues.name)
+        setIsEmailChanged(values.email !== initialValues.email)
     }, [values, initialValues]);
 
     useEffect(() => {
@@ -75,7 +77,7 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
                     value={isEdit ? values.name : currentUser.name}
                     isInputValid={isInputValid.name}
                     onChange={handleChange}
-                    send={false}
+                    send={send}
                     isEdit={isEdit}
                     error={validationError.name}
                     hasError={true}
@@ -91,7 +93,7 @@ function Profile({ logOut, updateUserProfile, isEdit, setIsEdit }) {
                     isInputValid={isInputValid.email}
                     pattern={emailRegex}
                     onChange={handleChange}
-                    send={false}
+                    send={send}
                     isEdit={isEdit}
                     error={validationError.email}
                     hasError={true}

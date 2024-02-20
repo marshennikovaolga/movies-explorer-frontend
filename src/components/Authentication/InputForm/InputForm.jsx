@@ -1,10 +1,12 @@
 import './InputForm.css'
+import SendContext from '../../../contexts/SendContext'
+import { useContext } from 'react'
 
 export default function InputForm({ name, title, isInputValid, pattern, type,
-    value, onChange, isSend, error, placeholder, minLength, maxLength }) {
+    value, onChange, error, placeholder, minLength, maxLength }) {
 
+    const send = useContext(SendContext);
     const inputClassName = `input__field ${isInputValid === undefined || isInputValid ? '' : 'input__field_invalid'}`;
-
 
     return (
         <label className='input__label'>
@@ -18,10 +20,9 @@ export default function InputForm({ name, title, isInputValid, pattern, type,
                 pattern={pattern instanceof RegExp ? pattern.source : pattern}
                 placeholder={placeholder}
                 onChange={onChange}
-                disabled={isSend}
+                disabled={send}
                 minLength={minLength}
                 maxLength={maxLength}
-
             />
             <span className='input__error' style={{ marginBottom: '10px' }}>
                 {error}
