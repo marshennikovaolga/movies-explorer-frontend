@@ -9,7 +9,7 @@ export default function Movies({ addMovie, savedMovies }) {
   const [globalError, setGlobalError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [allMovies, setAllMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState(savedMovies);
   const [searchedMovie, setSearchedMovie] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [initialSearch, setInitialSearch] = useState(true);

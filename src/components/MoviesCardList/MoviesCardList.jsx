@@ -9,13 +9,14 @@ import {
     STEP_MAX_SCREEN, STEP_SMALL_SCREEN
 } from '../../utils/constants';
 
-export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies, isLoading, searchedMovie, globalError, initialSearch }) {
+export default function MoviesCardList({ movies, savedMovies, onDelete, addMovie,
+    isLoading, globalError, initialSearch }) {
     const { pathname } = useLocation()
     const [cardCount, setCardCount] = useState(0);
     const currentLength = movies.slice(0, cardCount)
 
     useEffect(() => {
-        if (pathname === '/movies') {
+        if (pathname === '/movies' && '/saved-movies') {
             const cardCounter = calculateCardCount();
             setCardCount(cardCounter.init);
 
@@ -30,7 +31,9 @@ export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies
                 window.removeEventListener('resize', handleResize);
             };
         }
-    }, [pathname, movies]);
+    },
+        [pathname, movies, savedMovies]
+    );
 
     function calculateCardCount() {
         let cardCounter = { init: INIT_MAX_SCREEN, step: STEP_MAX_SCREEN };
@@ -57,6 +60,7 @@ export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies
     console.log('movies:', movies);
     console.log('savedMovies:', savedMovies);
 
+
     return (
         <section className='cardlist'>
             <ul className='cardlist__list'>
@@ -66,18 +70,23 @@ export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies
                             return (
                                 <MoviesCard
                                     key={data.id}
+                                    movies={movies}
                                     savedMovies={savedMovies}
                                     addMovie={addMovie}
                                     data={data}
+                                    isLiked={true}
                                 />
                             )
-                        }) : movies.length !== 0 ?
-                            movies.map(data => {
+                        }) : movies.length !== 0 && pathname === '/saved-movies' ?
+                        savedMovies.map(data => {
+                            const isLiked = movies.some(movie => movie.movieId === data.id)
                                 return (
                                     <MoviesCard
                                         key={data._id}
+                                        savedMovies={savedMovies}
                                         onDelete={onDelete}
                                         data={data}
+                                        isLiked={isLiked}
                                     />
                                 )
                             }) : globalError ?
@@ -99,9 +108,11 @@ export default function MoviesCardList({ movies, onDelete, addMovie, savedMovies
                                         </span>
                 }
             </ul>
-            {pathname === '/movies' && <button type='button'
-                className={`cardlist__showmore ${cardCount >= movies.length && 'cardlist__showmore_hidden'}`}
-                onClick={handleShowMore}>Ёще</button>}
+            {pathname === '/movies' &&
+                <button type='button'
+                    className={`cardlist__showmore ${cardCount >= movies.length && 'cardlist__showmore_hidden'}`}
+                    onClick={handleShowMore}>Ёще</button>
+            }
         </section>
     )
 }

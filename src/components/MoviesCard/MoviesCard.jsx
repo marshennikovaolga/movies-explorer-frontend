@@ -1,4 +1,4 @@
-import './MoviesCard.css';
+import './MoviesCard.css'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom';
@@ -6,6 +6,12 @@ import { Link } from 'react-router-dom';
 export default function MoviesCard({ data, savedMovies, addMovie, onDelete }) {
     const { pathname } = useLocation();
     const [isLiked, setIsLiked] = useState(false);
+    
+    function setTime(duration) {
+        const minutes = duration % 60;
+        const hours = Math.floor(duration / 60);
+        return (hours === 0 ? `${minutes}м` : minutes === 0 ? `${hours}ч` : `${hours}ч${minutes}м`);
+    }
 
     useEffect(() => {
         if (pathname === '/movies')
@@ -41,14 +47,16 @@ export default function MoviesCard({ data, savedMovies, addMovie, onDelete }) {
                     />
                 </Link>
                     {pathname === '/movies' ?
-                        <button type='button'
-                            className={`card__button card__button_save
-                            ${isLiked ? 'card__button_save_active' : ''}`}
-                            onClick={handleSave}></button>
+                       <button
+                       type='button'
+                       className={`card__button card__button_save ${isLiked ? 'card__button_save_active' : ''}`}
+                       onClick={handleSave}
+                   ></button>
                         :
                         <button type='button'
                             className={`card__button card__button_delete`}
-                            onClick={() => onDelete(data._id)}></button>
+                            onClick={() => onDelete(data._id)}
+                            ></button>
                     }
                 </div>
                 <div className='card__text'>
@@ -59,3 +67,35 @@ export default function MoviesCard({ data, savedMovies, addMovie, onDelete }) {
         </article>
     );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // useEffect(() => {
+    //     if (pathname === '/movies')
+    //         localStorage.setItem(`liked_${data.id}`, setIsLiked);
+    // }, [pathname, movies, data.id, setIsLiked]);
+    
+    // function handleSave() {
+    //     if (savedMovies.some(element => data.id === element.movieId)) {
+    //         setIsLiked(true);
+    //         addMovie(data);
+    //         localStorage.setItem(`liked_${data.id}`, false);
+    //     } else {
+    //         setIsLiked(false);
+    //         addMovie(data);
+    //         localStorage.setItem(`liked_${data.id}`, true);
+    //     }
+    // }
+
+
+

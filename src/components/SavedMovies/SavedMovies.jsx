@@ -1,120 +1,76 @@
-// import MoviesCardList from "../MoviesCardList/MoviesCardList"
-// import SearchForm from '../SearchForm/SearchForm'
-// import { useState, useCallback, useEffect } from 'react'
-// import { SHORT_MOVIE_DURATION } from "../../utils/constants"
-// import moviesApi from '../../utils/MoviesApi'
+import moviesApi from '../../utils/MoviesApi'
+import{ useState, useEffect } from 'react'
+import { SHORT_MOVIE_DURATION } from '../../utils/constants'
+import MoviesCardList from '../MoviesCardList/MoviesCardList'
+import SearchForm from '../SearchForm/SearchForm';
 
-// export default function SavedMovies({ savedMovies, onDelete, movies }) {
-//   const [globalError, setGlobalError] = useState(false);
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [filteredMovies, setFilteredMovies] = useState([]);
-//   const [searchedMovie, setSearchedMovie] = useState('');
-//   const [isChecked, setIsChecked] = useState(false);
-//   const [initialSearch, setInitialSearch] = useState(true);
-
-//   const filter = useCallback((search, isChecked, movies) => {
-//     setSearchedMovie(search);
-//     setFilteredMovies(movies.filter((movie) => {
-//       const searchName = typeof search === 'string' && movie.nameRU.toLowerCase().includes(search.toLowerCase());
-//       return isChecked ? searchName && movie.duration <= SHORT_MOVIE_DURATION : searchName;
-//     }));
-//   }, []);
-
-//   function searchMovies(search) {
-//     filter(search, isChecked, savedMovies);
-//   }
-
-//   function searchMovies(search) {
-//     if (savedMovies.length === 0) {
-//       setIsLoading(true);
-//       moviesApi.getMovies()
-//         .then((res) => {
-//           setFilteredMovies(res);
-//           setGlobalError(false);
-//           setIsChecked(false);
-//           setInitialSearch(false);
-//           filter(search, isChecked, res);
-//         })
-//         .catch(err => {
-//           setGlobalError(true);
-//           console.error(`Произошла ошибка при поиске фильмов ${err}`);
-//         })
-//         .finally(() => setIsLoading(false));
-//     } else {
-//       filter(search, isChecked, filteredMovies);
-//     }
-//   }
-
-//   return (
-//     <>
-//       <SearchForm
-//         isChecked={isChecked}
-//         setIsChecked={setIsChecked}
-//         searchMovies={searchMovies}
-//         searchedMovie={searchedMovie}
-//         initialSearch={initialSearch}
-//         savedMovies={savedMovies}
-//         filter={filter}
-//         movies={filteredMovies}
-//       />
-//       <MoviesCardList
-//         movies={filteredMovies}
-//         savedMovies={savedMovies}
-//         initialSearch={initialSearch}
-//         onDelete={onDelete}
-//         isLoading={isLoading}
-//       />
-//     </>
-//   );
-// }
-
-
-import MoviesCardList from "../MoviesCardList/MoviesCardList"
-import SearchForm from '../SearchForm/SearchForm'
-import { useState, useCallback, useEffect } from 'react'
-import { SHORT_MOVIE_DURATION } from "../../utils/constants"
-
-export default function SavedMovies({ savedMovies, onDelete }) {
-  const [filteredMovies, setFilteredMovies] = useState(savedMovies)
-  const [searchedMovie, setSearchedMovie] = useState('')
-  const [isChecked, setIsChecked] = useState(false)
-  const [initialSearch, setInitialSearch] = useState(true)
-
-  const filter = useCallback((search, isChecked, movies) => {
-    setSearchedMovie(search)
-    setFilteredMovies(movies.filter((movie) => {
-      const searchName = typeof movie.title === 'string' && movie.title.toLowerCase().includes(search.toLowerCase());
-      return isChecked ? (searchName && movie.duration <= SHORT_MOVIE_DURATION) : searchName;
-    }));
-  }, []);
-
-  function searchMovies(search) {
-    setInitialSearch(false)
-    filter(search, isChecked, savedMovies)
-  }
+const SavedMovies = ({ onDelete, savedMovies }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchedMovie, setSearchedMovie] = useState('');
+  const [filteredMovies, setFilteredMovies] = useState(savedMovies);
+  const [globalError, setGlobalError] = useState(false);
+  const [initialSearch, setInitialSearch] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
-    setSearchedMovie(savedMovies);
-  }, [savedMovies]);
+    setIsLoading(true);
+    moviesApi.getMovies()
+      .then((res) => {
+        setFilteredMovies(res);
+        setGlobalError(false);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Ошибка при получении сохраненных фильмов:', error);
+        setGlobalError(true);
+        setIsLoading(false);
+      });
+  }, []);
 
+  const filter = (search, isChecked, movies) => {
+    setSearchedMovie(search);
+    setFilteredMovies(
+      movies.filter((movie) => {
+        const searchName = movie.nameRU.toLowerCase().includes(search.toLowerCase());
+        return isChecked ? (searchName && movie.duration <= SHORT_MOVIE_DURATION) : searchName;
+      })
+    );
+  };
+
+  const searchMovies = (search) => {
+    filter(search, isChecked, savedMovies);
+    setInitialSearch(false);
+  };
+
+  const savedShorts = () => {
+    setIsChecked(!isChecked);
+    filter(searchedMovie, !isChecked, savedMovies);
+  };
 
   return (
     <>
       <SearchForm
+        isChecked={isChecked} 
+        setIsChecked={savedShorts}
+        // setIsChecked={setIsChecked}
         searchMovies={searchMovies}
-        movies={savedMovies}
-        savedMovies={savedMovies}
-        isChecked={isChecked}
-        setIsChecked={setIsChecked}
-        filter={filter}
-        initialSearch={initialSearch}
         searchedMovie={searchedMovie}
+        initialSearch={initialSearch}
+        movies={savedMovies}
+        filter={filter}
       />
       <MoviesCardList
         movies={savedMovies}
-        onDelete={onDelete}
+        initialSearch={initialSearch}
         savedMovies={savedMovies}
+        onDelete={onDelete}
+        isLoading={isLoading}
+        globalError={globalError}
       />
     </>
   );
-}
+};
+
+export default SavedMovies;
+
+
