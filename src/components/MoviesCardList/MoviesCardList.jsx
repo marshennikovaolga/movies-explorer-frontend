@@ -8,6 +8,7 @@ import {
     INIT_MAX_SCREEN, INIT_MEDIUM_SCREEN, INIT_SMALL_SCREEN,
     STEP_MAX_SCREEN, STEP_SMALL_SCREEN
 } from '../../utils/constants';
+import lodash from 'lodash';
 
 export default function MoviesCardList({ movies, savedMovies, onDelete, addMovie,
     isLoading, globalError, initialSearch }) {
@@ -16,14 +17,14 @@ export default function MoviesCardList({ movies, savedMovies, onDelete, addMovie
     const currentLength = movies.slice(0, cardCount)
 
     useEffect(() => {
-        if (pathname === '/movies' && '/saved-movies') {
+        if (pathname === '/movies' || pathname === '/saved-movies') {
             const cardCounter = calculateCardCount();
             setCardCount(cardCounter.init);
 
-            const handleResize = () => {
+            const handleResize = lodash.debounce(() => {
                 const newCardCounter = calculateCardCount();
                 setCardCount(newCardCounter.init);
-            };
+            }, 300);
 
             window.addEventListener('resize', handleResize);
 
@@ -31,9 +32,7 @@ export default function MoviesCardList({ movies, savedMovies, onDelete, addMovie
                 window.removeEventListener('resize', handleResize);
             };
         }
-    },
-        [pathname, movies, savedMovies]
-    );
+    }, [pathname, movies, savedMovies]);
 
     function calculateCardCount() {
         let cardCounter = { init: INIT_MAX_SCREEN, step: STEP_MAX_SCREEN };
@@ -57,9 +56,9 @@ export default function MoviesCardList({ movies, savedMovies, onDelete, addMovie
         setCardCount(newCardCount);
     };
 
+
     console.log('movies:', movies);
     console.log('savedMovies:', savedMovies);
-
 
     return (
         <section className='cardlist'>
@@ -78,18 +77,22 @@ export default function MoviesCardList({ movies, savedMovies, onDelete, addMovie
                                 />
                             )
                         }) : movies.length !== 0 && pathname === '/saved-movies' ?
-                        savedMovies.map(data => {
-                            const isLiked = movies.some(movie => movie.movieId === data.id)
+                            savedMovies.length !== 0 ? savedMovies.map(data => {
+                                const isLiked = movies.some(movie => movie.movieId === data.id)
                                 return (
                                     <MoviesCard
-                                        key={data._id}
+                                        key={data.id}
                                         savedMovies={savedMovies}
                                         onDelete={onDelete}
                                         data={data}
                                         isLiked={isLiked}
                                     />
                                 )
-                            }) : globalError ?
+                            }) : (
+                                <span className='cardlist__span'>
+                                    Нет сохранённых фильмов
+                                </span>
+                            ) : globalError ?
                                 <span className='cardlist__span'>
                                     Во время запроса произошла ошибка.
                                     Возможно, проблема с соединением или сервер недоступен.
@@ -104,7 +107,7 @@ export default function MoviesCardList({ movies, savedMovies, onDelete, addMovie
                                             Чтобы увидеть список фильмов, выполните поиск
                                         </span> :
                                         <span className='cardlist__span'>
-                                            Нет сохранённых фильмов
+                                            Ничего не найдено
                                         </span>
                 }
             </ul>

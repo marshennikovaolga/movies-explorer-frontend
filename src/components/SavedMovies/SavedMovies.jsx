@@ -1,10 +1,10 @@
-import moviesApi from '../../utils/MoviesApi'
-import{ useState, useEffect } from 'react'
-import { SHORT_MOVIE_DURATION } from '../../utils/constants'
-import MoviesCardList from '../MoviesCardList/MoviesCardList'
+import { useState, useEffect } from 'react';
+import { SHORT_MOVIE_DURATION } from '../../utils/constants';
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
+import moviesApi from '../../utils/MoviesApi';
 
-const SavedMovies = ({ onDelete, savedMovies }) => {
+export default function SavedMovies({ onDelete, savedMovies }) {
   const [isLoading, setIsLoading] = useState(false);
   const [searchedMovie, setSearchedMovie] = useState('');
   const [filteredMovies, setFilteredMovies] = useState(savedMovies);
@@ -27,40 +27,40 @@ const SavedMovies = ({ onDelete, savedMovies }) => {
       });
   }, []);
 
-  const filter = (search, isChecked, movies) => {
-    setSearchedMovie(search);
-    setFilteredMovies(
-      movies.filter((movie) => {
-        const searchName = movie.nameRU.toLowerCase().includes(search.toLowerCase());
-        return isChecked ? (searchName && movie.duration <= SHORT_MOVIE_DURATION) : searchName;
-      })
-    );
+
+  const filterMovies = (search, isChecked) => {
+    const filtered = savedMovies.filter(movie => {
+      const matchedSearch = movie.nameRU.toLowerCase().includes(search.toLowerCase());
+      const matchedDuration = isChecked ? movie.duration <= SHORT_MOVIE_DURATION : true;
+      return matchedSearch && matchedDuration;
+    });
+    setFilteredMovies(filtered);
   };
 
   const searchMovies = (search) => {
-    filter(search, isChecked, savedMovies);
+    setSearchedMovie(search);
+    filterMovies(search, isChecked);
     setInitialSearch(false);
   };
 
-  const savedShorts = () => {
+  const toggleShorts = () => {
     setIsChecked(!isChecked);
-    filter(searchedMovie, !isChecked, savedMovies);
+    filterMovies(searchedMovie, !isChecked);
   };
 
   return (
     <>
       <SearchForm
-        isChecked={isChecked} 
-        setIsChecked={savedShorts}
-        // setIsChecked={setIsChecked}
+        isChecked={isChecked}
+        setIsChecked={toggleShorts}
         searchMovies={searchMovies}
         searchedMovie={searchedMovie}
         initialSearch={initialSearch}
         movies={savedMovies}
-        filter={filter}
+        filter={filterMovies}
       />
       <MoviesCardList
-        movies={savedMovies}
+        movies={filteredMovies}
         initialSearch={initialSearch}
         savedMovies={savedMovies}
         onDelete={onDelete}
@@ -70,7 +70,3 @@ const SavedMovies = ({ onDelete, savedMovies }) => {
     </>
   );
 };
-
-export default SavedMovies;
-
-

@@ -38,6 +38,8 @@ export default function App() {
 
     const logOut = () => {
         localStorage.clear();
+        localStorage.removeItem('lastsearch');
+        localStorage.removeItem('lastCheckboxState');
         setLoggedIn(false);
         navigate('/');
     };
@@ -63,7 +65,7 @@ export default function App() {
           localStorage.clear()
         }
       }, [loggedIn])
-    
+
 
     function handleLogin(email, password) {
         setSend(true)
@@ -154,7 +156,7 @@ export default function App() {
             {isCheckToken ? <Preloader /> :
                 <CurrentUserContext.Provider value={currentUser}>
                     <SendContext.Provider value={send}>
-                        <ErrorContext.Provider value={{error, setError}}>
+                        <ErrorContext.Provider value={{ error, setError }}>
                             <Routes>
                                 <Route path="/signin" element={
                                     loggedIn ? <Navigate to='/movies' replace /> :
@@ -176,29 +178,27 @@ export default function App() {
                                         </Content>
                                     </ProtectedRoute>
                                 } />
+                                    <Route path="/movies" element={
+                                        <ProtectedRoute loggedIn={loggedIn}>
+                                            <Content loggedIn={loggedIn}>
+                                                <Movies
+                                                    savedMovies={savedMovies}
+                                                    addMovie={toggleMovie}
+                                                    loggedIn={loggedIn}
+                                                />
+                                            </Content>
+                                        </ProtectedRoute>} />
 
-                                <Route path="/movies" element={
-                                    <ProtectedRoute loggedIn={loggedIn}>
-                                        <Content loggedIn={loggedIn}>
-                                            <Movies
-                                                savedMovies={savedMovies}
-                                                addMovie={toggleMovie}
-                                                loggedIn={loggedIn}
-                                            />
-                                        </Content>
-                                    </ProtectedRoute>} />
-
-                                <Route path="/saved-movies" element={
-                                    <ProtectedRoute loggedIn={loggedIn}>
-                                        <Content loggedIn={loggedIn}>
-                                            <SavedMovies
-                                                savedMovies={savedMovies}
-                                                loggedIn={loggedIn}
-                                                onDelete={deleteMovie} />
-                                        </Content>
-                                    </ProtectedRoute>}
-                                />
-
+                                    <Route path="/saved-movies" element={
+                                        <ProtectedRoute loggedIn={loggedIn}>
+                                            <Content loggedIn={loggedIn}>
+                                                <SavedMovies
+                                                    savedMovies={savedMovies}
+                                                    loggedIn={loggedIn}
+                                                    onDelete={deleteMovie} />
+                                            </Content>
+                                        </ProtectedRoute>}
+                                    />
                                 <Route path="/" element={
                                     <Content loggedIn={loggedIn} logOut={logOut} >
                                         <Main name='projectpage' />

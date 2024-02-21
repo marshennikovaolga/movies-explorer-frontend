@@ -47,10 +47,10 @@ export default function Movies({ addMovie, savedMovies }) {
   }
 
   useEffect(() => {
-    if (localStorage.allmovies && localStorage.shorts && localStorage.movie) {
-      const movies = JSON.parse(localStorage.allmovies);
-      const search = JSON.parse(localStorage.movie);
-      const isChecked = JSON.parse(localStorage.shorts);
+    if (localStorage.getItem('allmovies') && localStorage.getItem('movie') && localStorage.getItem('shorts')) {
+      const movies = JSON.parse(localStorage.getItem('allmovies'));
+      const search = JSON.parse(localStorage.getItem('movie'));
+      const isChecked = JSON.parse(localStorage.getItem('shorts'));
       setGlobalError(false);
       setInitialSearch(false);
       setSearchedMovie(search);
