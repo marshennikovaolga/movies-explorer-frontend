@@ -4,12 +4,15 @@ import moviesApi from '../../utils/MoviesApi'
 import { useEffect, useState, useCallback } from 'react'
 import { SHORT_MOVIE_DURATION } from "../../utils/constants"
 
-export default function Movies({ addMovie, savedMovies }) {
+export default function Movies({ addMovie,
+  savedMovies
+}) {
 
   const [globalError, setGlobalError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [allMovies, setAllMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState(savedMovies);
+  // const [filteredMovies, setFilteredMovies] = useState(savedMovies);
+  const [filteredMovies, setFilteredMovies] = useState('');
   const [searchedMovie, setSearchedMovie] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [initialSearch, setInitialSearch] = useState(true);

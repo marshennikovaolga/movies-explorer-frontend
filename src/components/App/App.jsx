@@ -36,14 +36,6 @@ export default function App() {
         }
     }, [])
 
-    const logOut = () => {
-        localStorage.clear();
-        localStorage.removeItem('lastsearch');
-        localStorage.removeItem('lastCheckboxState');
-        setLoggedIn(false);
-        navigate('/');
-    };
-
     useEffect(() => {
         if (localStorage.jwt) {
           Promise.all([UserApi.getUser(localStorage.jwt), UserApi.getMovies(localStorage.jwt)])
@@ -62,10 +54,16 @@ export default function App() {
         } else {
           setLoggedIn(false)
           setIsCheckToken(false)
-          localStorage.clear()
         }
       }, [loggedIn])
 
+      const logOut = () => {
+        localStorage.clear();
+        setLoggedIn(false);
+        localStorage.removeItem('lastsearch');
+        localStorage.removeItem('lastCheckboxState');
+        navigate('/');
+    };
 
     function handleLogin(email, password) {
         setSend(true)

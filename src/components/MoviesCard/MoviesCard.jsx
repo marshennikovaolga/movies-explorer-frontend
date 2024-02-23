@@ -18,7 +18,6 @@ export default function MoviesCard({ data, savedMovies, addMovie, onDelete }) {
             setIsLiked(savedMovies.some(element => data.id === element.movieId));
     }, [pathname, savedMovies, data.id, setIsLiked]);
 
-
     function handleSave() {
         if (savedMovies.some(element => data.id === element.movieId)) {
             setIsLiked(true)
@@ -67,35 +66,3 @@ export default function MoviesCard({ data, savedMovies, addMovie, onDelete }) {
         </article>
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // useEffect(() => {
-    //     if (pathname === '/movies')
-    //         localStorage.setItem(`liked_${data.id}`, setIsLiked);
-    // }, [pathname, movies, data.id, setIsLiked]);
-    
-    // function handleSave() {
-    //     if (savedMovies.some(element => data.id === element.movieId)) {
-    //         setIsLiked(true);
-    //         addMovie(data);
-    //         localStorage.setItem(`liked_${data.id}`, false);
-    //     } else {
-    //         setIsLiked(false);
-    //         addMovie(data);
-    //         localStorage.setItem(`liked_${data.id}`, true);
-    //     }
-    // }
-
-
-
