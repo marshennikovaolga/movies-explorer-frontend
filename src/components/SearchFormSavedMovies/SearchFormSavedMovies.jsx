@@ -1,58 +1,54 @@
-
-import React, { useState, useEffect } from 'react';
-import FilterCheckbox from '../FilterCheckbox/FilterCheckbox'
+import { useState, useEffect } from 'react';
 import './SearchFormSavedMovies.css';
+import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import useFormValidation from '../../hooks/useFormValidation';
 
-
-export default function SearchFormSavedMovies({
-  firstSearch,
+function SearchFormSavedMovies({
   isCheck,
   setIsCheck,
   searchSavedMovies,
+  searchedSaveMovie,
+  firstSearch,
+  movies
 }) {
-  
   const [errorSaveMessage, setErrorSaveMessage] = useState('');
-  const { values, error, handleChange, reset, isValidButton } = useFormValidation({ search: '' });
+  const { values, handleChange, reset, isValidButton } = useFormValidation({
+    search: ''
+  });
 
   useEffect(() => {
-    const lastSaveSearch = localStorage.getItem('lastSaveSearch');
-    const lastCheckboxSaveState = localStorage.getItem('lastCheckboxSaveState');
-    if (lastSaveSearch && lastCheckboxSaveState ) {
-      reset({ search: lastSaveSearch, lastCheckboxSaveState });
-    }
-  }, [reset]);
+    reset({ search: searchedSaveMovie });
+  }, [searchedSaveMovie, reset]);
 
-  function onSubmit(evt) {
+  function handleSubmit(evt) {
     evt.preventDefault();
     const searchSaveValue = values.search.trim();
     if (isValidButton) {
-      searchSavedMovies(searchSaveValue)
-      localStorage.setItem('lastSaveSearch', searchSaveValue)
-      localStorage.setItem('lastCheckboxSaveState', isCheck)
+      searchSavedMovies(searchSaveValue);
       setErrorSaveMessage('');
     } else {
-      setErrorSaveMessage('Нужно ввести ключевое слово');
-      setTimeout(() => {
-        setErrorSaveMessage('');
-      }, 1500);
+      setErrorSaveMessage('Введите ключевое слово для поиска');
     }
   }
 
-  function showSavedShorts() {
-    const newSaveShortsState = !isCheck;
-    setIsCheck(newSaveShortsState);
-    localStorage.setItem('lastCheckboxSaveState', newSaveShortsState);
-  };
+  function toggleCheckbox() {
+    setIsCheck(!isCheck);
+  }
+
+  useEffect(() => {
+    reset({ search: searchedSaveMovie || '' });
+  }, [searchedSaveMovie, reset]);
 
   return (
     <section className="savesearch">
       <div className="savesearch__container">
-        {errorSaveMessage && <p className='savesearch__error_message'>{errorSaveMessage}</p>}
-        <form className="savesearch__form" noValidate onSubmit={onSubmit}>
+        {errorSaveMessage && (
+          <p className="savesearch__error_message">{errorSaveMessage}</p>
+        )}
+        <form className="savesearch__form" noValidate onSubmit={handleSubmit}>
           <input
             required
-            className='savesearch__input'
+            className="savesearch__input"
             placeholder="Фильм"
             name="search"
             type="text"
@@ -60,21 +56,24 @@ export default function SearchFormSavedMovies({
             onChange={handleChange}
             autoComplete="off"
           />
-          <button
-            type='submit'
-            className='savesearch__submit'
-          ></button>
+          <button type="submit" className="savesearch__submit"></button>
         </form>
         <FilterCheckbox
           isChecked={isCheck}
-          setIsChecked={showSavedShorts}
-          showShorts={showSavedShorts}
+          // setIsChecked={toggleCheckbox}
+          setIsChecked={setIsCheck}
+          showShorts={toggleCheckbox}
           initialSearch={firstSearch}
         />
       </div>
     </section>
   );
 }
+
+export default SearchFormSavedMovies;
+
+
+
 
 
 

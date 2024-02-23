@@ -11,7 +11,6 @@ export default function Movies({ addMovie,
   const [globalError, setGlobalError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [allMovies, setAllMovies] = useState([]);
-  // const [filteredMovies, setFilteredMovies] = useState(savedMovies);
   const [filteredMovies, setFilteredMovies] = useState('');
   const [searchedMovie, setSearchedMovie] = useState('');
   const [isChecked, setIsChecked] = useState(false);
@@ -69,7 +68,6 @@ export default function Movies({ addMovie,
         isChecked={isChecked}
         setIsChecked={setIsChecked}
         searchMovies={searchMovies}
-        searchedMovie={searchedMovie}
         initialSearch={initialSearch}
         movies={allMovies}
         filter={filter}

@@ -81,6 +81,7 @@ export default function MoviesCardList({ movies, savedMovies, onDelete, addMovie
                                         <MoviesCard
                                             key={data.id}
                                             savedMovies={savedMovies}
+                                            movies={movies}
                                             onDelete={onDelete}
                                             data={data}
                                         />
