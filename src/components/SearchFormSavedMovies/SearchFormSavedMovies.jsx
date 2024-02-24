@@ -3,27 +3,34 @@ import './SearchFormSavedMovies.css';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import useFormValidation from '../../hooks/useFormValidation';
 
-function SearchFormSavedMovies({
+export default function SearchFormSavedMovies({
   isCheck,
   setIsCheck,
   searchSavedMovies,
   firstSearch
 }) {
-  const [searchValue, setSearchValue] = useState('');
+  
   const [errorSaveMessage, setErrorSaveMessage] = useState('');
   const { values, handleChange, reset, isValidButton } = useFormValidation({
     search: ''
   });
 
   useEffect(() => {
-    reset({ search: searchValue });
-  }, [searchValue, reset]);
+    const lastSaveSearch = localStorage.getItem('lastSaveSearch');
+    const lastSaveCheckboxState = localStorage.getItem('lastSaveCheckboxState');
+    if (lastSaveSearch && lastSaveCheckboxState) {
+      reset({ search: lastSaveSearch });
+      setIsCheck(lastSaveCheckboxState === 'true');
+    }
+  }, [reset, setIsCheck]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
     const searchSaveValue = values.search.trim();
     if (isValidButton) {
       searchSavedMovies(searchSaveValue, isCheck);
+      localStorage.setItem('lastSaveSearch', searchSaveValue);
+      localStorage.setItem('lastSaveCheckboxState', isCheck);
       setErrorSaveMessage('');
     } else {
       setErrorSaveMessage('Нужно ввести ключевое слово');
@@ -33,7 +40,7 @@ function SearchFormSavedMovies({
   function toggleCheckbox() {
     const newSaveShortsState = !isCheck;
     setIsCheck(newSaveShortsState);
-    localStorage.setItem('lastCheckboxState', newSaveShortsState);
+    localStorage.setItem('lastSaveCheckboxState', newSaveShortsState);
   }
 
   return (
@@ -65,5 +72,3 @@ function SearchFormSavedMovies({
     </section>
   );
 }
-
-export default SearchFormSavedMovies;

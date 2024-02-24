@@ -15,7 +15,7 @@ export default function SavedMovies({ onDelete, savedMovies }) {
     setSearchedSaveMovie(search);
     setIsCheck(isChecked);
     if (movies) {
-      const filteredMovies = movies.filter(movie => {
+      const filteredMovies = savedMovies.filter(movie => {
         const searchName =
           typeof search === 'string' &&
           movie.nameRU.toLowerCase().includes(search.toLowerCase());
