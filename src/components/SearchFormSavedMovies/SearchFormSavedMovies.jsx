@@ -10,30 +10,32 @@ export default function SearchFormSavedMovies({
   firstSearch
 }) {
 
-  const [errorSaveMessage, setErrorSaveMessage] = useState('');
-  const { values, handleChange, reset, isValidButton } = useFormValidation({
-    search: ''
-  });
+  const { values, handleChange, reset, isValidButton } = useFormValidation({ search: '' })
+  const [errorSaveMessage, setErrorSaveMessage] = useState('')
 
   useEffect(() => {
     const lastSaveSearch = localStorage.getItem('lastSaveSearch');
     const lastSaveCheckboxState = localStorage.getItem('lastSaveCheckboxState');
     if (lastSaveSearch && lastSaveCheckboxState) {
-      reset({ search: lastSaveSearch });
-      setIsCheck(lastSaveCheckboxState === 'true');
+      reset({ search: lastSaveSearch, lastSaveCheckboxState });
     }
-  }, [reset, setIsCheck]);
+  }, [reset]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
     const searchSaveValue = values.search.trim();
     if (isValidButton) {
-      searchSavedMovies(searchSaveValue, isCheck);
+      if (searchSavedMovies) {
+        searchSavedMovies(searchSaveValue);
+      }
       localStorage.setItem('lastSaveSearch', searchSaveValue);
       localStorage.setItem('lastSaveCheckboxState', isCheck);
       setErrorSaveMessage('');
     } else {
       setErrorSaveMessage('Нужно ввести ключевое слово');
+      setTimeout(() => {
+        setErrorSaveMessage('');
+      }, 1500);
     }
   }
 

@@ -15,7 +15,8 @@ export default function FilterCheckbox({ isChecked, setIsChecked, initialSearch 
         onChange={handleChange}
         className='checkbox__search'
         disabled={initialSearch}
-        checked={isChecked}
+        checked={isChecked || false} 
+        // checked={isChecked}
       />
       <img
         alt='поиск короткометражек'

@@ -9,8 +9,8 @@ export default function SearchForm({
   setIsChecked,
   searchMovies
 }) {
-  const { values, handleChange, reset, isValidButton } = useFormValidation({ search: '' });
-  const [errorMessage, setErrorMessage] = useState('');
+  const { values, handleChange, reset, isValidButton } = useFormValidation({ search: '' })
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     const lastSearch = localStorage.getItem('lastsearch');
