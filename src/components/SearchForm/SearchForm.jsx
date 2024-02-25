@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import useFormValidation from '../../hooks/useFormValidation'
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox'
@@ -10,7 +9,7 @@ export default function SearchForm({
   setIsChecked,
   searchMovies
 }) {
-  const { values, error, handleChange, reset, isValidButton } = useFormValidation({ search: '' });
+  const { values, handleChange, reset, isValidButton } = useFormValidation({ search: '' });
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -58,7 +57,6 @@ export default function SearchForm({
             type="text"
             value={values.search}
             onChange={handleChange}
-            error={error.text}
             autoComplete="off"
           />
           <button

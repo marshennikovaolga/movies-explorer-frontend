@@ -79,7 +79,7 @@ export default function MoviesCardList({ movies, savedMovies, onDelete, addMovie
                                 savedMovies.map(data => {
                                     return (
                                         <MoviesCard
-                                            key={data.id}
+                                            key={data._id} //unique prop
                                             movies={movies}
                                             savedMovies={savedMovies}
                                             onDelete={onDelete}

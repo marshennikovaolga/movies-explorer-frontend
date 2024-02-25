@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import './SearchFormSavedMovies.css';
-import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
-import useFormValidation from '../../hooks/useFormValidation';
+import { useState, useEffect } from 'react'
+import './SearchFormSavedMovies.css'
+import FilterCheckbox from '../FilterCheckbox/FilterCheckbox'
+import useFormValidation from '../../hooks/useFormValidation'
 
 export default function SearchFormSavedMovies({
   isCheck,
@@ -9,7 +9,7 @@ export default function SearchFormSavedMovies({
   searchSavedMovies,
   firstSearch
 }) {
-  
+
   const [errorSaveMessage, setErrorSaveMessage] = useState('');
   const { values, handleChange, reset, isValidButton } = useFormValidation({
     search: ''

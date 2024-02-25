@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import SearchFormSavedMovies from '../SearchFormSavedMovies/SearchFormSavedMovies';
-import { SHORT_MOVIE_DURATION } from '../../utils/constants';
+import { useState, useEffect, useCallback } from 'react'
+import MoviesCardList from '../MoviesCardList/MoviesCardList'
+import SearchFormSavedMovies from '../SearchFormSavedMovies/SearchFormSavedMovies'
+import { SHORT_MOVIE_DURATION } from '../../utils/constants'
 
 export default function SavedMovies({ onDelete, savedMovies }) {
   const [searchedSaveMovie, setSearchedSaveMovie] = useState('');
