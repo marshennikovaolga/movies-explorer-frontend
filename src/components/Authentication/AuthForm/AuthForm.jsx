@@ -64,7 +64,7 @@ export default function AuthForm({ type, onSubmit }) {
                             isInputValid={isInputValid.password}
                             type="password"
                             onChange={handleChange}
-                            sens={send}
+                            send={send}
                             error={error.password}
                             hasError={true}
                         />
@@ -82,7 +82,7 @@ export default function AuthForm({ type, onSubmit }) {
                             minLength="2"
                             maxLength="30"
                             onChange={handleChange}
-                            sens={send}
+                            send={send}
                             error={error.name}
                             hasError={true}
                         />
@@ -95,7 +95,7 @@ export default function AuthForm({ type, onSubmit }) {
                             pattern={emailRegex}
                             type="email"
                             onChange={handleChange}
-                            sens={send}
+                            send={send}
                             error={error.email}
                             hasError={true}
                         />
@@ -107,7 +107,7 @@ export default function AuthForm({ type, onSubmit }) {
                             isInputValid={isInputValid.password}
                             type="password"
                             onChange={handleChange}
-                            sens={send}
+                            send={send}
                             error={error.password}
                             hasError={true}
                         />
@@ -118,9 +118,9 @@ export default function AuthForm({ type, onSubmit }) {
             )}
                 <button
                     type='submit'
-                    className={`authform__submit ${!isValidButton ? 'authform__submit_disabled' : ''}`}
+                    className={`authform__submit ${!isValidButton || send ? 'authform__submit_disabled' : ''}`}
                     aria-label={type === 'login' ? 'Войти' : 'Зарегистрироваться'}
-                    disabled={!isValidButton}
+                    disabled={!isValidButton || send }
                 >
                     {type === 'login' ? 'Войти' : 'Зарегистрироваться'}
                 </button>

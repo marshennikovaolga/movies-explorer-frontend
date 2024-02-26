@@ -3,18 +3,19 @@ import { useEffect, useState } from 'react'
 import MoviesCard from '../MoviesCard/MoviesCard'
 import Preloader from '../Preloader/Preloader'
 import { useLocation } from 'react-router-dom'
+import lodash from 'lodash'
 import {
     MAX_SCREEN_WIDTH, SMALL_SCREEN_WIDTH,
     INIT_MAX_SCREEN, INIT_MEDIUM_SCREEN, INIT_SMALL_SCREEN,
     STEP_MAX_SCREEN, STEP_SMALL_SCREEN
-} from '../../utils/constants';
-import lodash from 'lodash';
+} from '../../utils/constants'
 
 export default function MoviesCardList({ movies, savedMovies, onDelete, addMovie,
     isLoading, globalError, initialSearch }) {
     const { pathname } = useLocation()
     const [cardCount, setCardCount] = useState(0);
-    const currentLength = movies.slice(0, cardCount)
+
+    const currentLength = movies ? movies.slice(0, cardCount) : [];
 
     useEffect(() => {
         if (pathname === '/movies' || pathname === '/saved-movies') {
@@ -56,58 +57,49 @@ export default function MoviesCardList({ movies, savedMovies, onDelete, addMovie
         setCardCount(newCardCount);
     };
 
-    console.log('movies:', movies);
-    console.log('savedMovies:', savedMovies);
-
     return (
         <section className='cardlist'>
             <ul className='cardlist__list'>
-                {
-                    isLoading ? <Preloader /> :
-                        (pathname === '/movies' && currentLength.length !== 0) ?
-                            currentLength.map(data => {
-                                return (
-                                    <MoviesCard
-                                        key={data.id}
-                                        movies={movies}
-                                        savedMovies={savedMovies}
-                                        addMovie={addMovie}
-                                        data={data}
-                                    />
-                                )
-                            }) : savedMovies.length !== 0 && pathname === '/saved-movies' ?
-                                savedMovies.map(data => {
-                                    return (
+                {isLoading ? (
+                    <Preloader />
+                ) : (
+                    (globalError) ? (
+                        <span className='cardlist__span'>
+                            Во время запроса произошла ошибка.
+                            Возможно, проблема с соединением или сервер недоступен.
+                            Подождите немного и попробуйте ещё раз
+                        </span>
+                    ) : (
+                        (pathname === '/movies' && initialSearch) ? (
+                            <span className='cardlist__span'>
+                                Чтобы увидеть список фильмов, выполните поиск
+                            </span>
+                        ) : (
+                            (pathname === '/saved-movies' && initialSearch) ? (
+                                <span className='cardlist__span'>
+                                    Нет сохранённых фильмов
+                                </span>
+                            ) : (
+                                (pathname === '/movies' && currentLength.length === 0) || (pathname === '/saved-movies' && currentLength.length === 0) ? (
+                                    <span className='cardlist__span'>
+                                        Ничего не найдено
+                                    </span>
+                                ) : (
+                                    currentLength.map(data => (
                                         <MoviesCard
-                                            key={data._id} //unique prop
+                                            key={pathname === '/movies' ? data.id : data._id}
                                             movies={movies}
                                             savedMovies={savedMovies}
+                                            addMovie={addMovie}
                                             onDelete={onDelete}
                                             data={data}
                                         />
-                                    )
-                                }) : globalError ?
-                                    <span className='cardlist__span'>
-                                        Во время запроса произошла ошибка.
-                                        Возможно, проблема с соединением или сервер недоступен.
-                                        Подождите немного и попробуйте ещё раз
-                                    </span>
-                                    : pathname === '/saved-movies' && savedMovies.length === 0 ?
-                                        <span className='cardlist__span'>
-                                            Нет сохранённых фильмов
-                                        </span>
-                                        : !initialSearch ?
-                                            <span className='cardlist__span' >
-                                                Ничего не найдено
-                                            </span>
-                                            : pathname === '/movies' ?
-                                                <span className='cardlist__span'>
-                                                    Чтобы увидеть список фильмов, выполните поиск
-                                                </span> :
-                                                <span className='cardlist__span'>
-                                                    Нет сохранённых фильмов
-                                                </span>
-                }
+                                    ))
+                                )
+                            )
+                        )
+                    )
+                )}
             </ul>
             {pathname === '/movies' &&
                 <button type='button'

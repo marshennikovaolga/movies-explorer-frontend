@@ -4,9 +4,7 @@ import moviesApi from '../../utils/MoviesApi'
 import { useEffect, useState, useCallback } from 'react'
 import { SHORT_MOVIE_DURATION } from "../../utils/constants"
 
-export default function Movies({ addMovie,
-  savedMovies
-}) {
+export default function Movies({ addMovie, savedMovies}) {
 
   const [globalError, setGlobalError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +68,6 @@ export default function Movies({ addMovie,
         searchMovies={searchMovies}
         initialSearch={initialSearch}
         movies={allMovies}
-        filter={filter}
       />
       <MoviesCardList
         movies={filteredMovies}
