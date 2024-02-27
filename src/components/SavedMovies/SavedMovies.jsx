@@ -9,6 +9,7 @@ function SavedMovies({ savedMovies, onDelete }) {
   const [searchedMovie, setSearchedMovie] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [globalError, setGlobalError] = useState(false);
+  const [initialSearch, setInitialSearch] = useState(false);
 
   const filterSavedMovies = useCallback((search, isChecked, movies) => {
     setSearchedMovie(search);
@@ -34,13 +35,17 @@ function SavedMovies({ savedMovies, onDelete }) {
     setIsChecked(!isChecked);
   };
 
+  useEffect(() => {
+    setInitialSearch(false);
+  }, [savedMovies]);
+
   return (
     <>
       <SearchForm
         isChecked={isChecked}
         setIsChecked={handleCheckboxChange}
         searchSaveMovies={handleSearchSaveMovies}
-        initialSearch={false}
+        initialSearch={initialSearch}
         movies={savedMovies}
       />
       <MoviesCardList
@@ -48,6 +53,7 @@ function SavedMovies({ savedMovies, onDelete }) {
         onDelete={onDelete}
         isLoading={isLoading}
         globalError={globalError}
+        initialSearch={initialSearch}
       />
     </>
   );
