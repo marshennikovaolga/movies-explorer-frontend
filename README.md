@@ -6,5 +6,5 @@ https://www.figma.com/file/6FMWkB94wE7KTkcCgUXtnC/%D0%94%D0%B8%D0%BF%D0%BB%D0%BE
 
 IP 130.193.51.194
 
-frontend 
+frontend - the virtual machine is suspended. the site is no longer available
 https://movies-diploma.nomoredomainsmonster.ru
